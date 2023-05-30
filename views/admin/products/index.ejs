@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Products</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/admin/product.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div class="searchForProduct">
+        <form id="myForm">
+          البحث عن المنتجات
+          <input type="search" name="searchProducts" />
+          <button type="submit" onclick="search()">
+            <i class="bx bx-search"></i>
+          </button>
+        </form>
+        <div id="result"></div>
+      </div>
+      <form style="margin-top: 25px" id="addproduct">
+        <div class="input">
+          <select name="category" required>
+            <option value="" selected disabled>القسم</option>
+            <% category.forEach(cate => { %>
+            <option value="<%= cate.name_ar %>"><%= cate.name_ar %></option>
+            <% }) %>
+          </select>
+        </div>
+        <div class="input">
+          <input type="text" name="subcategory" required />
+        </div>
+        <div class="input">
+          <label>اسم</label>
+          <input type="text" name="name_ar" required />
+        </div>
+        <div class="input">
+          <label>الوصف</label>
+          <input type="text" name="dis_ar" required />
+        </div>
+        <div class="input">
+          <label>السعر</label>
+          <input type="number" name="price" required />
+        </div>
+        <input type="file" onchange="imageUploaded()" id="image" />
+      </form>
+    </div>
+    <script src="/js/admin/products.js"></script>
+  </body>
+</html>

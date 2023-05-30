@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%=product.name_ar%></title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div id="Product">
+      <div class="img">
+        <img src="<%= product.image %>" alt="<%= product.name %>" />
+      </div>
+      <div class="info">
+        <h3><%= product.name_ar %></h3>
+        <p><%= product.dis_ar %></p>
+        <p>سعر: <%= product.price %> ج</p>
+        <input type="hidden" id="id" value="<%=product.id%>" />
+        <input type="hidden" id="name" value="<%=product.name_ar%>" />
+        <input type="hidden" id="price" value="<%=product.price%>" />
+        <input type="hidden" id="image" value="<%=product.image%>" />
+        <button
+          onclick="addItemToCart(parseInt('<%=product.id%>'))"
+          class="addToCart"
+          type="submit"
+        >
+          أضف إلى السلة <i class="bx bxs-cart-add"></i>
+        </button>
+      </div>
+    </div>
+    <script>
+      const id = document.getElementById("id").value;
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const image = document.getElementById("image").value;
+      const quantity = 1;
+
+      let product = {
+        id: id,
+        name: name,
+        price: price,
+        image: image,
+        quantity: quantity,
+      };
+      function addItemToCart(productId) {
+        productId = product.id;
+        if (cart.length == 0) {
+          cart.push(product);
+        } else {
+          let res = cart.find((element) => element.id == productId);
+          if (res === undefined) {
+            cart.push(product);
+          }
+        }
+        cartLen();
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+    </script>
+  </body>
+</html>

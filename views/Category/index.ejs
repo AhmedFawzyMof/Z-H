@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/index.css" />
+    <title><%= name %></title>
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <% for(var i = 0; i < subcategory.length; i++) { %>
+      <div class="subcategories">
+        <a href="<%= name %>/<%=subcategory[i].name_ar%>">
+          <img
+            src="<%=subcategory[i].image%>"
+            alt="<%=subcategory[i].name_ar%>"
+          />
+          <p><%= subcategory[i].name_ar %></p>
+        </a>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>

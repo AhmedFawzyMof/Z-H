@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin PromoCode</title>
+    <link rel="stylesheet" href="/css/admin/category.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="catecontainer">
+        <% Promocode.forEach(category => { %>
+        <div class="category">
+          <form action="/delete/promocode" method="post" id="delete">
+            <input type="hidden" name="id" value="<%= category.id %>" />
+            <button type="submit"><i class="bx bx-trash"></i></button>
+          </form>
+          <p>معرف:<%= category.id %></p>
+          <p>كود: <%= category.code %></p>
+          <p>القيمة: <%= category.value %></p>
+        </div>
+        <form action="/edit/promocode" method="post" class="editform">
+          <input type="hidden" name="id" value="<%= category.id %>" />
+          <input type="text" name="code" value="<%= category.code %>" />
+          <input
+            type="number"
+            name="value"
+            step="any"
+            value="<%= category.value %>"
+          />
+          <button type="submit">تغير</button>
+        </form>
+        <% }) %>
+      </div>
+      <form style="margin: 25px 0" class="editform" id="addform">
+        <input type="text" name="code" placeholder="كود" />
+        <input type="number" step="any" name="value" placeholder="القيمة" />
+        <button type="submit"><i class="bx bxs-folder-plus"></i></button>
+      </form>
+    </div>
+    <script>
+      const myForm = document.getElementById("addform");
+      myForm.addEventListener("submit", function (e) {
+        e.preventDefault;
+        const formData = new FormData(myForm);
+        const searchParams = new URLSearchParams();
+
+        for (const pair of formData) {
+          searchParams.append(pair[0], pair[1]);
+        }
+        console.log(searchParams);
+        fetch("https://prickly-wasp-buckle.cyclic.app/add/to/promocode", {
+          method: "post",
+          body: searchParams,
+        })
+          .then(location.reload())
+          .catch(function (error) {
+            console.error(error);
+          });
+      });
+      window.addEventListener("pageshow", function (event) {
+        var historyTraversal =
+          event.persisted ||
+          (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+        if (historyTraversal) {
+          // Handle page restore.
+          window.location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

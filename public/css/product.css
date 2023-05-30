@@ -1,0 +1,192 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Cairo, Roboto;
+}
+
+body {
+  background: #eee;
+  overflow-x: hidden;
+  direction: rtl;
+}
+textarea:focus,
+input:focus {
+  outline: none;
+}
+nav ul li {
+  margin: 15px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #333;
+  border-radius: 5px;
+  height: 35px;
+}
+nav ul li a {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.container {
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  height: auto;
+}
+
+.Product {
+  margin: 10px;
+  border-radius: 5px;
+  background: #fff;
+  width: 260px;
+  position: relative;
+}
+
+.Product img {
+  width: 260px;
+  height: 300px;
+  border-radius: 5px;
+}
+
+.Product a {
+  text-decoration: none;
+  text-transform: capitalize;
+  color: #333;
+}
+
+.Product .price {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  border-radius: 5px;
+  padding: 0 10px;
+  font-weight: 700;
+  background: #fff;
+}
+
+.Product .name {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*-------------------------------------------*/
+
+#Product {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 20px 0;
+}
+
+#Product .img {
+  overflow: hidden;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+}
+
+#Product .img img {
+  width: 80%;
+  height: 80%;
+  border-radius: 10px;
+}
+
+#Product .info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 50%;
+  padding: 10px;
+}
+
+#Product .info h3 {
+  margin-bottom: 10px;
+}
+
+#Product .info p {
+  padding: 10px 0;
+}
+
+#Product .addToCart {
+  width: 200px;
+  height: 35px;
+  font-size: 19px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: 5px;
+  border: none;
+  background: #fff;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+#Product .addToCart i {
+  font-size: 25px;
+  margin-left: 10px;
+}
+
+@media (max-width: 600px) {
+  #Product {
+    flex-direction: column;
+  }
+  #Product .img {
+    width: 100%;
+    height: 50%;
+  }
+  #Product .img img {
+    width: 95%;
+    height: 95%;
+  }
+  #Product .info {
+    width: 90%;
+    height: 50%;
+  }
+}
+
+#outside {
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+}
+.selectCate {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.subcategories {
+  background: #fff;
+  text-decoration: none;
+  padding: 0 10px;
+  font-size: 20px;
+  border-radius: 0 10px;
+  width: 90%;
+}

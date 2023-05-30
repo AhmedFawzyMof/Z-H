@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>USERS</title>
+    <link rel="stylesheet" href="/css/admin/users.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="">
+    <div id="container">
+      <h2>عدد المستخدمين: <%= users.length %></h2>
+      <div class="searchForUser">
+        <form id="myForm">
+          البحث عن المستخدم
+          <input type="search" name="searchUser" />
+          <button type="submit" onclick="search()">
+            <i class="bx bx-search"></i>
+          </button>
+        </form>
+        <div id="result"></div>
+      </div>
+      <div class="addUser">
+        <form action="/register" method="post" id="adduser">
+          <h3>تسجيل حساب</h3>
+          <div class="input">
+            <label>الاسم:</label>
+            <input type="text" required name="name" />
+          </div>
+          <div class="input">
+            <label>بريد إلكتروني:</label>
+            <input type="email" required name="email" />
+          </div>
+          <div class="input">
+            <label>كلمة المرور:</label>
+            <input id="pass" type="password" required name="password" />
+          </div>
+          <div class="input">
+            <label>تأكيد كلمة المرور:</label>
+            <input id="pass2" type="password" required name="password2" />
+          </div>
+          <div class="input">
+            <button type="submit">تسجيل حساب</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <script src="/js/admin/user.js"></script>
+  </body>
+</html>

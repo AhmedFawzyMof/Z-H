@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cash On Delivery</title>
+    <link rel="stylesheet" href="/css/order.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen(), calContainer()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <div id="checkoutContainer">
+        <div id="countContainer"></div>
+      </div>
+      <form id="order" action="/order" method="post">
+        <div class="input">
+          <select name="city" required>
+            <option disabled selected value="">المدينة</option>
+            <option value="الشروق">الشروق</option>
+            <option value="بدر">بدر</option>
+            <option value="مدينتي">مدينتي</option>
+          </select>
+        </div>
+        <div class="input">
+          <select name="where" required>
+            <option disabled selected value="">تسليم الطلب في ؟</option>
+            <option value="الفرع">الفرع</option>
+            <option value="المنزل">المنزل</option>
+          </select>
+        </div>
+        <div class="input">
+          <label>العنوان</label>
+          <input type="text" required name="address" />
+        </div>
+        <div class="input">
+          <label>رقم الهاتف</label>
+          <input type="tel" required name="phone" />
+        </div>
+        <div class="input">
+          <label>رقم هاتف احتياطي</label>
+          <input type="tel" required name="phone2" />
+        </div>
+        <input type="hidden" name="delivered" value="0" />
+        <input type="hidden" name="paid" value="0" />
+        <div id="otherinput"></div>
+        <div class="input">
+          <button type="submit">اطلب الان</button>
+        </div>
+      </form>
+    </div>
+    <script src="/js/order.js"></script>
+  </body>
+</html>

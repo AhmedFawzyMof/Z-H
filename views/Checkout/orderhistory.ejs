@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order History</title>
+    <link rel="stylesheet" href="/css/order_history.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <% if (orders.length > 0) { %> <% orders.forEach(order => { %>
+      <div class="orderContainer">
+        <div class="head">
+          <p>رقم الطلب: # <%= order.id.substr(24,25) %></p>
+          <div class="orderdate">
+            تاريخ الطلب:
+            <h4 dir="ltr"><%= order.date.toISOString().slice(0, 10)%></h4>
+          </div>
+        </div>
+        <div class="orderInfo">
+          <h3>تفاصيل الطلب</h3>
+          <p>الاسم: <%= name.name %></p>
+          <p>بريد إلكتروني: <%= name.email %></p>
+          <p>العنوان: <%= order.Address %></p>
+          <p>رقم الهاتف: <%= order.phone %></p>
+          <p>هاتف احتياطي: <%= order.phone2 %></p>
+          <p>المجموع: <%= order.total %> ج</p>
+          <p>المدينة:<%= order.City %></p>
+          <p>مكان التسليم: <%= order.where %></p>
+        </div>
+        <div class="Orderitems">
+          <h3>منتجات الطلب</h3>
+          <% JSON.parse(order.cart).forEach(orderItem => { %>
+          <div class="orderitem">
+            <img src="<%= orderItem.image %>" alt="<%= orderItem.name %>" />
+            <div class="itemInfo">
+              <p><%= orderItem.name %></p>
+              <p>الكمية: <%= orderItem.quantity %></p>
+              <p>السعر: <%= orderItem.price %> ج</p>
+              <p>
+                السعر الإجمالي للمنتج: <%= orderItem.price * orderItem.quantity
+                %> ج
+              </p>
+            </div>
+          </div>
+          <% }) %>
+        </div>
+        <div class="orderStatus">
+          <h3>حالة الطلب</h3>
+          <% if (order.delivered === 0) { %>
+          <p class="failed">لم يتم تسليم الطلب بعد</p>
+          <% } else { %>
+          <p class="success">تم تسليم الطلب</p>
+          <% } %> <% if (order.paid === 0) { %>
+          <p class="failed">لم يتم الدفع حتي الان</p>
+          <% } else { %>
+          <p class="success">لقد تم دفع الطلب</p>
+          <% } %>
+        </div>
+      </div>
+      <% }) %> <% }else { %>
+      <div class="noOrders">
+        <p>لم يتم العثور على أية طلبات</p>
+      </div>
+      <% } %>
+    </div>
+    <script>
+      if (localStorage.getItem("Token") === "noToken") {
+        location.replace("/");
+      }
+    </script>
+  </body>
+</html>

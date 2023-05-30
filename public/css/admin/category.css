@@ -1,0 +1,78 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Cairo, Roboto;
+}
+
+body {
+  background: #eee;
+  overflow-x: hidden;
+  direction: rtl;
+}
+textarea:focus,
+input:focus {
+  outline: none;
+}
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+}
+.catecontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.category {
+  background: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.category img {
+  width: 100px;
+  height: 100px;
+}
+
+.editform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 280px;
+}
+
+.editform input,
+button {
+  margin: 10px 0;
+  width: 100%;
+  background: #eee;
+  border: none;
+  height: 35px;
+}
+button i {
+  font-size: 30px;
+}
+#delete button {
+  background: none;
+  border: none;
+  color: red;
+}
+select {
+  width: 100%;
+  background: #eee;
+  height: 35px;
+  border: none;
+}

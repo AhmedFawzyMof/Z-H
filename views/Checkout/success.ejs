@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Success</title>
+    <link rel="stylesheet" href="/css/order.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+
+    <div class="Container">
+      <div class="Success">
+        <div class="icon">
+          <i class="bx bx-check"></i>
+        </div>
+        <div class="body">
+          <h2>تم الطلب بنجاح</h2>
+          <p>لقد تلقينا طلب الشراء الخاص بك بنجاح ؛</p>
+          <p>سنتواصل معك قريبًا!</p>
+          <p>سيتم تسليم الطلب في غضون 48 ساعة</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      if (localStorage.getItem("Token") === "noToken") {
+        location.replace("/");
+      }
+    </script>
+  </body>
+</html>

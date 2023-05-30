@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Cairo, Roboto;
+      }
+
+      body {
+        background: #eee;
+        overflow-x: hidden;
+        direction: rtl;
+      }
+      .container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #eee;
+      }
+      .container h2 {
+        margin: 10px 0;
+        color: red;
+      }
+      .input {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+      .container form {
+        display: flex;
+        flex-direction: column;
+        width: 300px;
+        background: #fff;
+        padding: 5px;
+        border-radius: 5px;
+      }
+      .container form input {
+        margin: 10px 0;
+        background: #eee;
+        height: 35px;
+        border-radius: 5px;
+        border: none;
+      }
+      .container form textarea {
+        background: #eee;
+        border: none;
+        margin: 10px 0;
+        border-radius: 5px;
+      }
+      .container form button {
+        margin: 10px 0;
+        display: flex;
+        align-items: center;
+        height: 35px;
+        justify-content: center;
+        font-size: 17px;
+        cursor: pointer;
+        border: none;
+      }
+      .container form button i {
+        margin: 0 10px;
+        font-size: 20px;
+      }
+    </style>
+  </head>
+  <body onload="cartLen()">
+    <%- include('components/nav') %>
+    <div class="container">
+      <h2>اتصل بنا</h2>
+      <form action="/contact" method="post">
+        <div class="input">
+          <label>الاسم :</label>
+          <input type="text" required name="name" />
+        </div>
+        <div class="input">
+          <label>بريد إلكتروني :</label>
+          <input type="email" required name="email" />
+        </div>
+        <div class="input">
+          <label>رسالة :</label>
+          <textarea name="message" cols="15" rows="10"></textarea>
+        </div>
+        <button><i class="bx bxs-send"></i> إرسال</button>
+      </form>
+    </div>
+  </body>
+</html>

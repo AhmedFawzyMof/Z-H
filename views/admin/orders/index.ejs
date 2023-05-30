@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ORDERS</title>
+    <link rel="stylesheet" href="/css/admin/order.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="">
+    <div id="container">
+      <div class="citys">
+        <form id="CityForm">
+          <select name="city" required>
+            <option disabled selected value="">المدينة</option>
+            <option value="الشروق">الشروق</option>
+            <option value="بدر">بدر</option>
+            <option value="مدينتي">مدينتي</option>
+          </select>
+          <button type="submit" onclick="cityorders()">بحث</button>
+        </form>
+      </div>
+      <div id="length"></div>
+      <div id="city_orders"></div>
+      <div class="searchForUser">
+        <form id="myForm">
+          البحث عن الطلبات
+          <input type="search" name="searchUser" />
+          <button type="submit" onclick="search()">
+            <i class="bx bx-search"></i>
+          </button>
+        </form>
+        <div id="result"></div>
+      </div>
+    </div>
+    <script src="/js/admin/order.js"></script>
+  </body>
+</html>

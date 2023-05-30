@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Offers</title>
+    <link rel="stylesheet" href="/css/admin/category.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="catecontainer">
+        <% offer.forEach(category => { %>
+        <div class="category">
+          <form action="/delete/offer" method="post" id="delete">
+            <input type="hidden" name="id" value="<%= category.id %>" />
+            <button type="submit"><i class="bx bx-trash"></i></button>
+          </form>
+          <p>معرف:<%= category.id %></p>
+          <p>المنتج: <%= category.product %></p>
+          <img src="<%= category.imageUrl %>" />
+        </div>
+        <form action="/edit/offer" method="post" class="editform">
+          <input type="hidden" name="if" value="<%= category.id %>" />
+          <input type="text" name="product" value="<%= category.product %>" />
+          <button type="submit">تغير</button>
+        </form>
+        <% }) %>
+      </div>
+      <form style="margin: 25px 0" class="editform" id="addform">
+        <input type="text" name="product" placeholder="المنتج" />
+        <input type="file" id="image" onchange="imageUploaded()" />
+      </form>
+    </div>
+    <script>
+      let base64String = "";
+
+      function imageUploaded() {
+        var file = document.getElementById("image")["files"][0];
+
+        var reader = new FileReader();
+        console.log("next");
+
+        reader.onload = function () {
+          base64String = reader.result;
+
+          imageBase64Stringsep = base64String;
+
+          // alert(imageBase64Stringsep);
+          displayString(imageBase64Stringsep);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function displayString(imageBase64Stringsep) {
+        console.log("Base64String about to be printed");
+        const myForm = document.getElementById("addform");
+        const data = imageBase64Stringsep;
+
+        const formData = new FormData(myForm);
+        const searchParams = new URLSearchParams();
+
+        for (const pair of formData) {
+          searchParams.append(pair[0], pair[1]);
+        }
+        searchParams.append("image", data);
+        console.log(searchParams);
+        fetch("https://prickly-wasp-buckle.cyclic.app/add/to/offer", {
+          method: "post",
+          body: searchParams,
+        })
+          .then(location.reload())
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+      window.addEventListener("pageshow", function (event) {
+        var historyTraversal =
+          event.persisted ||
+          (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+        if (historyTraversal) {
+          // Handle page restore.
+          window.location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin SubCategory</title>
+    <link rel="stylesheet" href="/css/admin/category.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="catecontainer">
+        <% subcategory.forEach(subcategory => { %>
+        <div class="category">
+          <form action="/delete/subcategory" method="post" id="delete">
+            <input
+              type="hidden"
+              name="subcategoryid"
+              value="<%= subcategory.id %>"
+            />
+            <button type="submit"><i class="bx bx-trash"></i></button>
+          </form>
+          <p>معرف:<%= subcategory.id %></p>
+          <p>قسم:<%= subcategory.category %></p>
+          <p>الاسم: <%= subcategory.name_ar %></p>
+          <img src="<%= subcategory.image %>" />
+        </div>
+        <form
+          action="/edit/subcategory"
+          class="editform"
+          method="post"
+          id="editform"
+        >
+          <input
+            type="hidden"
+            name="subcategoryid"
+            value="<%= subcategory.id %>"
+          />
+          <select name="category">
+            <option disabled selected value="<%= subcategory.category %>">
+              <%= subcategory.category %>
+            </option>
+            <% category.forEach(name => { %>
+            <option value="<%=name.name_ar%>"><%=name.name_ar%></option>
+            <% }) %>
+          </select>
+          <input type="text" name="name" value="<%= subcategory.name_ar %>" />
+          <button type="submit">تغير</button>
+        </form>
+        <% }) %>
+      </div>
+      <form style="margin-top: 25px" class="editform" id="addform">
+        <select name="category">
+          <option selected disabled>قسم</option>
+          <% category.forEach(name => { %>
+          <option value="<%=name.name_ar%>"><%=name.name_ar%></option>
+          <% }) %>
+        </select>
+        <input type="text" name="name_ar" placeholder="الاسم" />
+        <input type="file" onchange="imageUploaded()" id="image" />
+      </form>
+    </div>
+    <script>
+      let base64String = "";
+
+      function imageUploaded() {
+        var file = document.getElementById("image")["files"][0];
+
+        var reader = new FileReader();
+        console.log("next");
+
+        reader.onload = function () {
+          base64String = reader.result;
+
+          imageBase64Stringsep = base64String;
+
+          // alert(imageBase64Stringsep);
+          displayString(imageBase64Stringsep);
+        };
+        reader.readAsDataURL(file);
+      }
+
+      function displayString(imageBase64Stringsep) {
+        console.log("Base64String about to be printed");
+        const myForm = document.getElementById("addform");
+        const data = imageBase64Stringsep;
+
+        const formData = new FormData(myForm);
+        const searchParams = new URLSearchParams();
+
+        for (const pair of formData) {
+          searchParams.append(pair[0], pair[1]);
+        }
+        searchParams.append("image", data);
+        console.log(searchParams);
+        fetch("https://prickly-wasp-buckle.cyclic.app/add/subcategory", {
+          method: "post",
+          body: searchParams,
+        })
+          .then(location.reload())
+          .catch(function (error) {
+            console.error(error);
+          });
+      }
+      window.addEventListener("pageshow", function (event) {
+        var historyTraversal =
+          event.persisted ||
+          (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+        if (historyTraversal) {
+          // Handle page restore.
+          window.location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

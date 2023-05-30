@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile <%= profile.name %></title>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <h2>مرحبًا <span><%= profile.name %></span></h2>
+      <form action="/edit/profile" class="form" method="post">
+        <input type="hidden" name="id" value="<%= profile.id %>" />
+        <div class="input">
+          <label>الاسم:</label>
+          <input type="text" name="name" value="<%= profile.name %>" />
+        </div>
+        <div class="input">
+          <label>البريد:</label>
+          <input type="email" name="email" value="<%= profile.email %>" />
+        </div>
+        <div class="input" style="flex-direction: column">
+          <label>كلمة المرور الجديدة:</label>
+          <input type="password" name="password" />
+        </div>
+        <button type="submit">تغيير</button>
+      </form>
+    </div>
+    <script>
+      if (!localStorage.getItem("Token") === "noToken") {
+        location.replace("/");
+      }
+
+      window.addEventListener("pageshow", function (event) {
+        var historyTraversal =
+          event.persisted ||
+          (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+        if (historyTraversal) {
+          // Handle page restore.
+          window.location.reload();
+        }
+      });
+    </script>
+  </body>
+</html>

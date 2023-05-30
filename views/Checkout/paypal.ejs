@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Credit Card Checkout</title>
+    <link rel="stylesheet" href="/css/order.css" />
+    <script src="https://www.paypal.com/sdk/js?client-id=<%= paypalClientId %>"></script>
+    <script src="/js/paypal.js" defer></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+  <body onload="cartLen(), calContainer()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <div id="checkoutContainer">
+        <div id="countContainer"></div>
+      </div>
+      <div id="order">
+        <div class="input">
+          <select name="city" required id="city">
+            <option disabled selected value="">المدينة</option>
+            <option value="الشروق">الشروق</option>
+            <option value="بدر">بدر</option>
+            <option value="مدينتي">مدينتي</option>
+          </select>
+        </div>
+        <div class="input">
+          <select name="where" required id="where">
+            <option disabled selected value="">تسليم الطلب في ؟</option>
+            <option value="الفرع">الفرع</option>
+            <option value="المنزل">المنزل</option>
+          </select>
+        </div>
+        <div class="input">
+          <label>العنوان</label>
+          <input type="text" required name="address" id="address" />
+        </div>
+        <div class="input">
+          <label>رقم الهاتف</label>
+          <input type="tel" required name="phone" id="phone" />
+        </div>
+        <div class="input">
+          <label>رقم هاتف احتياطي</label>
+          <input type="tel" required name="phone2" id="phone2" />
+        </div>
+        <div id="otherinput"></div>
+        <p id="ERR"></p>
+        <div class="input">
+          <button onclick="values()">تحقق من وجود أخطاء</button>
+        </div>
+        <div id="paypal"></div>
+      </div>
+    </div>
+    <script src="/js/order.js"></script>
+  </body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%= subcate %></title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/product.css" />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <form action="/sub/categories" method="post" class="selectCate">
+        <select name="categories" class="subcategories">
+          <option value="" disabled selected>Ziad</option>
+          <option value="">Hamasa</option>
+        </select>
+      </form>
+      <% for(var i = 0; i < products.length; i++) { %>
+      <div class="Product">
+        <input type="hidden" id="id" value="<%=products[i].id%>" />
+        <input type="hidden" id="name" value="<%=products[i].name_ar%>" />
+        <input type="hidden" id="price" value="<%=products[i].price%>" />
+        <input type="hidden" id="image" value="<%=products[i].image%>" />
+        <button
+          onclick="addItemToCart(parseInt('<%=products[i].id%>'))"
+          class="addToCart"
+          id="outside"
+          type="submit"
+        >
+          <i class="bx bxs-cart-add"></i>
+        </button>
+        <a href="/product/show/<%= products[i].id %>">
+          <img
+            src="<%= products[i].image %>"
+            alt="<%= products[i].name_ar %>"
+          />
+          <div class="body">
+            <p class="price"><%= products[i].price %> ج</p>
+            <p class="name"><%= products[i].name_ar %></p>
+          </div></a
+        >
+      </div>
+      <% } %>
+    </div>
+    <script>
+      const id = document.getElementById("id").value;
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const image = document.getElementById("image").value;
+      const quantity = 1;
+
+      let product = {
+        id: id,
+        name: name,
+        price: price,
+        image: image,
+        quantity: quantity,
+      };
+      function addItemToCart(productId) {
+        productId = product.id;
+        if (cart.length == 0) {
+          cart.push(product);
+        } else {
+          let res = cart.find((element) => element.id == productId);
+          if (res === undefined) {
+            cart.push(product);
+          }
+        }
+        cartLen();
+        localStorage.setItem("cart", JSON.stringify(cart));
+      }
+    </script>
+  </body>
+</html>
