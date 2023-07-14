@@ -1,4 +1,9 @@
-let disCount = JSON.parse(localStorage.getItem("disCount"));
+let disCount;
+if (localStorage.getItem("disCount")) {
+  disCount = JSON.parse(localStorage.getItem("disCount"));
+} else {
+  disCount = 1;
+}
 function calContainer() {
   function getTotal() {
     let temp = cart.map(function (item) {
@@ -25,7 +30,6 @@ function calContainer() {
     let shiping = 200;
     return shiping;
   }
-
   if (cart.length) {
     const countContainer = document.getElementById("countContainer");
     countContainer.innerHTML = `
@@ -131,14 +135,3 @@ function dicQuantity(productId) {
   }
   localStorage.setItem("cart", JSON.stringify(cart));
 }
-
-window.addEventListener("pageshow", function (event) {
-  var historyTraversal =
-    event.persisted ||
-    (typeof window.performance != "undefined" &&
-      window.performance.navigation.type === 2);
-  if (historyTraversal) {
-    // Handle page restore.
-    window.location.reload();
-  }
-});

@@ -3,70 +3,64 @@ const { v4: uuidv4 } = require("uuid");
 
 const controller = {
   addOne: (req, res) => {
-    const {
-      city,
-      address,
-      phone,
-      phone2,
-      user,
-      total,
-      cart,
-      where,
-      delivered,
-      paid,
-    } = req.body;
+    const { address, phone, phone2, user, total, cart, delivered, paid } =
+      req.body;
+
     const id = uuidv4();
     const date = new Date().toISOString().slice(0, 19).replace("T", " ");
-    db.query("SELECT * FROM users WHERE id = ?", [user], (err, result) => {
-      if (err) throw err;
-      if (result.length > 0) {
-        db.query(
-          "INSERT INTO `orders` (`id`, `user`, `City`, `Address`, `phone`, `phone2`, `total`, `date`, `cart`, `where`, `delivered`, `paid`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-          [
-            id,
-            result[0].email,
-            city,
-            address,
-            phone,
-            phone2,
-            total,
-            date,
-            cart,
-            where,
-            delivered,
-            paid,
-          ],
-          (err, result) => {
-            if (err) throw err;
-            res.send(`<script>
-            localStorage.setItem('cart','[]')
-            localStorage.setItem('disCount', '1')
-            location.replace('/pay/info/success')
+    if (JSON.parse(cart).length > 0) {
+      db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
+        if (err) throw err;
+        if (result.length > 0) {
+          db.query(
+            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare phone`, `delivered`, `paid`, `total`, `date`, `cart`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+              id,
+              user,
+              address,
+              phone,
+              phone2,
+              delivered,
+              paid,
+              total,
+              date,
+              cart,
+            ],
+            (err, result) => {
+              if (err) throw err;
+              res.send(`
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/success");
           </script>`);
-          }
-        );
-      }
-    });
+            }
+          );
+        }
+      });
+    } else {
+      res.redirect("/");
+    }
   },
   getSuccess: (req, res) => {
     res.render("Checkout/success");
   },
   getOrderHistory: (req, res) => {
     const userId = req.params.userId;
-    console.log(userId);
     const name = {};
     db.query(
-      "SELECT name,email FROM users WHERE id = ?",
+      "SELECT username FROM Users WHERE id = ?",
       [userId],
       (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
           Object.assign(name, result[0]);
           db.query(
-            "SELECT * FROM `orders` WHERE user = ?",
-            [result[0].email],
+            "SELECT * FROM `Order` WHERE user = ?",
+            [userId],
             (err, result) => {
               if (err) throw err;
+
               res.render("Checkout/orderhistory", {
                 orders: result,
                 name: name,

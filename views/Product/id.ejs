@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title><%=product.name_ar%></title>
+    <title><%=product.name%></title>
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
@@ -18,11 +18,11 @@
         <img src="<%= product.image %>" alt="<%= product.name %>" />
       </div>
       <div class="info">
-        <h3><%= product.name_ar %></h3>
-        <p><%= product.dis_ar %></p>
+        <h3><%= product.name %></h3>
+        <p><%= product.description %></p>
         <p>سعر: <%= product.price %> ج</p>
         <input type="hidden" id="id" value="<%=product.id%>" />
-        <input type="hidden" id="name" value="<%=product.name_ar%>" />
+        <input type="hidden" id="name" value="<%=product.name%>" />
         <input type="hidden" id="price" value="<%=product.price%>" />
         <input type="hidden" id="image" value="<%=product.image%>" />
         <button

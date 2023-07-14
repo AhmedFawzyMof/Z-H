@@ -50,7 +50,7 @@ const controller = {
   },
   getOne: (req, res) => {
     const { id } = req.params;
-    db.query("SELECT * FROM `product` WHERE id = ?", id, (err, result) => {
+    db.query("SELECT * FROM `Products` WHERE id = ?", id, (err, result) => {
       if (err) throw err;
 
       res.render("Product/id", {
@@ -61,7 +61,7 @@ const controller = {
   getCode: (req, res) => {
     const { code } = req.body;
     db.query(
-      "SELECT * FROM `promocode` WHERE code = ?",
+      "SELECT * FROM `PromoCode` WHERE code = ?",
       [code],
       (err, result) => {
         if (err) throw err;
@@ -69,15 +69,9 @@ const controller = {
           res.send(`
         <script>
         localStorage.setItem('disCount', '${result[0].value}')
-        window.history.back();
+        window.location.replace("/cart/show/items");
         </script>
         `);
-        } else {
-          res.send(`          
-          <script>
-          window.history.back();        
-          </script>
-          `);
         }
       }
     );
@@ -88,7 +82,7 @@ const controller = {
   searchProduct: (req, res) => {
     const Searchquery = req.body.search;
     db.query(
-      `SELECT * FROM product WHERE name_ar LIKE '%${Searchquery}%'`,
+      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%'`,
       (err, result) => {
         if (err) throw err;
         res.render("Product/search", {
@@ -101,7 +95,7 @@ const controller = {
   editProduct: (req, res) => {
     const { id, name_ar, dis_ar, price } = req.body;
     db.query(
-      "UPDATE `product` SET `name_ar` = ?, `dis_ar` = ?, `price` = ? WHERE `product`.`id` = ?",
+      "UPDATE `Products` SET `name` = ?, `description` = ?, `price` = ? WHERE `Products`.`id` = ?",
       [name_ar, dis_ar, price, id],
       (err, result) => {
         if (err) throw err;
@@ -116,7 +110,7 @@ const controller = {
   editOffer: (req, res) => {
     const { id, product } = req.body;
     db.query(
-      "UPDATE `offer` SET `product` = ? WHERE `offer`.`id` = ?",
+      "UPDATE `Offer` SET `product` = ? WHERE `Offer`.`id` = ?",
       [image, product, id],
       (err, result) => {
         if (err) throw err;
@@ -131,7 +125,7 @@ const controller = {
   editPromo: (req, res) => {
     const { id, code, value } = req.body;
     db.query(
-      "UPDATE `promocode` SET `code` = ?, `value` = ? WHERE `promocode`.`id` = ?",
+      "UPDATE `PromoCode` SET `code` = ?, `value` = ? WHERE `PromoCode`.`id` = ?",
       [code, value, id],
       (err, result) => {
         if (err) throw err;

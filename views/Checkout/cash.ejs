@@ -19,14 +19,6 @@
       </div>
       <form id="order" action="/order" method="post">
         <div class="input">
-          <select name="city" required>
-            <option disabled selected value="">المدينة</option>
-            <option value="الشروق">الشروق</option>
-            <option value="بدر">بدر</option>
-            <option value="مدينتي">مدينتي</option>
-          </select>
-        </div>
-        <div class="input">
           <select name="where" required>
             <option disabled selected value="">تسليم الطلب في ؟</option>
             <option value="الفرع">الفرع</option>
@@ -39,11 +31,11 @@
         </div>
         <div class="input">
           <label>رقم الهاتف</label>
-          <input type="tel" required name="phone" />
+          <input type="tel" required name="phone" maxlength="11" />
         </div>
         <div class="input">
           <label>رقم هاتف احتياطي</label>
-          <input type="tel" required name="phone2" />
+          <input type="tel" required name="phone2" maxlength="11" />
         </div>
         <input type="hidden" name="delivered" value="0" />
         <input type="hidden" name="paid" value="0" />

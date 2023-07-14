@@ -50,7 +50,7 @@ input:focus {
   position: absolute;
   width: 40px;
   height: 35px;
-  background: red;
+  background: #ff971f;
   border-radius: 5px 0 0 5px;
   left: 0;
   bottom: 0;
@@ -75,7 +75,7 @@ input:focus {
   background: none;
   border: none;
   font-size: 30px;
-  color: red;
+  color: #ff971f;
   cursor: pointer;
 }
 
@@ -91,7 +91,7 @@ input:focus {
 .Delivered form button {
   padding: 0 5px;
   font-size: 15px;
-  background: red;
+  background: #ff971f;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -100,7 +100,7 @@ input:focus {
 .Delivered form select {
   padding: 0 5px;
   font-size: 15px;
-  background: red;
+  background: #ff971f;
   color: #fff;
   border: none;
 }
@@ -117,7 +117,7 @@ input:focus {
 .Paid form button {
   padding: 0 5px;
   font-size: 15px;
-  background: red;
+  background: #ff971f;
   color: #fff;
   border: none;
   cursor: pointer;
@@ -126,7 +126,7 @@ input:focus {
 .Paid form select {
   padding: 0 5px;
   font-size: 15px;
-  background: red;
+  background: #ff971f;
   color: #fff;
   border: none;
 }

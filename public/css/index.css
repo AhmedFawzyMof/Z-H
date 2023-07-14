@@ -95,7 +95,7 @@ input:focus {
   width: 40px;
   cursor: pointer;
   font-size: 1.7rem;
-  background: red;
+  background: #ff971f;
   color: #fff;
   line-height: 40px;
   text-align: center;

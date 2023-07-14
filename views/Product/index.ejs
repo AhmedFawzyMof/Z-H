@@ -12,18 +12,25 @@
     <link rel="stylesheet" href="/css/product.css" />
   </head>
   <body onload="cartLen()">
-    <%- include('../components/nav') %>
+    <%- include('../components/nav') %> <% if (products.length > 0) { %>
     <div class="container">
-      <form action="/sub/categories" method="post" class="selectCate">
-        <select name="categories" class="subcategories">
-          <option value="" disabled selected>Ziad</option>
-          <option value="">Hamasa</option>
-        </select>
-      </form>
-      <% for(var i = 0; i < products.length; i++) { %>
+      <div class="categories">
+        <% for(let i =0; i < categories.length; i++) {%>
+        <form action="/sub/categories" method="post" class="selectCate">
+          <input type="hidden" name="compony" value="<%= subcate %>" />
+          <input
+            type="hidden"
+            name="category"
+            value="<%= categories[i].name %>"
+          />
+          <button><%= categories[i].name %></button>
+        </form>
+        <% } %>
+      </div>
+      <% for(let i = 0; i < products.length; i++) { %>
       <div class="Product">
         <input type="hidden" id="id" value="<%=products[i].id%>" />
-        <input type="hidden" id="name" value="<%=products[i].name_ar%>" />
+        <input type="hidden" id="name" value="<%=products[i].name%>" />
         <input type="hidden" id="price" value="<%=products[i].price%>" />
         <input type="hidden" id="image" value="<%=products[i].image%>" />
         <button
@@ -41,7 +48,7 @@
           />
           <div class="body">
             <p class="price"><%= products[i].price %> ج</p>
-            <p class="name"><%= products[i].name_ar %></p>
+            <p class="name"><%= products[i].name %></p>
           </div></a
         >
       </div>
@@ -71,9 +78,12 @@
             cart.push(product);
           }
         }
-        cartLen();
         localStorage.setItem("cart", JSON.stringify(cart));
+        cartLen();
       }
     </script>
+    <% } else { %>
+    <p id="Err">لا توجد منتجات متاحة</p>
+    <% } %>
   </body>
 </html>

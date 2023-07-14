@@ -14,7 +14,7 @@ myForm.addEventListener("submit", function (e) {
     searchParams.append(pair[0], pair[1]);
   }
 
-  fetch("https://prickly-wasp-buckle.cyclic.app/login", {
+  fetch("/login", {
     method: "post",
     body: searchParams,
   })

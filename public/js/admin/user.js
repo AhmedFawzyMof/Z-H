@@ -11,7 +11,7 @@ function search() {
       searchParams.append(pair[0], pair[1]);
     }
 
-    fetch("https://prickly-wasp-buckle.cyclic.app/search/users", {
+    fetch("/search/users", {
       method: "post",
       body: searchParams,
     })
@@ -28,7 +28,7 @@ function search() {
     const mappedItems = users[0]
       .map((user, index) => {
         function manger() {
-          if (user.isManger === 1) {
+          if (user.Admin === 1) {
             return `نعم`;
           } else {
             return `لا`;
@@ -41,7 +41,7 @@ function search() {
                       <button class='delete' type='submit'><i class='bx bx-trash'></i></button>
                     </form>
                     <p>معرف المستخدم: ${user.id.substr(24, 25)}</p>
-                    <p>اسم المستخدم: ${user.name}</p>
+                    <p>اسم المستخدم: ${user.username}</p>
                     <div class='manger'>المستخدم مدير: ${manger()} 
                     <form action='/edit/user' method='post'>
                     <input type='hidden' name='id' value='${user.id}'/>
@@ -52,7 +52,7 @@ function search() {
                     <button type='submit'>تغيير</button>
                   </form>
                   </div>
-                    <p>البريد الالكتروني للمستخدم: ${user.email}</p>
+                    <p>البريد الالكتروني: ${user.email}</p>
                   </div>`;
       })
       .join("");

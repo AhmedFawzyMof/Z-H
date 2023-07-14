@@ -17,10 +17,10 @@
       <% SearchedProduct.forEach(products => { %>
       <div class="Product">
         <a href="/product/show/<%= products.id %>">
-          <img src="<%= products.image %>" alt="<%= products.name_ar %>" />
+          <img src="<%= products.image %>" alt="<%= products.name %>" />
           <div class="body">
             <p class="price"><%= products.price %> ج</p>
-            <p class="name"><%= products.name_ar %></p>
+            <p class="name"><%= products.name %></p>
           </div></a
         >
       </div>

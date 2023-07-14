@@ -34,21 +34,53 @@ const controller = {
   getProducts: (req, res) => {
     const subcategory = req.params.subcategory;
     db.query(
-      "SELECT id,image,name_ar,price FROM `product` WHERE subcategory = ?",
+      "SELECT * FROM `Products` WHERE compony = ?; SELECT * FROM `Categories`",
       [subcategory],
       (err, result) => {
         if (err) throw err;
-
-        res.render("Product", {
-          products: result,
-          subcate: subcategory,
-        });
+        if (result[0].length > 0) {
+          res.render("Product", {
+            products: result[0],
+            subcate: subcategory,
+            categories: result[1],
+          });
+        } else {
+          res.render("Product", {
+            products: [],
+            subcate: subcategory,
+            categories: [],
+          });
+        }
+      }
+    );
+  },
+  getProductsByCate: (req, res) => {
+    const { compony, category } = req.body;
+    console.log(compony, category);
+    db.query(
+      "SELECT * FROM `Products` WHERE (compony, category) = (?, ?); SELECT * FROM `Categories`",
+      [compony, category],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].length > 0) {
+          res.render("Product", {
+            products: result[0],
+            subcate: compony,
+            categories: result[1],
+          });
+        } else {
+          res.render("Product", {
+            products: [],
+            subcate: compony,
+            categories: [],
+          });
+        }
       }
     );
   },
   getAll: (req, res) => {
     db.query(
-      "SELECT * FROM `subcategory`; SELECT * FROM `offer`",
+      "SELECT * FROM `Componies`; SELECT * FROM `Offer`",
       (err, result) => {
         if (err) throw err;
         res.render("index", {

@@ -4,175 +4,144 @@ const controller = {
   //! GET {
   getProducut: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query(
-            "SELECT name_ar FROM category; SELECT name_ar FROM subcategory",
-            (err, result) => {
-              if (err) throw err;
-              res.render("admin/products", {
-                category: result[0],
-                subcategory: result[1],
-              });
-            }
-          );
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query(
+          "SELECT name_ar FROM category; SELECT name_ar FROM subcategory",
+          (err, result) => {
+            if (err) throw err;
+            res.render("admin/products", {
+              category: result[0],
+              subcategory: result[1],
+            });
+          }
+        );
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getOrders: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=? LIMIT 0,50",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query("SELECT * FROM orders", (err, result) => {
-            if (err) throw err;
-            res.render("admin/orders", { orders: result });
-          });
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query("SELECT * FROM `Order` LIMIT 0,50", (err, result) => {
+          if (err) throw err;
+          res.render("admin/orders", { orders: result });
+        });
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getCategory: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query("SELECT * FROM category", (err, result) => {
-            if (err) throw err;
-            res.render("admin/category", { category: result });
-          });
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query("SELECT * FROM category", (err, result) => {
+          if (err) throw err;
+          res.render("admin/category", { category: result });
+        });
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getSubCategory: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query(
-            "SELECT * FROM subcategory; SELECT name_ar FROM category",
-            (err, result) => {
-              if (err) throw err;
-              res.render("admin/subcategory", {
-                subcategory: result[0],
-                category: result[1],
-              });
-            }
-          );
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query(
+          "SELECT * FROM subcategory; SELECT name_ar FROM category",
+          (err, result) => {
+            if (err) throw err;
+            res.render("admin/subcategory", {
+              subcategory: result[0],
+              category: result[1],
+            });
+          }
+        );
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getPromocode: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query(" SELECT * FROM `promocode`", (err, result) => {
-            if (err) throw err;
-            res.render("admin/promo", {
-              Promocode: result,
-            });
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query(" SELECT * FROM `promocode`", (err, result) => {
+          if (err) throw err;
+          res.render("admin/promo", {
+            Promocode: result,
           });
-        } else {
-          res.redirect("/");
-        }
+        });
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getOffer: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query("SELECT * FROM `offer`", (err, result) => {
-            if (err) throw err;
-            res.render("admin/offer", {
-              offer: result,
-            });
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query("SELECT * FROM `offer`", (err, result) => {
+          if (err) throw err;
+          res.render("admin/offer", {
+            offer: result,
           });
-        } else {
-          res.redirect("/");
-        }
+        });
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getUser: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          db.query("SELECT * FROM users", (err, result) => {
-            if (err) throw err;
-            res.render("admin/users", { users: result });
-          });
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        db.query("SELECT * FROM Users", (err, result) => {
+          if (err) throw err;
+          res.render("admin/users", { users: result });
+        });
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   getAdmin: (req, res) => {
     const token = req.params.admin;
-    db.query(
-      "SELECT isManger FROM users WHERE id=?",
-      [token],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].isManger == 1) {
-          res.render("admin");
-        } else {
-          res.redirect("/");
-        }
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin == 1) {
+        res.render("admin");
+      } else {
+        res.redirect("/");
       }
-    );
+    });
   },
   //! }
   //! SEARCH {
   searchUsers: (req, res) => {
     const Searchquery = req.body.searchUser;
-    console.log(Searchquery);
-    db.query(
-      `SELECT * FROM users WHERE email LIKE '%${Searchquery}%'`,
-      (err, result) => {
-        if (err) throw err;
-        res.json({
-          data: result,
-        });
-      }
-    );
+    if (Searchquery !== "") {
+      db.query(
+        `SELECT * FROM Users WHERE email LIKE '%${Searchquery}%'`,
+        (err, result) => {
+          if (err) throw err;
+          res.json({
+            data: result,
+          });
+        }
+      );
+    }
   },
   searchProduct: (req, res) => {
     const Searchquery = req.body.searchProducts;

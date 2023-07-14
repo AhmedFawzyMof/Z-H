@@ -1,8 +1,12 @@
 if (localStorage.getItem("Token") === "noToken") {
   location.replace("/");
 }
-let disCount = JSON.parse(localStorage.getItem("disCount"));
-
+let disCount;
+if (localStorage.getItem("disCount")) {
+  disCount = JSON.parse(localStorage.getItem("disCount"));
+} else {
+  disCount = 1;
+}
 function calContainer() {
   function getTotal() {
     let temp = cart.map(function (item) {
@@ -56,9 +60,7 @@ function calContainer() {
     color: #2660ff;'> اذهب للتسوق</a> </p>`;
   }
 }
-
 const myForm = document.getElementById("order");
-
 function ShipingPrice() {
   let shiping = 200;
   return shiping;

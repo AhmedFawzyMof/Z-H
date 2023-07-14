@@ -14,12 +14,12 @@
   <body onload="cartLen()">
     <%- include('../components/nav') %>
     <div class="container">
-      <h2>مرحبًا <span><%= profile.name %></span></h2>
+      <h2>مرحبًا <span><%= profile.username %></span></h2>
       <form action="/edit/profile" class="form" method="post">
         <input type="hidden" name="id" value="<%= profile.id %>" />
         <div class="input">
           <label>الاسم:</label>
-          <input type="text" name="name" value="<%= profile.name %>" />
+          <input type="text" name="name" value="<%= profile.username %>" />
         </div>
         <div class="input">
           <label>البريد:</label>

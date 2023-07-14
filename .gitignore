@@ -1,3 +1,4 @@
 node_modules
 .env
-makeitimage.js
+package-lock.json
+imageConverter.js

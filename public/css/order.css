@@ -100,7 +100,7 @@ a {
 
 #message {
   padding: 5px;
-  background: red;
+  background: #ff971f;
   position: absolute;
   top: 70px;
   right: 0;
@@ -160,7 +160,7 @@ a {
   align-items: center;
   justify-content: center;
   font-size: 80px;
-  color: red;
+  color: #ff971f;
 }
 
 .body {
@@ -173,7 +173,7 @@ a {
 }
 
 .body h2 {
-  color: red;
+  color: #ff971f;
 }
 
 @media (max-width: 300px) {
@@ -183,7 +183,7 @@ a {
 }
 
 #ERR {
-  background: red;
+  background: #ff971f;
   width: 100%;
   border-radius: 50px;
   color: #fff;

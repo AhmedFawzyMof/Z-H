@@ -37,6 +37,7 @@ router.get("/paypal", OrderController.postPaypal);
 router.post("/login", UserController.Login);
 router.post("/register", UserController.Register);
 router.post("/order", OrderController.addOne);
+router.post("/sub/categories", CategoryController.getProductsByCate);
 router.post("/search", ProductController.searchProduct);
 router.post("/search/users", AdminController.searchUsers);
 router.post("/search/product", AdminController.searchProduct);

@@ -13,7 +13,7 @@ const controller = {
       res.json({ success: 0, message: "كلمات السر لا تتطابق" });
     } else {
       db.query(
-        "SELECT * FROM `users` WHERE email = ?",
+        "SELECT * FROM `Users` WHERE email = ?",
         [email],
         (err, result) => {
           if (err) throw err;
@@ -23,7 +23,7 @@ const controller = {
             const pass = crypto.createHmac("sha256", password).digest("hex");
             const id = uuidv4();
             db.query(
-              "INSERT INTO `users` (`id`, `name`, `email`, `password`) VALUES (?, ?, ?, ?)",
+              "INSERT INTO `Users` (`id`, `username`, `email`, `password`) VALUES (?, ?, ?, ?)",
               [id, name, email, pass],
               (err, result) => {
                 if (err) throw err;
@@ -41,7 +41,7 @@ const controller = {
     const { email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
-      "SELECT id,isManger FROM `users` WHERE (`email`, `password`) = (?, ?)",
+      "SELECT id,Admin FROM `Users` WHERE (`email`, `password`) = (?, ?)",
       [email, pass],
       (err, result) => {
         if (err) throw err;
@@ -49,7 +49,7 @@ const controller = {
           res.json({
             success: 1,
             user: result[0].id,
-            StateM: result[0].isManger,
+            StateM: result[0].Admin,
           });
         } else {
           res.json({
@@ -69,7 +69,7 @@ const controller = {
   editManger: (req, res) => {
     const { id, isManger } = req.body;
     db.query(
-      "UPDATE `users` SET `isManger` = ? WHERE `users`.`id` = ?",
+      "UPDATE `Users` SET `Admin` = ? WHERE `Users`.`id` = ?",
       [isManger, id],
       (err, result) => {
         if (err) throw err;
@@ -88,10 +88,10 @@ const controller = {
     res.render("contactus");
   },
   contact: (req, res) => {
-    const { name, email, message } = req.body;
+    const { name, email, phone, message } = req.body;
     db.query(
-      "INSERT INTO `contact` (`name`, `email`, `message`) VALUES (?, ?, ?)",
-      [name, email, message],
+      "INSERT INTO `Contact` (`name`, `email`, `phone`, `message`) VALUES (?, ?, ?, ?)",
+      [name, email, phone, message],
       (err, result) => {
         if (err) throw err;
         res.send(`
@@ -106,7 +106,7 @@ const controller = {
   },
   getProfile: (req, res) => {
     const userId = req.params.userId;
-    db.query("SELECT * FROM users WHERE id = ?", [userId], (err, result) => {
+    db.query("SELECT * FROM Users WHERE id = ?", [userId], (err, result) => {
       if (err) throw err;
       res.render("User/profile", { profile: result[0] });
     });
@@ -115,7 +115,7 @@ const controller = {
     const { id, name, email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
-      "UPDATE `users` SET `name` = ?, `email` = ?, `password` = ? WHERE `users`.`id` = ?",
+      "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
       [name, email, pass, id],
       (err, result) => {
         if (err) throw err;
