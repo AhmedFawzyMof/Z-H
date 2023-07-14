@@ -83,3 +83,43 @@ nav ul li a {
   align-items: center;
   justify-content: center;
 }
+
+.container h1 {
+  text-transform: capitalize;
+}
+
+.container h1 span {
+  color: #ff971f;
+}
+
+.aboutQ {
+  width: 300px;
+  border-radius: 5px;
+  height: 50px;
+  background: #fff;
+  color: #333;
+  transition: 0.3s;
+  margin: 15px 0;
+}
+
+.aboutQ .Qut {
+  display: flex;
+  align-items: center;
+  padding: 0 5px;
+  justify-content: space-between;
+  height: 50px;
+  cursor: pointer;
+  color: #ff971f;
+}
+
+.aboutQ .Qut i {
+  font-size: 30px;
+  transition: 0.3s;
+}
+
+.A {
+  display: none;
+  height: 100px;
+  align-items: center;
+  padding: 0 5px;
+}

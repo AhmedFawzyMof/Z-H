@@ -56,7 +56,6 @@ const controller = {
   },
   getProductsByCate: (req, res) => {
     const { compony, category } = req.body;
-    console.log(compony, category);
     db.query(
       "SELECT * FROM `Products` WHERE (compony, category) = (?, ?); SELECT * FROM `Categories`",
       [compony, category],

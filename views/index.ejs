@@ -46,6 +46,7 @@
           localStorage.setItem("cart", "[]");
         }
         if (!localStorage.getItem("Token")) {
+          location.reload();
           localStorage.setItem("Token", "noToken");
         }
         if (!localStorage.getItem("State")) {
