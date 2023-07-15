@@ -2,7 +2,7 @@ let disCount;
 if (localStorage.getItem("disCount")) {
   disCount = JSON.parse(localStorage.getItem("disCount"));
 } else {
-  disCount = 1;
+  disCount = 0;
 }
 function calContainer() {
   function getTotal() {
@@ -14,7 +14,7 @@ function calContainer() {
       return prev + next;
     }, 0);
 
-    return sum * disCount;
+    return sum - disCount;
   }
 
   function getItems() {
@@ -27,7 +27,7 @@ function calContainer() {
     return temp;
   }
   function ShipingPrice() {
-    let shiping = 200;
+    let shiping = 20;
     return shiping;
   }
   if (cart.length) {
