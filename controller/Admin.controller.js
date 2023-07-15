@@ -7,12 +7,17 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query("SELECT * FROM Products", (err, result) => {
-          if (err) throw err;
-          res.render("admin/products", {
-            products: result,
-          });
-        });
+        db.query(
+          "SELECT * FROM Products; SELECT name FROM Categories; SELECT name FROM Componies",
+          (err, result) => {
+            if (err) throw err;
+            res.render("admin/products", {
+              products: result[0],
+              categories: result[1],
+              componies: result[2],
+            });
+          }
+        );
       } else {
         res.redirect("/");
       }

@@ -25,8 +25,7 @@
             <button type="submit"><i class="bx bx-trash"></i></button>
           </form>
           <p>معرف:<%= subcategory.id %></p>
-          <p>قسم:<%= subcategory.category %></p>
-          <p>الاسم: <%= subcategory.name_ar %></p>
+          <p>الاسم: <%= subcategory.name %></p>
           <img src="<%= subcategory.image %>" />
         </div>
         <form
@@ -40,26 +39,12 @@
             name="subcategoryid"
             value="<%= subcategory.id %>"
           />
-          <select name="category">
-            <option disabled selected value="<%= subcategory.category %>">
-              <%= subcategory.category %>
-            </option>
-            <% category.forEach(name => { %>
-            <option value="<%=name.name_ar%>"><%=name.name_ar%></option>
-            <% }) %>
-          </select>
-          <input type="text" name="name" value="<%= subcategory.name_ar %>" />
+          <input type="text" name="name" value="<%= subcategory.name %>" />
           <button type="submit">تغير</button>
         </form>
         <% }) %>
       </div>
       <form style="margin-top: 25px" class="editform" id="addform">
-        <select name="category">
-          <option selected disabled>قسم</option>
-          <% category.forEach(name => { %>
-          <option value="<%=name.name_ar%>"><%=name.name_ar%></option>
-          <% }) %>
-        </select>
         <input type="text" name="name_ar" placeholder="الاسم" />
         <input type="file" onchange="imageUploaded()" id="image" />
       </form>
@@ -97,7 +82,7 @@
         }
         searchParams.append("image", data);
         console.log(searchParams);
-        fetch("https://prickly-wasp-buckle.cyclic.app/add/subcategory", {
+        fetch("/add/subcategory", {
           method: "post",
           body: searchParams,
         })

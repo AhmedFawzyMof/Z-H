@@ -1,11 +1,22 @@
 const db = require("../db/index");
+const fs = require("fs");
 
 const controller = {
   addOne: (req, res) => {
-    const { category, name_ar, image } = req.body;
+    const { name_ar, image } = req.body;
+    const images = "/img/compony/" + name_ar + ".png";
+    let base64Image = image.split(";base64,").pop();
+    fs.writeFile(
+      `public/img/compony/${name_ar}.png`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
     db.query(
-      "INSERT INTO `subcategory` (`category`,  `name_ar`, `image`) VALUES (?, ?, ?)",
-      [category, name_ar, image],
+      "INSERT INTO `Componies` (`name`, `image`) VALUES (?, ?)",
+      [name_ar, images],
       (err, result) => {
         if (err) throw err;
         res.send(`
@@ -17,10 +28,10 @@ const controller = {
     );
   },
   editSubcategory: (req, res) => {
-    const { subcategoryid, category, name, image } = req.body;
+    const { subcategoryid, name } = req.body;
     db.query(
-      "UPDATE `subcategory` SET `category` = ?, `name_ar` = ?, `image` = ? WHERE `subcategory`.`id` = ?",
-      [category, name, image, subcategoryid],
+      "UPDATE `Componies` SET `name` = ? WHERE `Componies`.`id` = ?",
+      [name, subcategoryid],
       (err, result) => {
         if (err) throw err;
         res.send(`

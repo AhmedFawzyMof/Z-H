@@ -30,10 +30,7 @@
       <% for(var i = 0; i < category.length; i++) { %>
       <div class="categories">
         <a href="/<%=category[i].name%>">
-          <img
-            src="<%=category[i].image%><%=category[i].name%>.png"
-            alt="<%=category[i].name%>"
-          />
+          <img src="<%=category[i].image%>" alt="<%=category[i].name%>" />
           <p><%= category[i].name %></p>
         </a>
       </div>

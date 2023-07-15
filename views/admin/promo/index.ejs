@@ -54,7 +54,7 @@
           searchParams.append(pair[0], pair[1]);
         }
         console.log(searchParams);
-        fetch("https://prickly-wasp-buckle.cyclic.app/add/to/promocode", {
+        fetch("/add/to/promocode", {
           method: "post",
           body: searchParams,
         })

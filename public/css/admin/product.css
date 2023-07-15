@@ -34,6 +34,43 @@ input:focus {
   margin: 5px 0;
 }
 
+#edit button {
+  display: flex;
+  align-items: center;
+  background: #ff971f;
+  cursor: pointer;
+  justify-content: center;
+  color: #fff;
+}
+
 .product img {
   width: 100%;
+}
+
+#delete button {
+  background: none;
+  border: none;
+  font-size: 30px;
+  color: #ff971f;
+  cursor: pointer;
+}
+
+.editform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 90%;
+}
+
+.editform input,
+button {
+  margin: 10px 0;
+  width: 100%;
+  background: #eee;
+  border: none;
+  height: 35px;
 }

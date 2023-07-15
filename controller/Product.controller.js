@@ -1,11 +1,21 @@
 const db = require("../db/index");
+const fs = require("fs");
 const controller = {
   addOne: (req, res) => {
     const { category, subcategory, name_ar, dis_ar, price, image } = req.body;
-    console.log();
+    const images = "/img/product/" + name_ar + ".png";
+    let base64Image = image.split(";base64,").pop();
+    fs.writeFile(
+      `public/img/product/${name_ar}.png`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
     db.query(
-      "INSERT INTO `product` (`category`, `subcategory`, `image`, `name_ar`,  `dis_ar`, `price` ) VALUES ( ?, ?, ?, ?, ?,?)",
-      [category, subcategory, image, name_ar, dis_ar, price],
+      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`) VALUES ( ?, ?, ?, ?, ?, ?)",
+      [name_ar, dis_ar, category, subcategory, price, images],
       (err, result) => {
         if (err) throw err;
         res.send(`
@@ -18,10 +28,19 @@ const controller = {
   },
   addOffer: (req, res) => {
     const { product, image } = req.body;
-    console.log(req.body);
+    const images = "/img/offer/" + product + ".png";
+    let base64Image = image.split(";base64,").pop();
+    fs.writeFile(
+      `public/img/offer/${images}`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
     db.query(
-      "INSERT INTO `offer` ( `imageUrl`,  `product` ) VALUES (?,?)",
-      [image, product],
+      "INSERT INTO `Offer` ( `product`,  `image` ) VALUES (?,?)",
+      [product, images],
       (err, result) => {
         if (err) throw err;
         res.send(`
@@ -36,7 +55,7 @@ const controller = {
     const { code, value } = req.body;
     console.log(req.body);
     db.query(
-      "INSERT INTO `promocode` ( `code`,  `value` ) VALUES (?,?)",
+      "INSERT INTO `PromoCode` ( `code`,  `value` ) VALUES (?,?)",
       [code, value],
       (err, result) => {
         if (err) throw err;
@@ -93,19 +112,38 @@ const controller = {
     );
   },
   editProduct: (req, res) => {
-    const { id, name_ar, dis_ar, price } = req.body;
-    db.query(
-      "UPDATE `Products` SET `name` = ?, `description` = ?, `price` = ? WHERE `Products`.`id` = ?",
-      [name_ar, dis_ar, price, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
-    <script>
-      window.history.back();
-      location.reload()
-    </script>`);
-      }
-    );
+    const body = req.body;
+    const id = req.body.productid;
+    if (body.price !== undefined) {
+      const price = req.body.price;
+      db.query(
+        "UPDATE `Products` SET `price` = ? WHERE `Products`.`id` = ?",
+        [price, id],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+      <script>
+        window.history.back();
+        location.reload();
+      </script>`);
+        }
+      );
+    }
+    if (body.available !== undefined) {
+      const available = req.body.available;
+      db.query(
+        "UPDATE `Products` SET `available` = ? WHERE `Products`.`id` = ?",
+        [available, id],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+      <script>
+        window.history.back();
+        location.reload();
+      </script>`);
+        }
+      );
+    }
   },
   editOffer: (req, res) => {
     const { id, product } = req.body;
