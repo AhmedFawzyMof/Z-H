@@ -35,7 +35,8 @@ input:focus {
   background: #fff;
   padding: 5px;
   border-radius: 5px;
-  margin: 10px;
+  width: 90%;
+  margin: 10px 0;
 }
 
 .category img {
@@ -51,7 +52,7 @@ input:focus {
   background: #fff;
   padding: 5px;
   border-radius: 5px;
-  width: 280px;
+  width: 90%;
 }
 
 .editform input,

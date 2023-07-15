@@ -158,3 +158,10 @@ input:focus {
   align-items: center;
   flex-wrap: wrap;
 }
+
+.searchForUser {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

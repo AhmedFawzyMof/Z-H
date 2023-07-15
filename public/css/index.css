@@ -52,7 +52,7 @@ input:focus {
   margin: 5px;
   border-radius: 5px;
   background: #fff;
-  width: 110px;
+  width: calc(90% / 3);
 }
 
 .categories img {

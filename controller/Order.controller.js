@@ -13,7 +13,7 @@ const controller = {
         if (err) throw err;
         if (result.length > 0) {
           db.query(
-            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare phone`, `delivered`, `paid`, `total`, `date`, `cart`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
               id,
               user,

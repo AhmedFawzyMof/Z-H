@@ -11,31 +11,63 @@
       rel="stylesheet"
     />
   </head>
-  <body onload="">
+  <body>
+    <div class="searchForUser">
+      <form id="myForm">
+        البحث عن الطلبات
+        <input type="search" name="searchUser" />
+        <button type="submit" onclick="search()">
+          <i class="bx bx-search"></i>
+        </button>
+      </form>
+      <div id="result"></div>
+    </div>
     <div id="container">
-      <div class="citys">
-        <form id="CityForm">
-          <select name="city" required>
-            <option disabled selected value="">المدينة</option>
-            <option value="الشروق">الشروق</option>
-            <option value="بدر">بدر</option>
-            <option value="مدينتي">مدينتي</option>
-          </select>
-          <button type="submit" onclick="cityorders()">بحث</button>
-        </form>
-      </div>
-      <div id="length"></div>
-      <div id="city_orders"></div>
-      <div class="searchForUser">
-        <form id="myForm">
-          البحث عن الطلبات
-          <input type="search" name="searchUser" />
-          <button type="submit" onclick="search()">
-            <i class="bx bx-search"></i>
+      <% orders.forEach((order, index) => { %>
+      <div class="orderRec" key="<%= index %>">
+        <form action="/delete/order" method="post">
+          <input
+            type="hidden"
+            name="orderid"
+            value="<%=
+              order.id
+            %>"
+          />
+          <button class="delete" type="submit">
+            <i class="bx bx-trash"></i>
           </button>
         </form>
-        <div id="result"></div>
+        <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
+        <p>تاريخ الطلب: <%=order.date%></p>
+        <p>العنوان: <%=order.address%></p>
+        <p>معرف المستخدم: <%=order.user.substr(24, 25)%></p>
+        <p>رقم الهاتف: <%=order.phone%></p>
+        <p>هاتف احتياطي: <%=order.spare_phone%></p>
+        <p>المجموع: <%=order.total%> ج</p>
+        <div class="Delivered">
+          تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
+          <form action="/edit/order/delivered" method="post">
+            <input type="hidden" name="id" value="<%=order.id%>" />
+            <select name="isDelivered">
+              <option value="0" selected>لا</option>
+              <option value="1">نعم</option>
+            </select>
+            <button type="submit">تغيير</button>
+          </form>
+        </div>
+        <div class="Paid">
+          تم الدفع: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
+          <form action="/edit/order/paid" method="post">
+            <input type="hidden" name="id" value="<%=order.id%>" />
+            <select name="isPaid">
+              <option value="0" selected>لا</option>
+              <option value="1">نعم</option>
+            </select>
+            <button type="submit">تغيير</button>
+          </form>
+        </div>
       </div>
+      <% }) %>
     </div>
     <script src="/js/admin/order.js"></script>
   </body>

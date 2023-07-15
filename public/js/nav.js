@@ -59,9 +59,20 @@ function logedUser() {
   >
 </li>`;
   } else {
-    MenuBar.innerHTML = `    <li
+    MenuBar.innerHTML = `
+    <li
+><a href="/user/info/profile/${parsedToken}" style="color: #fff; text-decoration: none"
+>الملف الشخصي</a
+>
+</li>    
+<li
 >
   <a href="/" style="color: #fff; text-decoration: none">الصفحة الرئيسية</a>
+</li>
+<li
+><a href="/user/info/o_h/${parsedToken}" style="color: #fff; text-decoration: none"
+>سجل الطلبات</a
+>
 </li>
 <li
 >
@@ -82,16 +93,7 @@ cursor: pointer;  border: none; font-size:15px;"
   >تسجيل خروج</button
 >
 </li>
-<li
-><a href="/user/info/profile/${parsedToken}" style="color: #fff; text-decoration: none"
->الملف الشخصي</a
->
-</li>
-<li
-><a href="/user/info/o_h/${parsedToken}" style="color: #fff; text-decoration: none"
->سجل الطلبات</a
->
-</li>
+
 <li
 id="adPage"
 

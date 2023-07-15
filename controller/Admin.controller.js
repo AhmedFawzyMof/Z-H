@@ -7,16 +7,12 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query(
-          "SELECT name_ar FROM category; SELECT name_ar FROM subcategory",
-          (err, result) => {
-            if (err) throw err;
-            res.render("admin/products", {
-              category: result[0],
-              subcategory: result[1],
-            });
-          }
-        );
+        db.query("SELECT * FROM Products", (err, result) => {
+          if (err) throw err;
+          res.render("admin/products", {
+            products: result,
+          });
+        });
       } else {
         res.redirect("/");
       }
@@ -26,11 +22,14 @@ const controller = {
     const token = req.params.admin;
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
-      if (result[0].Admin == 1) {
-        db.query("SELECT * FROM `Order` LIMIT 0,50", (err, result) => {
-          if (err) throw err;
-          res.render("admin/orders", { orders: result });
-        });
+      if (result[0].Admin === 1) {
+        db.query(
+          "SELECT * FROM `Order` ORDER BY paid, delivered ASC LIMIT 0,50",
+          (err, result) => {
+            if (err) throw err;
+            res.render("admin/orders", { orders: result });
+          }
+        );
       } else {
         res.redirect("/");
       }
@@ -41,7 +40,7 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query("SELECT * FROM category", (err, result) => {
+        db.query("SELECT * FROM Categories", (err, result) => {
           if (err) throw err;
           res.render("admin/category", { category: result });
         });
@@ -55,16 +54,12 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query(
-          "SELECT * FROM subcategory; SELECT name_ar FROM category",
-          (err, result) => {
-            if (err) throw err;
-            res.render("admin/subcategory", {
-              subcategory: result[0],
-              category: result[1],
-            });
-          }
-        );
+        db.query("SELECT * FROM Componies;", (err, result) => {
+          if (err) throw err;
+          res.render("admin/subcategory", {
+            subcategory: result,
+          });
+        });
       } else {
         res.redirect("/");
       }
@@ -75,7 +70,7 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query(" SELECT * FROM `promocode`", (err, result) => {
+        db.query(" SELECT * FROM `PromoCode`", (err, result) => {
           if (err) throw err;
           res.render("admin/promo", {
             Promocode: result,
@@ -91,7 +86,7 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query("SELECT * FROM `offer`", (err, result) => {
+        db.query("SELECT * FROM `Offer`", (err, result) => {
           if (err) throw err;
           res.render("admin/offer", {
             offer: result,
@@ -106,11 +101,8 @@ const controller = {
     const token = req.params.admin;
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
-      if (result[0].Admin == 1) {
-        db.query("SELECT * FROM Users", (err, result) => {
-          if (err) throw err;
-          res.render("admin/users", { users: result });
-        });
+      if (result[0].Admin === 1) {
+        res.render("admin/users");
       } else {
         res.redirect("/");
       }
@@ -136,8 +128,41 @@ const controller = {
         `SELECT * FROM Users WHERE email LIKE '%${Searchquery}%'`,
         (err, result) => {
           if (err) throw err;
+          const mappedItems = result
+            .map((user, index) => {
+              function manger() {
+                if (user.Admin === 1) {
+                  return `نعم`;
+                } else {
+                  return `لا`;
+                }
+              }
+              return `
+                      <div class="userRec" key=${index}>
+                        <form action='/delete/user' method='post'>
+                          <input type='hidden' name='userid' value='${
+                            user.id
+                          }'/>
+                          <button class='delete' type='submit'><i class='bx bx-trash'></i></button>
+                        </form>
+                        <p>معرف المستخدم: ${user.id.substr(24, 25)}</p>
+                        <p>اسم المستخدم: ${user.username}</p>
+                        <div class='manger'>المستخدم مدير: ${manger()} 
+                        <form action='/edit/user' method='post'>
+                        <input type='hidden' name='id' value='${user.id}'/>
+                        <select name="isManger">
+                          <option value="0" selected>لا</option>
+                          <option value="1" >نعم</option>
+                        </select>
+                        <button type='submit'>تغيير</button>
+                      </form>
+                      </div>
+                        <p>البريد الالكتروني: ${user.email}</p>
+                      </div>`;
+            })
+            .join("");
           res.json({
-            data: result,
+            data: mappedItems,
           });
         }
       );
@@ -147,7 +172,7 @@ const controller = {
     const Searchquery = req.body.searchProducts;
     console.log(req.body);
     db.query(
-      `SELECT * FROM product WHERE name_ar LIKE '%${Searchquery}%'`,
+      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%'`,
       (err, result) => {
         if (err) throw err;
         res.json({
@@ -159,7 +184,7 @@ const controller = {
   searchOrders: (req, res) => {
     const Searchquery = req.body.searchUser;
     db.query(
-      `SELECT * FROM orders WHERE id OR users LIKE '%${Searchquery}%' LIMIT 0,50`,
+      `SELECT * FROM Order WHERE id OR user LIKE '%${Searchquery}%' LIMIT 0,50 ORDER BY paid, delivered ASC`,
       (err, result) => {
         if (err) throw err;
         res.json({
@@ -173,14 +198,14 @@ const controller = {
   deleteUser: (req, res) => {
     const id = req.body.userid;
     db.query(
-      "DELETE FROM `users` WHERE `users`.`id` = ?",
+      "DELETE FROM `Users` WHERE `Users`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
         res.send(`
         <script>
           window.history.back();
-          location.reload()
+          location.reload();
         </script>`);
       }
     );
@@ -188,14 +213,14 @@ const controller = {
   deleteProduct: (req, res) => {
     const id = req.body.productid;
     db.query(
-      "DELETE FROM `product` WHERE `product`.`id` = ?",
+      "DELETE FROM `Products` WHERE `Products`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
         res.send(`
         <script>
           window.history.back();
-          location.reload()
+          location.reload();
         </script>`);
       }
     );
@@ -203,7 +228,7 @@ const controller = {
   deleteCategory: (req, res) => {
     const id = req.body.categoryid;
     db.query(
-      "DELETE FROM `category` WHERE `category`.`id` = ?",
+      "DELETE FROM `Categories` WHERE `Categories`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
@@ -218,7 +243,7 @@ const controller = {
   deleteSubcategory: (req, res) => {
     const id = req.body.subcategoryid;
     db.query(
-      "DELETE FROM `subcategory` WHERE `subcategory`.`id` = ?",
+      "DELETE FROM `Componies` WHERE `Componies`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
@@ -233,14 +258,14 @@ const controller = {
   deleteOrder: (req, res) => {
     const id = req.body.orderid;
     db.query(
-      "DELETE FROM `orders` WHERE `orders`.`id` = ?",
+      "DELETE FROM `Order` WHERE `Order`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
         res.send(`
         <script>
           window.history.back();
-          location.reload()
+          location.reload();
         </script>`);
       }
     );
@@ -248,14 +273,14 @@ const controller = {
   deleteOffer: (req, res) => {
     const id = req.body.id;
     db.query(
-      "DELETE FROM `offer` WHERE `offer`.`id` = ?",
+      "DELETE FROM `Offer` WHERE `Offer`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
         res.send(`
         <script>
           window.history.back();
-          location.reload()
+          location.reload();
         </script>`);
       }
     );
@@ -263,14 +288,14 @@ const controller = {
   deletePromo: (req, res) => {
     const id = req.body.id;
     db.query(
-      "DELETE FROM `promocode` WHERE `promocode`.`id` = ?",
+      "DELETE FROM `PromoCode` WHERE `PromoCode`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;
         res.send(`
         <script>
           window.history.back();
-          location.reload()
+          location.reload();
         </script>`);
       }
     );

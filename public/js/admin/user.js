@@ -17,47 +17,13 @@ function search() {
     })
       .then((res) => res.json())
       .then((res) => {
-        users.push(res.data);
-        usersL();
-        console.log(res.data);
+        usersL(res.data);
       });
   });
-  function usersL() {
+  function usersL(data) {
     const Container = document.getElementById("result");
 
-    const mappedItems = users[0]
-      .map((user, index) => {
-        function manger() {
-          if (user.Admin === 1) {
-            return `نعم`;
-          } else {
-            return `لا`;
-          }
-        }
-        return `
-                  <div class="userRec" key=${index}>
-                    <form action='/delete/user' method='post'>
-                      <input type='hidden' name='userid' value='${user.id}'/>
-                      <button class='delete' type='submit'><i class='bx bx-trash'></i></button>
-                    </form>
-                    <p>معرف المستخدم: ${user.id.substr(24, 25)}</p>
-                    <p>اسم المستخدم: ${user.username}</p>
-                    <div class='manger'>المستخدم مدير: ${manger()} 
-                    <form action='/edit/user' method='post'>
-                    <input type='hidden' name='id' value='${user.id}'/>
-                    <select name="isManger">
-                      <option value="0" selected>لا</option>
-                      <option value="1" >نعم</option>
-                    </select>
-                    <button type='submit'>تغيير</button>
-                  </form>
-                  </div>
-                    <p>البريد الالكتروني: ${user.email}</p>
-                  </div>`;
-      })
-      .join("");
-
-    Container.innerHTML = mappedItems;
+    Container.innerHTML = data;
   }
 }
 window.addEventListener("pageshow", function (event) {
