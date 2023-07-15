@@ -3,8 +3,17 @@ const { v4: uuidv4 } = require("uuid");
 
 const controller = {
   addOne: (req, res) => {
-    const { address, phone, phone2, user, total, cart, delivered, paid } =
-      req.body;
+    const {
+      where,
+      address,
+      phone,
+      phone2,
+      user,
+      total,
+      cart,
+      delivered,
+      paid,
+    } = req.body;
 
     const id = uuidv4();
     const date = new Date().toISOString().slice(0, 19).replace("T", " ");
@@ -13,7 +22,7 @@ const controller = {
         if (err) throw err;
         if (result.length > 0) {
           db.query(
-            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
               id,
               user,
@@ -25,6 +34,7 @@ const controller = {
               total,
               date,
               cart,
+              where,
             ],
             (err, result) => {
               if (err) throw err;
@@ -49,7 +59,7 @@ const controller = {
     const userId = req.params.userId;
     const name = {};
     db.query(
-      "SELECT username FROM Users WHERE id = ?",
+      "SELECT username,email FROM Users WHERE id = ?",
       [userId],
       (err, result) => {
         if (err) throw err;
