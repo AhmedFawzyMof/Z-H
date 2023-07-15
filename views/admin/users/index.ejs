@@ -13,6 +13,47 @@
   </head>
   <body onload="">
     <div id="container">
+      <div
+        class="Users"
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-wrap: wrap;
+        "
+      >
+        <% users.forEach((user, index) => { %>
+        <div class="userRec" key="<%=index%>" style="margin: 0 5px">
+          <form action="/delete/user" method="post">
+            <input
+              type="hidden"
+              name="userid"
+              value="<%=
+              user.id
+            %>"
+            />
+            <button class="delete" type="submit">
+              <i class="bx bx-trash"></i>
+            </button>
+          </form>
+          <p>معرف المستخدم: <%=user.id.substr(24, 25)%></p>
+          <p>اسم المستخدم: <%=user.username%></p>
+          <div class="manger">
+            المستخدم مدير: <% if (user.Admin === 1) { %> نعم <% }else { %> ﻻ <%
+            } %>
+            <form action="/edit/user" method="post">
+              <input type="hidden" name="id" value="<%=user.id%>" />
+              <select name="isManger">
+                <option value="0" selected>لا</option>
+                <option value="1">نعم</option>
+              </select>
+              <button type="submit">تغيير</button>
+            </form>
+          </div>
+          <p>البريد الالكتروني: <%=user.email%></p>
+        </div>
+        <% }) %>
+      </div>
       <div class="searchForUser">
         <form id="myForm">
           البحث عن المستخدم

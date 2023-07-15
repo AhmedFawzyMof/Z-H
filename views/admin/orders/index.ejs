@@ -40,10 +40,21 @@
         <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
         <p>تاريخ الطلب: <%=order.date%></p>
         <p>العنوان: <%=order.address%></p>
-        <p>معرف المستخدم: <%=order.user.substr(24, 25)%></p>
-        <p>رقم الهاتف: <%=order.phone%></p>
-        <p>هاتف احتياطي: <%=order.spare_phone%></p>
+        <p>المستخدم: <%=order.email%></p>
+        <p>رقم الهاتف: <%="0"+order.phone%></p>
+        <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
         <p>المجموع: <%=order.total%> ج</p>
+        <% JSON.parse(order.cart).forEach(item => { %>
+        <div class="orderitem">
+          <img src="<%= item.image %>" alt="<%= item.name %>" />
+          <div class="itemInfo">
+            <p><%= item.name %></p>
+            <p>الكمية: <%= item.quantity %></p>
+            <p>السعر: <%= item.price %> ج</p>
+            <p>السعر الإجمالي للطلب: <%= item.price * item.quantity %> ج</p>
+          </div>
+        </div>
+        <% }) %>
         <div class="Delivered">
           تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
           <form action="/edit/order/delivered" method="post">

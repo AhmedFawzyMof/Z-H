@@ -24,7 +24,7 @@ const controller = {
       if (err) throw err;
       if (result[0].Admin === 1) {
         db.query(
-          "SELECT * FROM `Order` ORDER BY paid, delivered ASC LIMIT 0,50",
+          "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
           (err, result) => {
             if (err) throw err;
             res.render("admin/orders", { orders: result });
@@ -99,14 +99,20 @@ const controller = {
   },
   getUser: (req, res) => {
     const token = req.params.admin;
-    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
-      if (err) throw err;
-      if (result[0].Admin === 1) {
-        res.render("admin/users");
-      } else {
-        res.redirect("/");
+    db.query(
+      "SELECT Admin FROM Users WHERE id=? LIMIT 0,50",
+      [token],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].Admin === 1) {
+          db.query("SELECT * FROM Users", [token], (err, result) => {
+            res.render("admin/users", { users: result });
+          });
+        } else {
+          res.redirect("/");
+        }
       }
-    });
+    );
   },
   getAdmin: (req, res) => {
     const token = req.params.admin;
@@ -183,15 +189,89 @@ const controller = {
   },
   searchOrders: (req, res) => {
     const Searchquery = req.body.searchUser;
-    db.query(
-      `SELECT * FROM Order WHERE id OR user LIKE '%${Searchquery}%' LIMIT 0,50 ORDER BY paid, delivered ASC`,
-      (err, result) => {
-        if (err) throw err;
-        res.json({
-          data: result,
-        });
-      }
-    );
+    if (Searchquery !== "") {
+      const search = "%" + `${Searchquery}` + "%";
+      db.query(
+        "SELECT `Order`.`id`, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.`email` FROM `Order` INNER JOIN `Users` ON `Order`.`user` = `Users`.`id` WHERE `Order`.`id` LIKE ?",
+        [search],
+        (err, result) => {
+          if (err) throw err;
+          console.log(JSON.parse(result[0].cart));
+          const mappedItems = result
+            .map((order, index) => {
+              function Delivered() {
+                if (order.delivered === 1) {
+                  return `نعم`;
+                } else {
+                  return `لا`;
+                }
+              }
+              function Paid() {
+                if (order.paid === 1) {
+                  return `نعم`;
+                } else {
+                  return `لا`;
+                }
+              }
+              let items = "";
+              JSON.parse(order.cart).forEach((item) => {
+                items += ` 
+                  <div class="orderitem">
+                  <img src="${item.image}" alt="${item.name}" />
+                  <div class="itemInfo">
+                    <p>${item.name}</p>
+                    <p>الكمية: ${item.quantity}</p>
+                    <p>السعر: ${item.price} ج</p>
+                    <p>السعر الإجمالي للطلب: ${item.price * item.quantity} ج</p>
+                  </div>
+                </div>
+                `;
+              });
+              return `
+                    <div class="orderRec" key=${index}>
+                      <form action='/delete/order' method='post'>
+                        <input type='hidden' name='orderid' value='${
+                          order.id
+                        }'/>
+                        <button class='delete' type='submit'><i class='bx bx-trash'></i></button>
+                      </form>
+                      <p>معرف الطلب: ${order.id.substr(24, 25)}</p>
+                      <p>تاريخ الطلب: ${order.date}</p>
+                      <p>العنوان: ${order.address}</p>
+                      <p>المستخدم: ${order.email}</p>
+                      <p>رقم الهاتف:  ${order.phone}</p>
+                      <p>هاتف احتياطي: ${order.spare_phone}</p>
+                      <p>المجموع: ${order.total} ج</p>
+                      ${items}
+                      <div class='Delivered'>تسليم الطلب: ${Delivered()}
+                        <form action='/edit/order/delivered' method='post'>
+                      <input type='hidden' name='id' value='${order.id}'/>
+                      <select name="isDelivered">
+                        <option value="0" selected>لا</option>
+                        <option value="1" >نعم</option>
+                      </select>
+                      <button type='submit'>تغيير</button>
+                    </form>
+                    </div>
+                    <div class='Paid'>تم الدفع: ${Paid()}
+                    <form action='/edit/order/paid' method='post'>
+                        <input type='hidden' name='id' value='${order.id}'/>
+                        <select name="isPaid">
+                            <option value="0" selected>لا</option>
+                            <option value="1" >نعم</option>
+                        </select>
+                        <button type='submit'>تغيير</button>
+                    </form>
+                    </div>
+                </div>`;
+            })
+            .join("");
+          res.json({
+            data: mappedItems,
+          });
+        }
+      );
+    }
   },
   //!}
   //! DELETE {
