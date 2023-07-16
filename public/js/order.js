@@ -30,7 +30,7 @@ function calContainer() {
     return temp;
   }
   function ShipingPrice() {
-    let shiping = 200;
+    let shiping = 20;
     return shiping;
   }
 
