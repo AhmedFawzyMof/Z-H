@@ -103,6 +103,9 @@ id="adPage"
   if (localStorage.getItem("State") === "1") {
     const adPage = document.getElementById("adPage");
     adPage.innerHTML = `<a href='/user/info/admin/${parsedToken}' style="color: #fff; text-decoration: none">صفحة الإدارة</a>`;
+  } else {
+    const adPage = document.getElementById("adPage");
+    adPage.style.display = "none";
   }
 }
 
