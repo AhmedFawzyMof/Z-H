@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/css/product.css" />
   </head>
   <body onload="cartLen()">
-    <%- include('../components/nav') %> <% if (products.length > 0) { %>
+    <%- include('../components/nav') %>
     <div class="container">
       <div class="categories">
         <% for(let i =0; i < categories.length; i++) {%>
@@ -27,7 +27,8 @@
         </form>
         <% } %>
       </div>
-      <% for(let i = 0; i < products.length; i++) { %>
+      <% if (products.length > 0) { %> <% for(let i = 0; i < products.length;
+      i++) { %>
       <div class="Product">
         <input type="hidden" id="id" value="<%=products[i].id%>" />
         <input type="hidden" id="name" value="<%=products[i].name%>" />

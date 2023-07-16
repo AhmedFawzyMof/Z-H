@@ -48,7 +48,7 @@ const controller = {
           res.render("Product", {
             products: [],
             subcate: subcategory,
-            categories: [],
+            categories: result[1],
           });
         }
       }
@@ -71,7 +71,7 @@ const controller = {
           res.render("Product", {
             products: [],
             subcate: compony,
-            categories: [],
+            categories: result[1],
           });
         }
       }
