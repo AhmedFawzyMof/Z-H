@@ -126,19 +126,19 @@ const controller = {
       res.render("Err/profile", { err: "كلمة المرور مفقودة" });
     } else {
       console.log("ok");
+      db.query(
+        "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
+        [name, email, pass, id],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+          <script>
+            window.history.back();
+            location.reload()
+          </script>`);
+        }
+      );
     }
-    // db.query(
-    //   "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
-    //   [name, email, pass, id],
-    //   (err, result) => {
-    //     if (err) throw err;
-    //     res.send(`
-    //     <script>
-    //       window.history.back();
-    //       location.reload()
-    //     </script>`);
-    //   }
-    // );
   },
 };
 module.exports = controller;
