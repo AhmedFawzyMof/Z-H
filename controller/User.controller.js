@@ -114,18 +114,31 @@ const controller = {
   editProfile: (req, res) => {
     const { id, name, email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
-    db.query(
-      "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
-      [name, email, pass, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
-        <script>
-          window.history.back();
-          location.reload()
-        </script>`);
-      }
-    );
+    if (id === "") {
+      console.log(req.body.id);
+    } else if (name === "") {
+      res.render("Err/profile", { err: "الاسم مفقود" });
+    } else if (email === "") {
+      res.render("Err/profile", {
+        err: "البريد الإلكتروني مفقود",
+      });
+    } else if (password === "") {
+      res.render("Err/profile", { err: "كلمة المرور مفقودة" });
+    } else {
+      console.log("ok");
+    }
+    // db.query(
+    //   "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
+    //   [name, email, pass, id],
+    //   (err, result) => {
+    //     if (err) throw err;
+    //     res.send(`
+    //     <script>
+    //       window.history.back();
+    //       location.reload()
+    //     </script>`);
+    //   }
+    // );
   },
 };
 module.exports = controller;
