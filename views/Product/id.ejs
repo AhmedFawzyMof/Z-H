@@ -21,6 +21,7 @@
         <h3><%= product.name %></h3>
         <p><%= product.description %></p>
         <p>سعر: <%= product.price %> ج</p>
+        <% if (product.available) { %>
         <input type="hidden" id="id" value="<%=product.id%>" />
         <input type="hidden" id="name" value="<%=product.name%>" />
         <input type="hidden" id="price" value="<%=product.price%>" />
@@ -32,6 +33,7 @@
         >
           أضف إلى السلة <i class="bx bxs-cart-add"></i>
         </button>
+        <% } %>
       </div>
     </div>
     <script>
