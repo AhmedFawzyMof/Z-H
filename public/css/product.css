@@ -187,7 +187,7 @@ nav ul li a {
   display: flex;
   align-items: center;
   overflow-x: scroll;
-  z-index: 999;
+  z-index: 20;
   width: calc(100% / 1);
 }
 
