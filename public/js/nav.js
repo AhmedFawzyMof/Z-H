@@ -129,6 +129,7 @@ id="adPage"
 function logout() {
   localStorage.setItem("Token", "noToken");
   localStorage.setItem("State", "noState");
+  localStorage.removeItem("coupon");
   location.replace("/");
 }
 
