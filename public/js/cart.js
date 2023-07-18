@@ -1,3 +1,6 @@
+if (localStorage.getItem("Token")) {
+  const token = localStorage.getItem("Token");
+}
 let disCount;
 if (localStorage.getItem("disCount")) {
   disCount = JSON.parse(localStorage.getItem("disCount"));
@@ -34,6 +37,7 @@ function calContainer() {
     const countContainer = document.getElementById("countContainer");
     countContainer.innerHTML = `
         <form action='/get/promocode' method="post" id='promocode'>
+        <input type='hidden' name="id" value='${token}' />
         <input type='text' name='code' placeholder='كود الترويجي' />
         <button type='submit'>كود الترويجي</button>
         </form>
@@ -53,10 +57,6 @@ function calContainer() {
   } else {
     const countContainer = document.getElementById("countContainer");
     countContainer.innerHTML = `<p style="
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%,-50%);
       background: #fff;
       padding: 5px;
       width: 95%;

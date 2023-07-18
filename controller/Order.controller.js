@@ -13,14 +13,22 @@ const controller = {
       cart,
       delivered,
       paid,
+      discount,
     } = req.body;
-
     const id = uuidv4();
     const date = new Date().toISOString().slice(0, 19).replace("T", " ");
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
+          db.query(
+            "UPDATE `Users` SET code='', value='0' WHERE Users.id= ?",
+            [user],
+            (err, result) => {
+              if (err) throw err;
+              console.log(result);
+            }
+          );
           db.query(
             "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
             [
@@ -111,19 +119,6 @@ const controller = {
         window.history.back();
         location.reload()
       </script>`);
-      }
-    );
-  },
-  getCitysOrders: (req, res) => {
-    const city = req.body.city;
-    db.query(
-      "SELECT * FROM `orders` WHERE City = ? LIMIT 0,50",
-      [city],
-      (err, result) => {
-        if (err) throw err;
-        res.json({
-          data: result,
-        });
       }
     );
   },

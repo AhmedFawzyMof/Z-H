@@ -78,19 +78,20 @@ const controller = {
     });
   },
   getCode: (req, res) => {
-    const { code } = req.body;
+    const { code, id } = req.body;
+    const Id = JSON.parse(id);
     db.query(
-      "SELECT * FROM `PromoCode` WHERE code = ?",
-      [code],
+      "SELECT code,value FROM `Users` WHERE (id, code) = (?,?)",
+      [Id, code],
       (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
           res.send(`
-        <script>
-        localStorage.setItem('disCount', '${result[0].value}')
-        window.location.replace("/cart/show/items");
-        </script>
-        `);
+          <script>
+          localStorage.setItem('disCount', '${result[0].value}')
+          window.location.replace("/cart/show/items");
+          </script>
+          `);
         }
       }
     );

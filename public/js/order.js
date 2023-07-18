@@ -74,20 +74,28 @@ function getTotal() {
     return prev + next;
   }, 0);
 
-  return sum * disCount;
-}
-function moreInputs() {
-  let token = JSON.stringify(localStorage.getItem("Token"));
-
-  const otherinput = document.getElementById("otherinput");
-
-  otherinput.innerHTML = `<input id='token' type='hidden' name='user' value='${JSON.parse(
-    token
-  )}' /> <input type='hidden' id='total' name='total' value='${JSON.parse(
-    getTotal() + ShipingPrice()
-  )}' /> <input type='hidden' id='cart' name='cart' value='${JSON.stringify(
-    cart
-  )}' />`;
+  return sum - disCount;
 }
 
-moreInputs();
+const OrderForm = document.getElementById("order");
+
+const tokenInp = document.createElement("input");
+tokenInp.type = "hidden";
+tokenInp.name = "user";
+tokenInp.value = JSON.parse(token);
+const totalInp = document.createElement("input");
+totalInp.type = "hidden";
+totalInp.name = "total";
+totalInp.value = JSON.parse(getTotal() + ShipingPrice());
+const cartInp = document.createElement("input");
+cartInp.type = "hidden";
+cartInp.name = "cart";
+cartInp.value = JSON.stringify(cart);
+const disCountInp = document.createElement("input");
+disCountInp.type = "hidden";
+disCountInp.name = "discount";
+disCountInp.value = JSON.parse(disCount);
+OrderForm.append(tokenInp);
+OrderForm.append(totalInp);
+OrderForm.append(cartInp);
+OrderForm.append(disCountInp);
