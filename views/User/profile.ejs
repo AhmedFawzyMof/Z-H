@@ -29,6 +29,18 @@
           <label>كلمة المرور الجديدة:</label>
           <input type="password" name="password" />
         </div>
+        <div
+          class="code"
+          style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <p>كوبون: <%= profile.code %></p>
+          <p>قيمة: <%= profile.value %></p>
+        </div>
         <button type="submit">تغيير</button>
       </form>
     </div>

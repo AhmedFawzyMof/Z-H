@@ -41,7 +41,7 @@ const controller = {
     const { email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
-      "SELECT id,Admin FROM `Users` WHERE (`email`, `password`) = (?, ?)",
+      "SELECT id,Admin,code FROM `Users` WHERE (`email`, `password`) = (?, ?)",
       [email, pass],
       (err, result) => {
         if (err) throw err;
@@ -50,6 +50,7 @@ const controller = {
             success: 1,
             user: result[0].id,
             StateM: result[0].Admin,
+            code: result[0].code,
           });
         } else {
           res.json({

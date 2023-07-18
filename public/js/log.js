@@ -30,6 +30,9 @@ myForm.addEventListener("submit", function (e) {
       } else {
         localStorage.setItem("Token", res.user);
         localStorage.setItem("State", JSON.parse(res.StateM));
+        if (res.code !== "") {
+          localStorage.setItem("coupon", "1");
+        }
         location.replace("/");
       }
     })

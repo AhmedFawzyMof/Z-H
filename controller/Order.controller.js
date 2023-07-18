@@ -49,7 +49,7 @@ const controller = {
               res.send(`
           <script>
             localStorage.setItem("cart","[]")
-            localStorage.removeItem("disCount")
+            localStorage.removeItem("coupon")
             location.replace("/pay/info/success");
           </script>`);
             }
