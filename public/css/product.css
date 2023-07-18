@@ -187,6 +187,7 @@ nav ul li a {
   display: flex;
   align-items: center;
   overflow-x: scroll;
+  z-index: 999;
   width: calc(100% / 1);
 }
 
@@ -238,4 +239,12 @@ nav ul li a {
 
 .quantity p {
   margin: 0 10px;
+}
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: #ff971f;
+  transition: 0.3s;
+  padding: 5px 0;
 }
