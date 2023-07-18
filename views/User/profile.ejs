@@ -32,6 +32,8 @@
         <button type="submit">تغيير</button>
       </form>
     </div>
+    <%- include('../components/footer') %>
+
     <script>
       if (!localStorage.getItem("Token") === "noToken") {
         location.replace("/");
