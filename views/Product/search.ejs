@@ -15,7 +15,21 @@
     <%- include('../components/nav') %>
     <div class="container">
       <% SearchedProduct.forEach(products => { %>
-      <div class="Product">
+      <div class="Product" id="<%= products.id %>">
+        <% if (products.available) { %>
+        <input type="hidden" id="id" value="<%=products.id%>" />
+        <input type="hidden" id="name" value="<%=products.name%>" />
+        <input type="hidden" id="price" value="<%=products.price%>" />
+        <input type="hidden" id="image" value="<%=products.image%>" />
+        <button
+          onclick="addItemToCart(parseInt('<%=products.id%>'))"
+          class="addToCart"
+          id="outside"
+          type="submit"
+        >
+          <i class="bx bxs-cart-add"></i>
+        </button>
+        <% } %>
         <a href="/product/show/<%= products.id %>">
           <img src="<%= products.image %>" alt="<%= products.name %>" />
           <div class="body">
@@ -27,5 +41,6 @@
       <% }) %>
     </div>
     <%- include('../components/footer') %>
+    <script src="/js/product.js"></script>
   </body>
 </html>
