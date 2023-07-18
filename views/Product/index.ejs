@@ -58,8 +58,14 @@
       <% } %>
     </div>
     <script src="/js/product.js"></script>
-    <% } else { %>
+    <%- include('../components/footer') %> <% } else { %>
     <p id="Err">لا توجد منتجات متاحة</p>
-    <% } %> <%- include('../components/footer') %>
+    <%- include('../components/footer') %>
+    <script>
+      const footer = document.getElementById("footer");
+      footer.style.position = "absolute";
+      footer.style.bottom = "0";
+    </script>
+    <% } %>
   </body>
 </html>
