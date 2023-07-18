@@ -3,6 +3,7 @@ const name = document.getElementById("name").value;
 const price = document.getElementById("price").value;
 const image = document.getElementById("image").value;
 const quantity = 1;
+console.log(document.getElementById("outside"));
 const Quantity = document.createElement("div");
 Quantity.setAttribute("class", "quantity");
 const QuantityIncBtn = document.createElement("button");
