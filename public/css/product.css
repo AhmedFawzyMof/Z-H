@@ -202,3 +202,40 @@ nav ul li a {
   color: #ff971f;
   width: 150px;
 }
+
+.quantity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.quantity button {
+  margin: 0 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  font-size: 25px;
+}
+
+.quantity button:first-child {
+  background: #14ec14;
+  color: #fff;
+}
+
+.quantity button:last-child {
+  background: #ff971f;
+  color: #fff;
+}
+
+.quantity p {
+  margin: 0 10px;
+}
