@@ -133,4 +133,21 @@ function logout() {
   location.replace("/");
 }
 
-window.onload(logedUser());
+function getCoupon() {
+  fetch("/getcoupon", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ user: parsedToken }),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.success !== 0) {
+        localStorage.setItem("coupon", "1");
+      } else {
+        localStorage.setItem("coupon", "0");
+      }
+    });
+}
+window.onload(logedUser(), getCoupon());

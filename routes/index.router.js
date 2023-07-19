@@ -35,6 +35,7 @@ router.get("/info/contact_us/success", UserController.contact_success);
 router.get("/contact", UserController.contact);
 router.get("/paypal", OrderController.postPaypal);
 router.post("/login", UserController.Login);
+router.post("/getcoupon", UserController.getCoupon);
 router.post("/register", UserController.Register);
 router.post("/order", OrderController.addOne);
 router.post("/sub/categories", CategoryController.getProductsByCate);

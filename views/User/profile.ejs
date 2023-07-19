@@ -29,6 +29,7 @@
           <label>كلمة المرور الجديدة:</label>
           <input type="password" name="password" />
         </div>
+        <% if (profile.code !== null) { %>
         <div
           class="code"
           style="
@@ -41,6 +42,9 @@
           <p>كوبون: <%= profile.code %></p>
           <p>قيمة: <%= profile.value %></p>
         </div>
+        <% } else { %>
+        <p>للأسف لا يوجد قسيمة</p>
+        <% } %>
         <button type="submit">تغيير</button>
       </form>
     </div>

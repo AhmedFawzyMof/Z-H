@@ -141,5 +141,26 @@ const controller = {
       );
     }
   },
+  getCoupon: (req, res) => {
+    const user = req.body.user;
+    console.log(user);
+    if (user !== "noToken") {
+      db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
+        if (result[0].value !== 0) {
+          res.json({
+            success: 1,
+          });
+        } else {
+          res.json({
+            success: 0,
+          });
+        }
+      });
+    } else {
+      res.json({
+        success: 0,
+      });
+    }
+  },
 };
 module.exports = controller;

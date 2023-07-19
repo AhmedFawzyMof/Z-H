@@ -22,7 +22,7 @@ const controller = {
         if (err) throw err;
         if (result.length > 0) {
           db.query(
-            "UPDATE `Users` SET code='', value='0' WHERE Users.id= ?",
+            "UPDATE `Users` SET code=NULL, value='0' WHERE Users.id= ?",
             [user],
             (err, result) => {
               if (err) throw err;
@@ -50,6 +50,7 @@ const controller = {
           <script>
             localStorage.setItem("cart","[]")
             localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
             location.replace("/pay/info/success");
           </script>`);
             }
