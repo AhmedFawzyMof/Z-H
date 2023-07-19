@@ -212,6 +212,9 @@ nav ul li a {
   position: absolute;
   top: 5px;
   left: 5px;
+  background: #fff;
+  padding: 5px 0;
+  border-radius: 5px;
 }
 
 .quantity button {
