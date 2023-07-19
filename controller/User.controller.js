@@ -41,7 +41,7 @@ const controller = {
     const { email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
-      "SELECT id,Admin,code FROM `Users` WHERE (`email`, `password`) = (?, ?)",
+      "SELECT id,Admin,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
       [email, pass],
       (err, result) => {
         if (err) throw err;
@@ -50,7 +50,7 @@ const controller = {
             success: 1,
             user: result[0].id,
             StateM: result[0].Admin,
-            code: result[0].code,
+            code: JSON.parse(result[0].coupons).length,
           });
         } else {
           res.json({
@@ -143,12 +143,11 @@ const controller = {
   },
   getCoupon: (req, res) => {
     const user = req.body.user;
-    console.log(user);
     if (user !== "noToken") {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
-        if (result[0].value !== 0) {
+        if (JSON.parse(result[0].coupons).length !== 0) {
           res.json({
-            success: 1,
+            success: JSON.parse(result[0].coupons).length,
           });
         } else {
           res.json({

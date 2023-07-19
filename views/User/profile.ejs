@@ -29,18 +29,25 @@
           <label>كلمة المرور الجديدة:</label>
           <input type="password" name="password" />
         </div>
-        <% if (profile.code !== null) { %>
+        <% if (JSON.parse(profile.coupons).length !== 0) { %>
         <div
-          class="code"
-          style="
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          "
+          class="coupons"
+          style="width: 100%; display: grid; place-items: center"
         >
-          <p>كوبون: <%= profile.code %></p>
-          <p>قيمة: <%= profile.value %></p>
+          <% JSON.parse(profile.coupons).forEach(coupon => { %>
+          <div
+            class="code"
+            style="
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            "
+          >
+            <p>كوبون: <%= coupon.code %></p>
+            <p>قيمة: <%= coupon.value %></p>
+          </div>
+          <% }) %>
         </div>
         <% } else { %>
         <p>للأسف لا يوجد قسيمة</p>

@@ -100,7 +100,8 @@ id="adPage"
 
 >
 </li>`;
-    if (localStorage.getItem("coupon") === "1") {
+    const TheCoupon = localStorage.getItem("coupon");
+    if (TheCoupon !== "0") {
       const coupon = document.getElementById("userInfo");
       coupon.style.display = "flex";
       coupon.style.position = "absolute";
@@ -114,7 +115,7 @@ id="adPage"
       coupon.style.alignItems = "center";
       coupon.style.justifyContent = "center";
       coupon.style.left = "20px";
-      coupon.innerText = "1";
+      coupon.innerText = TheCoupon;
     }
   }
   if (localStorage.getItem("State") === "1") {
@@ -144,7 +145,7 @@ function getCoupon() {
     .then((res) => res.json())
     .then((res) => {
       if (res.success !== 0) {
-        localStorage.setItem("coupon", "1");
+        localStorage.setItem("coupon", res.success);
       } else {
         localStorage.setItem("coupon", "0");
       }

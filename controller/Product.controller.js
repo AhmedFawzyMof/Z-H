@@ -82,18 +82,25 @@ const controller = {
     const Id = JSON.parse(id);
     if (code !== "") {
       db.query(
-        "SELECT code,value FROM `Users` WHERE (id, code) = (?,?)",
-        [Id, code],
+        "SELECT coupons FROM `Users` WHERE id = ?",
+        [Id],
         (err, result) => {
           if (err) throw err;
+          const ress = JSON.parse(result[0].coupons);
+          const coupon = {};
+          ress.forEach((Tcode) => {
+            if (Tcode.code === code) {
+              Object.assign(coupon, Tcode);
+            }
+          });
           if (result.length > 0) {
-            console.log(code);
+            console.log(coupon.value);
             res.send(`
-          <script>
-          localStorage.setItem('disCount', '${result[0].value}')
-          window.location.replace("/cart/show/items");
-          </script>
-          `);
+           <script>
+           localStorage.setItem('disCount', '${coupon.value}')
+           window.location.replace("/cart/show/items");
+           </script>
+           `);
           }
         }
       );
