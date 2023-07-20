@@ -102,20 +102,22 @@ id="adPage"
 </li>`;
     const TheCoupon = localStorage.getItem("coupon");
     if (TheCoupon !== "0") {
-      const coupon = document.getElementById("userInfo");
-      coupon.style.display = "flex";
-      coupon.style.position = "absolute";
-      coupon.style.background = "#ff971f";
-      coupon.style.color = "#fff";
-      coupon.style.width = "20px";
-      coupon.style.height = "25px";
-      coupon.style.borderRadius = "5px";
-      coupon.style.fontWeight = "700";
-      coupon.style.top = "-7.5px";
-      coupon.style.alignItems = "center";
-      coupon.style.justifyContent = "center";
-      coupon.style.left = "20px";
-      coupon.innerText = TheCoupon;
+      const coupons = document.querySelectorAll("#userInfo");
+      coupons.forEach((coupon) => {
+        coupon.style.display = "flex";
+        coupon.style.position = "absolute";
+        coupon.style.background = "#ff971f";
+        coupon.style.color = "#fff";
+        coupon.style.width = "20px";
+        coupon.style.height = "25px";
+        coupon.style.borderRadius = "5px";
+        coupon.style.fontWeight = "700";
+        coupon.style.top = "-7.5px";
+        coupon.style.alignItems = "center";
+        coupon.style.justifyContent = "center";
+        coupon.style.left = "0px";
+        coupon.innerText = TheCoupon;
+      });
     }
   }
   if (localStorage.getItem("State") === "1") {
