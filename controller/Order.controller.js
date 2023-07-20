@@ -16,7 +16,7 @@ const controller = {
       discount,
     } = req.body;
     const id = uuidv4();
-    const date = new Date().getDate();
+    const date = new Date.now();
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
@@ -27,6 +27,7 @@ const controller = {
               coupons.splice(index, 1);
             }
           });
+          console.log;
           db.query(
             "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
             [
