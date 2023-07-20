@@ -16,7 +16,7 @@ const controller = {
       discount,
     } = req.body;
     const id = uuidv4();
-    const date = new Date().getDate();
+    const date = new Date();
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
