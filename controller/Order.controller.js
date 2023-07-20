@@ -16,7 +16,7 @@ const controller = {
       discount,
     } = req.body;
     const id = uuidv4();
-    const date = new Date().toISOString().slice(0, 19).replace("T", " ");
+    const date = new Date().getDate();
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
@@ -28,14 +28,7 @@ const controller = {
             }
           });
           db.query(
-            "UPDATE `Users` SET coupons= ?, value='0' WHERE Users.id= ?",
-            [JSON.stringify(coupons), user],
-            (err, result) => {
-              if (err) throw err;
-            }
-          );
-          db.query(
-            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
             [
               id,
               user,
@@ -48,6 +41,8 @@ const controller = {
               date,
               cart,
               where,
+              JSON.stringify(coupons),
+              user,
             ],
             (err, result) => {
               if (err) throw err;
