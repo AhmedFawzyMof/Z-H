@@ -17,7 +17,11 @@ function calContainer() {
       return prev + next;
     }, 0);
 
-    return sum - disCount;
+    let total = sum - disCount;
+    if (total < 0 && total == NaN) {
+      total = sum - 0;
+    }
+    return total;
   }
 
   function getItems() {

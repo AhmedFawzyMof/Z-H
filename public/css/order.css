@@ -212,3 +212,16 @@ a {
 .Error .body {
   color: red;
 }
+
+.location {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  direction: ltr;
+}
+
+.location a {
+  color: #ff971f;
+  text-decoration: none;
+}

@@ -74,7 +74,11 @@ function getTotal() {
     return prev + next;
   }, 0);
 
-  return sum - disCount;
+  let total = sum - disCount;
+  if (total < 0 && total == NaN) {
+    total = sum - 0;
+  }
+  return total;
 }
 
 const OrderForm = document.getElementById("order");
@@ -99,3 +103,14 @@ OrderForm.append(tokenInp);
 OrderForm.append(totalInp);
 OrderForm.append(cartInp);
 OrderForm.append(disCountInp);
+
+function getLoc() {
+  const Thelocation = document.getElementById("location");
+  if (Thelocation.value === "الفرع") {
+    const loc = document.querySelector(".location");
+    loc.outerHTML =
+      '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
+  } else {
+    console.log(false);
+  }
+}
