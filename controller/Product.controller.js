@@ -89,12 +89,11 @@ const controller = {
           const ress = JSON.parse(result[0].coupons);
           const coupon = {};
           ress.forEach((Tcode) => {
-            if (Tcode.code === code) {
+            if (Tcode.code === code.toLowerCase()) {
               Object.assign(coupon, Tcode);
             }
           });
           if (result.length > 0) {
-            console.log(coupon.value);
             res.send(`
            <script>
            localStorage.setItem('disCount', '${coupon.value}')
@@ -107,7 +106,7 @@ const controller = {
     } else {
       res.send(`
           <script>
-          localStorage.setItem('disCount', '${result[0].value}')
+          localStorage.setItem('disCount', '0')
           window.location.replace("/cart/show/items");
           </script>
           `);

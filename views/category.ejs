@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Z&H Market</title>
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/product.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <script src="/js/carousel.js" defer></script>
+  </head>
+  <body onload="cartLen(), logedUser()">
+    <%- include('components/nav') %> <% if (offers.length > 0) { %>
+    <div class="wrapper">
+      <i id="left" class="bx bx-chevron-left"></i>
+      <div class="carousel">
+        <% offers.forEach(offer => { %>
+        <a href="/product/show/<%= offer.product %>">
+          <img src="<%= offer.image %>" draggable="false"
+        /></a>
+        <% }) %>
+      </div>
+      <i id="right" class="bx bx-chevron-right"></i>
+    </div>
+
+    <% } %>
+    <div class="category">
+      <% for(let i =0; i < categories.length; i++) {%>
+      <form action="/categories" method="post" class="selectCate">
+        <input
+          type="hidden"
+          name="category"
+          value="<%= categories[i].name %>"
+        />
+        <button><%= categories[i].name %></button>
+      </form>
+      <% } %>
+    </div>
+    <div class="container">
+      <% if (category.length >0) { %> <% for(var i = 0; i < category.length;
+      i++) { %>
+      <div class="Product" id="<%= category[i].id %>">
+        <% if (category[i].available) { %>
+        <input type="hidden" id="id" value="<%=category[i].id%>" />
+        <input type="hidden" id="name" value="<%=category[i].name%>" />
+        <input type="hidden" id="price" value="<%=category[i].price%>" />
+        <input type="hidden" id="image" value="<%=category[i].image%>" />
+        <button
+          onclick="addItemToCart(parseInt('<%=category[i].id%>'))"
+          class="addToCart"
+          id="outside"
+          type="submit"
+        >
+          <i class="bx bxs-cart-add"></i>
+        </button>
+        <% } %>
+        <a href="/product/show/<%= category[i].id %>">
+          <img src="<%= category[i].image %>" alt="<%= category[i].name %>" />
+          <div class="body">
+            <p class="price"><%= category[i].price %> ج</p>
+            <p class="name"><%= category[i].name %></p>
+          </div>
+        </a>
+      </div>
+      <% } %>
+    </div>
+    <%- include('components/footer') %>
+    <br />
+    <% }else { %>
+    <p id="Err">لا توجد منتجات متاحة</p>
+    <%- include('components/footer') %>
+    <script>
+      const footer = document.getElementById("footer");
+      footer.style.position = "absolute";
+      footer.style.bottom = "0";
+    </script>
+    <%}%>
+    <script>
+      window.onscroll = function () {
+        myFunction();
+      };
+      var header = document.querySelector(".category");
+
+      // Get the offset position of the navbar
+      var sticky = header.offsetTop;
+
+      function myFunction() {
+        if (window.pageYOffset > sticky) {
+          header.classList.add("sticky");
+        } else {
+          header.classList.remove("sticky");
+        }
+      }
+    </script>
+    <script src="/js/product.js"></script>
+  </body>
+</html>

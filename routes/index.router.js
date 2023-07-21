@@ -51,6 +51,7 @@ router.post("/add/product", ProductController.addOne);
 router.post("/add/to/offer", ProductController.addOffer);
 router.post("/add/to/promocode", ProductController.addPromo);
 router.post("/get/promocode", ProductController.getCode);
+router.post("/categories", CategoryController.getCategory);
 //? }
 //? DELETE {
 router.post("/delete/user", AdminController.deleteUser);

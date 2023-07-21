@@ -79,10 +79,11 @@ const controller = {
   },
   getAll: (req, res) => {
     db.query(
-      "SELECT * FROM `Componies`; SELECT * FROM `Offer`",
+      "SELECT * FROM `Componies`;SELECT * FROM `Offer`;SELECT * FROM Categories",
       (err, result) => {
         if (err) throw err;
         res.render("index", {
+          categories: result[2],
           category: result[0],
           offers: result[1],
         });
@@ -102,6 +103,21 @@ const controller = {
       window.history.back();
       location.reload()
     </script>`);
+      }
+    );
+  },
+  getCategory: (req, res) => {
+    const category = req.body.category;
+    db.query(
+      "SELECT * FROM `Products` WHERE category = ?;SELECT * FROM `Offer`;SELECT * FROM Categories",
+      [category],
+      (err, result) => {
+        if (err) throw err;
+        res.render("category", {
+          categories: result[2],
+          category: result[0],
+          offers: result[1],
+        });
       }
     );
   },

@@ -145,7 +145,8 @@ const controller = {
     const user = req.body.user;
     if (user !== "noToken") {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
-        if (JSON.parse(result[0].coupons).length !== 0) {
+        if (err) throw err;
+        if (JSON.parse(result[0].coupons).length > 0) {
           res.json({
             success: JSON.parse(result[0].coupons).length,
           });

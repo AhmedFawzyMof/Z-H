@@ -17,6 +17,7 @@ const controller = {
     } = req.body;
     const id = uuidv4();
     const date = new Date();
+    console.log(total);
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
@@ -33,8 +34,8 @@ const controller = {
               id,
               user,
               address,
-              phone,
-              phone2,
+              phone.toString(),
+              phone2.toString(),
               delivered,
               paid,
               total,
