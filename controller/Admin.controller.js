@@ -148,6 +148,37 @@ const controller = {
       }
     );
   },
+  orderPage: (req, res) => {
+    const { admin, order } = req.params;
+    db.query(
+      "SELECT Admin,Stuff FROM Users WHERE id=?",
+      [admin],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].Admin === 1) {
+          db.query(
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id WHERE `Order`.`id` = ?",
+            [order],
+            (err, result) => {
+              if (err) throw err;
+              res.render("admin/orders/id", { order: result[0] });
+            }
+          );
+        } else if (result[0].Stuff === 1) {
+          db.query(
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id WHERE `Order`.`id` = ?",
+            [order],
+            (err, result) => {
+              if (err) throw err;
+              res.render("admin/orders/id", { order: result[0] });
+            }
+          );
+        } else {
+          res.redirect("/");
+        }
+      }
+    );
+  },
   //! }
   //! SEARCH {
   searchUsers: (req, res) => {

@@ -25,6 +25,15 @@ function search() {
     Container.innerHTML = data;
   }
 }
+
+const token = localStorage.getItem("Token");
+
+const orderPage = document.querySelectorAll("#orderPage");
+orderPage.forEach((page) => {
+  const orderid = page.classList[0];
+  page.setAttribute("href", "/order/info/admin/" + token + "/" + orderid);
+});
+
 window.addEventListener("pageshow", function (event) {
   var historyTraversal =
     event.persisted ||

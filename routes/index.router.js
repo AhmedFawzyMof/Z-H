@@ -30,6 +30,7 @@ router.get("/admin/panle/subcategorys/:admin", AdminController.getSubCategory);
 router.get("/admin/panle/promocode/:admin", AdminController.getPromocode);
 router.get("/admin/panle/orders/:admin", AdminController.getOrders);
 router.get("/info/contact_us/success", UserController.contact_success);
+router.get("/order/info/admin/:admin/:order", AdminController.orderPage);
 //? }
 //? POST {
 router.get("/contact", UserController.contact);
