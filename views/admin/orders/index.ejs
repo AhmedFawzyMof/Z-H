@@ -67,7 +67,7 @@
           </form>
         </div>
         <div class="Paid">
-          تم الدفع: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
+          تم الدفع: <% if (order.paid) { %> نعم <% }else{ %> ﻻ <% } %>
           <form action="/edit/order/paid" method="post">
             <input type="hidden" name="id" value="<%=order.id%>" />
             <select name="isPaid">

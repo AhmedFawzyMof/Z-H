@@ -6,7 +6,7 @@ const controller = {
     const token = req.params.admin;
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
-      if (result[0].Admin == 1) {
+      if (result[0].Admin === 1) {
         db.query(
           "SELECT * FROM Products; SELECT name FROM Categories; SELECT name FROM Componies",
           (err, result) => {
@@ -25,20 +25,32 @@ const controller = {
   },
   getOrders: (req, res) => {
     const token = req.params.admin;
-    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
-      if (err) throw err;
-      if (result[0].Admin === 1) {
-        db.query(
-          "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
-          (err, result) => {
-            if (err) throw err;
-            res.render("admin/orders", { orders: result });
-          }
-        );
-      } else {
-        res.redirect("/");
+    db.query(
+      "SELECT Admin,Stuff FROM Users WHERE id=?",
+      [token],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].Admin === 1) {
+          db.query(
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
+            (err, result) => {
+              if (err) throw err;
+              res.render("admin/orders", { orders: result });
+            }
+          );
+        } else if (result[0].Stuff === 1) {
+          db.query(
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
+            (err, result) => {
+              if (err) throw err;
+              res.render("admin/orders", { orders: result });
+            }
+          );
+        } else {
+          res.redirect("/");
+        }
       }
-    });
+    );
   },
   getCategory: (req, res) => {
     const token = req.params.admin;
@@ -121,14 +133,20 @@ const controller = {
   },
   getAdmin: (req, res) => {
     const token = req.params.admin;
-    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
-      if (err) throw err;
-      if (result[0].Admin == 1) {
-        res.render("admin");
-      } else {
-        res.redirect("/");
+    db.query(
+      "SELECT Admin,Stuff,id FROM Users WHERE id=?",
+      [token],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].Admin == 1) {
+          res.render("admin");
+        } else if (result[0].Stuff == 1) {
+          res.redirect("/admin/panle/orders/" + result[0].id);
+        } else {
+          res.redirect("/");
+        }
       }
-    });
+    );
   },
   //! }
   //! SEARCH {

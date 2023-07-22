@@ -97,7 +97,7 @@ const controller = {
   editDelivered: (req, res) => {
     const { id, isDelivered } = req.body;
     db.query(
-      "UPDATE `orders` SET `delivered` = ? WHERE `orders`.`id` = ?",
+      "UPDATE `Order` SET `delivered` = ? WHERE `Order`.`id` = ?",
       [isDelivered, id],
       (err, result) => {
         if (err) throw err;
@@ -112,7 +112,7 @@ const controller = {
   editPaid: (req, res) => {
     const { id, isPaid } = req.body;
     db.query(
-      "UPDATE `orders` SET `paid` = ? WHERE `orders`.`id` = ?",
+      "UPDATE `Order` SET `paid` = ? WHERE `Order`.`id` = ?",
       [isPaid, id],
       (err, result) => {
         if (err) throw err;

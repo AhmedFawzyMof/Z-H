@@ -30,12 +30,18 @@ myForm.addEventListener("submit", function (e) {
       } else {
         localStorage.setItem("Token", res.user);
         localStorage.setItem("State", JSON.parse(res.StateM));
+
         if (res.code !== 0) {
           localStorage.setItem("coupon", res.code);
         } else {
           localStorage.setItem("coupon", "0");
         }
-        location.replace("/");
+        if (res.Stuff) {
+          console.log(res.Stuff);
+          location.replace("/admin/panle/orders/" + res.user);
+        } else {
+          location.replace("/");
+        }
       }
     })
     .catch(function (error) {

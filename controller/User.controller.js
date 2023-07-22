@@ -23,8 +23,8 @@ const controller = {
             const pass = crypto.createHmac("sha256", password).digest("hex");
             const id = uuidv4();
             db.query(
-              "INSERT INTO `Users` (`id`, `username`, `email`, `password`) VALUES (?, ?, ?, ?)",
-              [id, name, email, pass],
+              "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
+              [id, name, email, pass, "[]"],
               (err, result) => {
                 if (err) throw err;
                 res.json({
@@ -41,13 +41,20 @@ const controller = {
     const { email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
-      "SELECT id,Admin,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
+      "SELECT id,Admin,Stuff,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
       [email, pass],
       (err, result) => {
         if (err) throw err;
+        let stuff;
+        if (result[0].Stuff !== 0) {
+          stuff = true;
+        } else {
+          stuff = false;
+        }
         if (result.length > 0) {
           res.json({
             success: 1,
+            Stuff: stuff,
             user: result[0].id,
             StateM: result[0].Admin,
             code: JSON.parse(result[0].coupons).length,
