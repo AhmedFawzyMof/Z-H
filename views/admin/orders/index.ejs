@@ -24,24 +24,25 @@
     </div>
     <div id="container">
       <% orders.forEach((order, index) => { %>
-      <a
-        id="orderPage"
-        style="text-decoration: none; color: #333"
-        class="<%= order.id %>"
-      >
-        <div class="orderRec" key="<%= index %>">
-          <form action="/delete/order" method="post">
-            <input
-              type="hidden"
-              name="orderid"
-              value="<%=
+
+      <div class="orderRec" key="<%= index %>">
+        <form action="/delete/order" method="post">
+          <input
+            type="hidden"
+            name="orderid"
+            value="<%=
               order.id
             %>"
-            />
-            <button class="delete" type="submit">
-              <i class="bx bx-trash"></i>
-            </button>
-          </form>
+          />
+          <button class="delete" type="submit">
+            <i class="bx bx-trash"></i>
+          </button>
+        </form>
+        <a
+          id="orderPage"
+          style="text-decoration: none; color: #333"
+          class="<%= order.id %>"
+        >
           <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
           <p>تاريخ الطلب: <%=order.date%></p>
           <p>العنوان: <%=order.address%></p>
@@ -49,41 +50,41 @@
           <p>رقم الهاتف: <%="0"+order.phone%></p>
           <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
           <p>المجموع: <%=order.total%> ج</p>
-          <% JSON.parse(order.cart).forEach(item => { %>
-          <div class="orderitem">
-            <img src="<%= item.image %>" alt="<%= item.name %>" />
-            <div class="itemInfo">
-              <p><%= item.name %></p>
-              <p>الكمية: <%= item.quantity %></p>
-              <p>السعر: <%= item.price %> ج</p>
-              <p>السعر الإجمالي للطلب: <%= item.price * item.quantity %> ج</p>
-            </div>
-          </div>
-          <% }) %>
-          <div class="Delivered">
-            تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
-            <form action="/edit/order/delivered" method="post">
-              <input type="hidden" name="id" value="<%=order.id%>" />
-              <select name="isDelivered">
-                <option value="0" selected>لا</option>
-                <option value="1">نعم</option>
-              </select>
-              <button type="submit">تغيير</button>
-            </form>
-          </div>
-          <div class="Paid">
-            تم الدفع: <% if (order.paid) { %> نعم <% }else{ %> ﻻ <% } %>
-            <form action="/edit/order/paid" method="post">
-              <input type="hidden" name="id" value="<%=order.id%>" />
-              <select name="isPaid">
-                <option value="0" selected>لا</option>
-                <option value="1">نعم</option>
-              </select>
-              <button type="submit">تغيير</button>
-            </form>
+        </a>
+        <% JSON.parse(order.cart).forEach(item => { %>
+        <div class="orderitem">
+          <img src="<%= item.image %>" alt="<%= item.name %>" />
+          <div class="itemInfo">
+            <p><%= item.name %></p>
+            <p>الكمية: <%= item.quantity %></p>
+            <p>السعر: <%= item.price %> ج</p>
+            <p>السعر الإجمالي للطلب: <%= item.price * item.quantity %> ج</p>
           </div>
         </div>
-      </a>
+        <% }) %>
+        <div class="Delivered">
+          تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
+          <form action="/edit/order/delivered" method="post">
+            <input type="hidden" name="id" value="<%=order.id%>" />
+            <select name="isDelivered">
+              <option value="0" selected>لا</option>
+              <option value="1">نعم</option>
+            </select>
+            <button type="submit">تغيير</button>
+          </form>
+        </div>
+        <div class="Paid">
+          تم الدفع: <% if (order.paid) { %> نعم <% }else{ %> ﻻ <% } %>
+          <form action="/edit/order/paid" method="post">
+            <input type="hidden" name="id" value="<%=order.id%>" />
+            <select name="isPaid">
+              <option value="0" selected>لا</option>
+              <option value="1">نعم</option>
+            </select>
+            <button type="submit">تغيير</button>
+          </form>
+        </div>
+      </div>
       <% }) %>
     </div>
     <script src="/js/admin/order.js"></script>
