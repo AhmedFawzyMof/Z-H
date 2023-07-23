@@ -8,7 +8,8 @@ const controller = {
     const email = req.body.email;
     const password = req.body.password;
     const password2 = req.body.password2;
-
+    const coupons =
+      '[{"code": "13102019","value":10},{"code":"80402002","value":15},{"code":"29072002","value":20}]';
     if (password != password2) {
       res.json({ success: 0, message: "كلمات السر لا تتطابق" });
     } else {
@@ -24,7 +25,7 @@ const controller = {
             const id = uuidv4();
             db.query(
               "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
-              [id, name, email, pass, "[]"],
+              [id, name, email, pass, coupons],
               (err, result) => {
                 if (err) throw err;
                 res.json({
