@@ -21,7 +21,9 @@ const Products = document.querySelectorAll(".Product");
 Products.forEach((product) => {
   let res = cart.find((element) => element.id == product.id);
   if (res !== undefined) {
-    let button = document.getElementById("outside");
+    const div = document.getElementById(res.id);
+    console.log(div);
+    let button = div.querySelector("#outside");
 
     QuantityIncBtn.setAttribute(
       "onclick",
