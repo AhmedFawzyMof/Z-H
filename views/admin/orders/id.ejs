@@ -37,7 +37,6 @@
     <p>المجموع: <%=order.total%> ج</p>
     <% JSON.parse(order.cart).forEach(item => { %>
     <div class="orderitem">
-      <img src="<%= item.image %>" alt="<%= item.name %>" />
       <div class="itemInfo">
         <p><%= item.name %></p>
         <p>الكمية: <%= item.quantity %></p>
