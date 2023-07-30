@@ -46,13 +46,11 @@ const controller = {
       [email, pass],
       (err, result) => {
         if (err) throw err;
-        let stuff;
-        if (result[0].Stuff !== 0) {
-          stuff = true;
-        } else {
-          stuff = false;
-        }
+        let stuff = false;
         if (result.length > 0) {
+          if (result[0].Stuff !== 0) {
+            stuff = true;
+          }
           res.json({
             success: 1,
             Stuff: stuff,

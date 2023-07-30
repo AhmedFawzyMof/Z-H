@@ -14,40 +14,44 @@ myForm.addEventListener("submit", function (e) {
     searchParams.append(pair[0], pair[1]);
   }
 
-  fetch("/login", {
-    method: "post",
-    body: searchParams,
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.success == 0) {
-        message.style.color = "#fff";
-        message.style.background = "red";
-        message.style.fontSize = "12px";
-        message.style.padding = " 0 2.5px";
-        message.style.borderRadius = "50px";
-        message.innerHTML = res.message;
-      } else {
-        localStorage.setItem("Token", res.user);
-        localStorage.setItem("State", JSON.parse(res.StateM));
-
-        if (res.code !== 0) {
-          localStorage.setItem("coupon", res.code);
-        } else {
-          localStorage.setItem("coupon", "0");
-        }
-        if (res.Stuff) {
-          console.log(res.Stuff);
-          location.replace("/admin/panle/orders/" + res.user);
-        } else {
-          location.replace("/");
-        }
-      }
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+  login(searchParams);
 });
+async function login(data) {
+  const loading = document.getElementById("loading");
+  loading.classList.add("active");
+  const log = await fetch("/login", {
+    method: "post",
+    body: data,
+  });
+
+  const response = await log.json();
+  loading.classList.remove("active");
+
+  console.log(response);
+
+  if (response.success !== 0) {
+    localStorage.setItem("Token", response.user);
+    localStorage.setItem("State", JSON.parse(response.StateM));
+
+    if (response.code !== 0) {
+      localStorage.setItem("coupon", response.code);
+    } else {
+      localStorage.setItem("coupon", "0");
+    }
+    if (response.Stuff) {
+      console.log(response.Stuff);
+      location.replace("/admin/panle/orders/" + response.user);
+    } else {
+      location.replace("/");
+    }
+  } else {
+    message.style.right = "5px";
+    message.textContent = response.message;
+    setTimeout(() => {
+      message.style.right = "-305px";
+    }, 3000);
+  }
+}
 
 function showPass() {
   const password = document.getElementById("mypassword");

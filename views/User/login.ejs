@@ -12,6 +12,10 @@
     <link rel="stylesheet" href="/css/login.css" />
   </head>
   <body>
+    <div id="loading">
+      <i class="bx bx-loader-alt"></i>
+    </div>
+    <p id="err"></p>
     <a href="/" class="Back"><i class="bx bx-left-arrow-alt"></i></a>
     <div class="container">
       <form dir="rtl" id="myForm">
@@ -31,7 +35,6 @@
         <div class="input">
           <button>تسجيل الدخول</button>
         </div>
-        <p id="err"></p>
         <p>
           لا تملك حسابا حتى الآن ؟
           <a href="/user/info/register">قم بالتسجيل </a>

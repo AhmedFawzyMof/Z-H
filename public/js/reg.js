@@ -14,25 +14,29 @@ myForm.addEventListener("submit", function (e) {
     searchParams.append(pair[0], pair[1]);
   }
 
-  fetch("/register", {
-    method: "post",
-    body: searchParams,
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.success == 0) {
-        message.style.color = "#fff";
-        message.style.background = "red";
-        message.style.fontSize = "12px";
-        message.style.padding = " 0 2.5px";
-        message.style.borderRadius = "5px";
-        message.style.padding = "0 5px";
-        message.innerHTML = res.message;
-      } else {
-        location.replace("/user/info/login");
-      }
-    })
-    .catch(function (error) {
-      console.error(error);
-    });
+  register(searchParams);
 });
+
+async function register(data) {
+  const loading = document.getElementById("loading");
+  loading.classList.add("active");
+  const log = await fetch("/register", {
+    method: "post",
+    body: data,
+  });
+
+  const response = await log.json();
+  loading.classList.remove("active");
+
+  console.log(response);
+
+  if (response.success !== 0) {
+    location.replace("/user/info/login");
+  } else {
+    message.style.right = "5px";
+    message.textContent = response.message;
+    setTimeout(() => {
+      message.style.right = "-305px";
+    }, 3000);
+  }
+}
