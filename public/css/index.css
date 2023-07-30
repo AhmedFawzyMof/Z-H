@@ -52,7 +52,7 @@ input:focus {
   margin: 5px;
   border-radius: 5px;
   background: #fff;
-  width: calc(90% / 3);
+  width: calc(90% / 5);
 }
 
 .sticky {
@@ -67,9 +67,10 @@ input:focus {
 .category {
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow-x: scroll;
   z-index: 20;
-  width: calc(100% / 1);
+  width: 100%;
   margin: 10px 0;
 }
 
@@ -168,7 +169,7 @@ input:focus {
 .carousel img {
   height: 200px;
   object-fit: cover;
-  width: calc(100% / 3);
+  width: calc(100% / 2);
   border-radius: 5px;
 }
 
@@ -180,6 +181,9 @@ input:focus {
   .carousel img {
     height: 150px;
     width: calc(100% / 2);
+  }
+  .categories {
+    width: calc(90% / 4);
   }
 }
 
@@ -195,5 +199,11 @@ input:focus {
 
   .wrapper i:last-child {
     right: -15px;
+  }
+  .categories {
+    margin: 5px;
+    border-radius: 5px;
+    background: #fff;
+    width: calc(90% / 3);
   }
 }

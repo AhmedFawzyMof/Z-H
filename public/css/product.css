@@ -39,7 +39,6 @@ nav ul li a {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
   flex-wrap: wrap;
   height: auto;
 }
@@ -186,9 +185,11 @@ nav ul li a {
 .categories {
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin-top: 20px;
   overflow-x: scroll;
   z-index: 20;
-  width: calc(100% / 1);
+  width: 100%;
 }
 
 .categories form {
@@ -248,6 +249,7 @@ nav ul li a {
   top: 0;
   width: 100%;
   background: #ff971f;
+  margin: 0;
   transition: 0.3s;
   padding: 5px 0;
 }

@@ -42,13 +42,13 @@ function logedUser() {
 </li>
 <li
 >
-  <a href="/contact_us" style="color: #fff; text-decoration: none"
+  <a href="/zh/info/contact_us" style="color: #fff; text-decoration: none"
     >اتصل بنا</a
   >
 </li>
 <li
 >
-  <a href="/about" style="color: #fff; text-decoration: none"
+  <a href="/zh/info/about" style="color: #fff; text-decoration: none"
     >معلومات عنا</a
   >
 </li>
@@ -77,13 +77,13 @@ function logedUser() {
 </li>
 <li
 >
-  <a href="/gomla/info/contact_us" style="color: #fff; text-decoration: none"
+  <a href="/zh/info/contact_us" style="color: #fff; text-decoration: none"
     >اتصل بنا</a
   >
 </li>
 <li
 >
-  <a href="/gomla/info/about" style="color: #fff; text-decoration: none"
+  <a href="/zh/info/about" style="color: #fff; text-decoration: none"
     >معلومات عنا</a
   >
 </li>

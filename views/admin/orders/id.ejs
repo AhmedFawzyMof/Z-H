@@ -4,76 +4,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= order.id %></title>
-    <link rel="stylesheet" href="/css/admin/order.css">
+    <link rel="stylesheet" href="/css/admin/order.css" />
     <link
-    href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
-    rel="stylesheet"
-  />  
-</head>
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
   <body>
-    <div class="container" style="display: grid; place-content: center;"> 
-    <div class="orderRec" style="position: relative;">
-    <form action="/delete/order" method="post">
-      <input
-        type="hidden"
-        name="orderid"
-        value="<%=
+    <div class="container" style="display: grid; place-content: center">
+      <div class="orderRec" style="position: relative">
+        <form action="/delete/order" method="post">
+          <input
+            type="hidden"
+            name="orderid"
+            value="<%=
         order.id
       %>"
-      />
-      <button class="delete" type="submit">
-        <i class="bx bx-trash"></i>
-      </button>
-    </form>
-    <button class="print" onclick="Print()" style="position: absolute; left: 5px;top: 5px; font-size: 30px; cursor: pointer;background: none;border: none; color: #ff971f;">
-        <i class='bx bx-printer'></i>    
-    </button>
-    <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
-    <p>تاريخ الطلب: <%=order.date.toString().replace(" GMT+0200 (Eastern European Standard Time)","")%></p>
-    <p>العنوان: <%=order.address%></p>
-    <p>المستخدم: <%=order.email%></p>
-    <p>رقم الهاتف: <%="0"+order.phone%></p>
-    <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
-    <p>المجموع: <%=order.total%> ج</p>
-    <% JSON.parse(order.cart).forEach(item => { %>
-    <div class="orderitem">
-      <div class="itemInfo">
-        <p><%= item.name %></p>
-        <p>الكمية : <%= item.quantity %></p>
-        <p>السعر : <%= item.price %> ج</p>
-        <p>السعر الإجمالي للطلب : <%= item.price * item.quantity %> ج</p>
+          />
+          <button class="delete" type="submit">
+            <i class="bx bx-trash"></i>
+          </button>
+        </form>
+        <button
+          class="print"
+          onclick="Print()"
+          style="
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            font-size: 30px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: #ff971f;
+          "
+        >
+          <i class="bx bx-printer"></i>
+        </button>
+        <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
+        <p>
+          تاريخ الطلب:
+          <%=order.date.toString().replaceAll("GMT+0200(EasternEuropeanStandardTime)","")
+          %>
+        </p>
+        <p>العنوان: <%=order.address%></p>
+        <p>المستخدم: <%=order.email%></p>
+        <p>رقم الهاتف: <%="0"+order.phone%></p>
+        <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
+        <% JSON.parse(order.cart).forEach(item => { %>
+        <div class="orderitem">
+          <div class="itemInfo">
+            <p><%= item.name %></p>
+            <p>الكمية : <%= item.quantity %></p>
+            <p>السعر : <%= item.price %> ج</p>
+          </div>
+        </div>
+        <% }) %>
+        <div class="Delivered">
+          تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
+        </div>
+        <div class="Paid">
+          تم الدفع: <% if (order.paid) { %> نعم <% }else{ %> ﻻ <% } %>
+        </div>
+        <p>السعر الإجمالي للطلب : <%= order.total %> ج</p>
       </div>
     </div>
-    <% }) %>
-    <div class="Delivered">
-      تسليم الطلب: <% if (order.delivered) { %> نعم <% }else{ %> ﻻ <% } %>
-      <form action="/edit/order/delivered" method="post">
-        <input type="hidden" name="id" value="<%=order.id%>" />
-        <select name="isDelivered">
-          <option value="0" selected>لا</option>
-          <option value="1">نعم</option>
-        </select>
-        <button type="submit">تغيير</button>
-      </form>
-    </div>
-    <div class="Paid">
-      تم الدفع: <% if (order.paid) { %> نعم <% }else{ %> ﻻ <% } %>
-      <form action="/edit/order/paid" method="post">
-        <input type="hidden" name="id" value="<%=order.id%>" />
-        <select name="isPaid">
-          <option value="0" selected>لا</option>
-          <option value="1">نعم</option>
-        </select>
-        <button type="submit">تغيير</button>
-      </form>
-    </div>
-  </div>
-</a></div>
-<script>
-    const Print = ()=>{
-        print()
-    }
-</script>
-<script src="/js/admin/order.js"></script>
-</body>
+    <script>
+      const Print = () => {
+        print();
+      };
+    </script>
+    <script src="/js/admin/order.js"></script>
+  </body>
 </html>
