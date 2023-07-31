@@ -32,19 +32,18 @@
         </div>
         <% }) %>
         <p>السعر الإجمالي للطلب : <%= order.total %> ج</p>
-        <img src="/img/logo.jpeg" style="width: 100%" />
+        <img src="/img/print.jpeg" style="width: 100%" />
       </div>
     </div>
     <script>
-    document.addEventListener('DOMContentLoaded',()=>{
-      print()
-      const date = document.getElementById("date");
-      date.outerHTML = date.outerHTML.replace(
-        "GMT+0200 (Eastern European Standard Time)",
-        ""
-      );
-    })
-      
+      document.addEventListener("DOMContentLoaded", () => {
+        print();
+        const date = document.getElementById("date");
+        date.outerHTML = date.outerHTML.replace(
+          "GMT+0200 (Eastern European Standard Time)",
+          ""
+        );
+      });
     </script>
     <script src="/js/admin/order.js"></script>
   </body>
