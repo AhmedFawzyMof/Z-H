@@ -185,6 +185,9 @@ input:focus {
   .categories {
     width: calc(90% / 4);
   }
+  .category {
+    justify-content: flex-start;
+  }
 }
 
 @media screen and (max-width: 550px) {
