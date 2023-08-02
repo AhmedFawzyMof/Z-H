@@ -194,22 +194,6 @@ const controller = {
       }
     });
   },
-  getPromocode: (req, res) => {
-    const token = req.params.admin;
-    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
-      if (err) throw err;
-      if (result[0].Admin == 1) {
-        db.query(" SELECT * FROM `PromoCode`", (err, result) => {
-          if (err) throw err;
-          res.render("admin/promo", {
-            Promocode: result,
-          });
-        });
-      } else {
-        res.redirect("/");
-      }
-    });
-  },
   getOffer: (req, res) => {
     const token = req.params.admin;
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
