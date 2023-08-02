@@ -15,21 +15,32 @@
     <div class="container">
       <div class="catecontainer">
         <% category.forEach(category => { %>
-        <div class="category">
-          <form action="/delete/category" method="post" id="delete">
+        <div class="cate">
+          <div class="category">
+            <form action="/delete/category" method="post" id="delete">
+              <input
+                type="hidden"
+                name="categoryid"
+                value="<%= category.id %>"
+              />
+              <button type="submit"><i class="bx bx-trash"></i></button>
+            </form>
+            <p>معرف:<%= category.id %></p>
+            <p>الاسم: <%= category.name %></p>
+          </div>
+          <form action="/edit/category" method="post" class="editform">
             <input type="hidden" name="categoryid" value="<%= category.id %>" />
-            <button type="submit"><i class="bx bx-trash"></i></button>
+            <input type="text" name="name" value="<%= category.name %>" />
+            <button type="submit">تغير</button>
           </form>
-          <p>معرف:<%= category.id %></p>
-          <p>الاسم: <%= category.name %></p>
         </div>
-        <form action="/edit/category" method="post" class="editform">
-          <input type="hidden" name="categoryid" value="<%= category.id %>" />
-          <input type="text" name="name" value="<%= category.name %>" />
-          <button type="submit">تغير</button>
-        </form>
         <% }) %>
       </div>
+
+      <form action="/add/category" method="post" class="addform">
+        <input type="text" name="name" placeholder="الاسم" />
+        <button type="submit">أضف</button>
+      </form>
     </div>
     <script>
       window.addEventListener("pageshow", function (event) {

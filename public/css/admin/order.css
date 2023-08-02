@@ -11,6 +11,8 @@
 body {
   background: #eee;
   overflow-x: hidden;
+  display: grid;
+  place-items: center;
   direction: rtl;
 }
 textarea:focus,
@@ -22,7 +24,7 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
+  gap: 10px;
   flex-wrap: wrap;
   min-height: 100vh;
 }
@@ -158,4 +160,67 @@ input:focus {
   justify-content: center;
   flex-wrap: wrap;
   width: 100%;
+}
+
+.icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+#orderPage {
+  font-size: 30px;
+  color: #ff971f !important;
+}
+
+.paginaiton a {
+  text-decoration: none;
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+}
+
+.paginaiton a.selectedLink {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+}
+
+.paginaiton {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.paginaiton .after {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  padding: 0 10px;
+}
+
+.paginaiton .before {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  padding: 0 10px;
 }

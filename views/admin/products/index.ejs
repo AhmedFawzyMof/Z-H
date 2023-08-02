@@ -24,30 +24,27 @@
         <p><%= product.id %></p>
         <p>اسم :<%= product.name %></p>
         <p>الوصف :<%= product.description %></p>
-        <p>السعر :<%= product.price %> 
+        <p>السعر :<%= product.price %></p>
         <form action="/edit/product" method="post" id="edit">
           <input type="hidden" name="productid" value="<%= product.id %>" />
-          <input type="number" name="price" required>
-          <button class="delete" type="submit">
-            تأكيد
-          </button>
+          <input type="number" name="price" required />
+          <button class="delete" type="submit">تأكيد</button>
         </form>
-      <div>
-        <p>شركة :<%= product.compony %></p>
-        <p>فئة :<%= product.category %></p>
-        <p>
-          متاح : <% if (product.available ) { %> نعم <% } else { %> ﻻ <% } %>
+        <div>
+          <p>شركة :<%= product.compony %></p>
+          <p>فئة :<%= product.category %></p>
+          <p>
+            متاح : <% if (product.available ) { %> نعم <% } else { %> ﻻ <% } %>
+          </p>
           <form action="/edit/product" method="post" id="edit">
             <input type="hidden" name="productid" value="<%= product.id %>" />
             <select name="available" required>
               <option value="1">نعم</option>
               <option value="0">لا</option>
             </select>
-            <button class="delete" type="submit">
-              تأكيد
-            </button>
+            <button class="delete" type="submit">تأكيد</button>
           </form>
-        </p>
+        </div>
         <img src="<%= product.image  %>" />
       </div>
       <% }) %>
@@ -67,6 +64,33 @@
         <input type="text" name="price" placeholder="السعر" />
         <input type="file" id="image" onchange="imageUploaded()" />
       </form>
+    </div>
+    <br />
+    <div class="paginaiton">
+      <% if(page > 1) { %>
+      <a
+        href="/admin/panle/products/<%=userId%>/?page=<%=page-1%>"
+        class="before"
+      >
+        <i class="bx bxs-skip-previous-circle"></i>
+      </a>
+      <% } %> <% for(let i = iterator; i <= endingLink; i++) { %> <% if(i ===
+      page) { %>
+      <a
+        class="selectedLink"
+        href="/admin/panle/products/<%=userId%>/?page=<%=i%>"
+      >
+        <%=i%>
+      </a>
+      <% continue; %> <% } %> <%if (!i <0) {%>
+      <a href="/admin/panle/products/<%=userId%>/?page=<%=i%>"><%=i%></a>
+      <%}%> <% } %> <% if(page < numberOfPages) { %>
+      <a
+        href="/admin/panle/products/<%=userId%>/?page=<%=page+1%>"
+        class="after"
+        ><i class="bx bxs-skip-next-circle"></i>
+      </a>
+      <% } %>
     </div>
     <script src="/js/admin/products.js"></script>
   </body>

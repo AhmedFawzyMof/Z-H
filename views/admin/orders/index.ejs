@@ -26,31 +26,35 @@
       <% orders.forEach((order, index) => { %>
 
       <div class="orderRec" key="<%= index %>">
-        <form action="/delete/order" method="post">
-          <input
-            type="hidden"
-            name="orderid"
-            value="<%=
+        <div class="icons">
+          <form action="/delete/order" method="post">
+            <input
+              type="hidden"
+              name="orderid"
+              value="<%=
               order.id
             %>"
-          />
-          <button class="delete" type="submit">
-            <i class="bx bx-trash"></i>
-          </button>
-        </form>
-        <a
-          id="orderPage"
-          style="text-decoration: none; color: #333"
-          class="<%= order.id %>"
-        >
-          <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
-          <p>تاريخ الطلب: <%=order.date%></p>
-          <p>العنوان: <%=order.address%></p>
-          <p>المستخدم: <%=order.email%></p>
-          <p>رقم الهاتف: <%="0"+order.phone%></p>
-          <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
-          <p>المجموع: <%=order.total%> ج</p>
-        </a>
+            />
+            <button class="delete" type="submit">
+              <i class="bx bx-trash"></i>
+            </button>
+          </form>
+          <a
+            id="orderPage"
+            style="text-decoration: none; color: #333"
+            class="<%= order.id %>"
+          >
+            <i class="bx bxs-printer"></i>
+          </a>
+        </div>
+        <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
+        <p>تاريخ الطلب: <%=order.date%></p>
+        <p>العنوان: <%=order.address%></p>
+        <p>المستخدم: <%=order.email%></p>
+        <p>رقم الهاتف: <%="0"+order.phone%></p>
+        <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
+        <p>المجموع: <%=order.total%> ج</p>
+
         <% JSON.parse(order.cart).forEach(item => { %>
         <div class="orderitem">
           <img src="<%= item.image %>" alt="<%= item.name %>" />
@@ -86,6 +90,31 @@
         </div>
       </div>
       <% }) %>
+    </div>
+    <br />
+    <div class="paginaiton">
+      <% if(page > 1) { %>
+      <a
+        href="/admin/panle/orders/<%=userId%>/?page=<%=page-1%>"
+        class="before"
+      >
+        <i class="bx bxs-skip-previous-circle"></i>
+      </a>
+      <% } %> <% for(let i = iterator; i <= endingLink; i++) { %> <% if(i ===
+      page) { %>
+      <a
+        class="selectedLink"
+        href="/admin/panle/orders/<%=userId%>/?page=<%=i%>"
+      >
+        <%=i%>
+      </a>
+      <% continue; %> <% } %> <%if (!i <0) {%>
+      <a href="/admin/panle/orders/<%=userId%>/?page=<%=i%>"><%=i%></a>
+      <%}%> <% } %> <% if(page < numberOfPages) { %>
+      <a href="/admin/panle/orders/<%=userId%>/?page=<%=page+1%>" class="after"
+        ><i class="bx bxs-skip-next-circle"></i>
+      </a>
+      <% } %>
     </div>
     <script src="/js/admin/order.js"></script>
   </body>

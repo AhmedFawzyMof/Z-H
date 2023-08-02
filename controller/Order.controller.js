@@ -29,7 +29,7 @@ const controller = {
             }
           });
           db.query(
-            "INSERT INTO `Order` (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
+            "INSERT INTO TheOrders (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
             [
               id,
               user,
@@ -76,7 +76,7 @@ const controller = {
         if (result.length > 0) {
           Object.assign(name, result[0]);
           db.query(
-            "SELECT * FROM `Order` WHERE user = ?",
+            "SELECT * FROM TheOrders WHERE user = ?",
             [userId],
             (err, result) => {
               if (err) throw err;
@@ -97,7 +97,7 @@ const controller = {
   editDelivered: (req, res) => {
     const { id, isDelivered } = req.body;
     db.query(
-      "UPDATE `Order` SET `delivered` = ? WHERE `Order`.`id` = ?",
+      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?",
       [isDelivered, id],
       (err, result) => {
         if (err) throw err;
@@ -112,7 +112,7 @@ const controller = {
   editPaid: (req, res) => {
     const { id, isPaid } = req.body;
     db.query(
-      "UPDATE `Order` SET `paid` = ? WHERE `Order`.`id` = ?",
+      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?",
       [isPaid, id],
       (err, result) => {
         if (err) throw err;

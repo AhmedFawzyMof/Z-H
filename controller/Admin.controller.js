@@ -1,51 +1,163 @@
 const db = require("../db/index");
-
+const resultsPerPage = 25;
 const controller = {
   //! GET {
   getProducut: (req, res) => {
     const token = req.params.admin;
-    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
-      if (err) throw err;
-      if (result[0].Admin === 1) {
-        db.query(
-          "SELECT * FROM Products; SELECT name FROM Categories; SELECT name FROM Componies",
-          (err, result) => {
+    db.query(
+      "SELECT Admin,id FROM Users WHERE id=?",
+      [token],
+      (err, result) => {
+        if (err) throw err;
+        const userId = result[0].id;
+        if (result[0].Admin === 1) {
+          db.query("SELECT * FROM Products", (err, result) => {
             if (err) throw err;
-            res.render("admin/products", {
-              products: result[0],
-              categories: result[1],
-              componies: result[2],
+            const numOfResults = result.length;
+            const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            let page = req.query.page ? Number(req.query.page) : 1;
+            if (page > numberOfPages) {
+              res.redirect(
+                "/admin/panle/products/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent(numberOfPages)
+              );
+            } else if (page < 1) {
+              res.redirect(
+                "/admin/panle/products/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent("1")
+              );
+            }
+            const startingLimit = (page - 1) * resultsPerPage;
+            const sql = `SELECT * FROM Products LIMIT ${startingLimit},${resultsPerPage}; SELECT name FROM Categories; SELECT name FROM Componies;`;
+            db.query(sql, (err, result) => {
+              if (err) throw err;
+              let iterator = page - 5 < 1 ? 1 : page - 5;
+              let endingLink =
+                iterator + 9 < numberOfPages
+                  ? iterator + 9
+                  : page + (numberOfPages - page);
+
+              if (endingLink < page + 4) {
+                iterator -= page + 4 - numberOfPages;
+              }
+              res.render("admin/products", {
+                products: result[0],
+                categories: result[1],
+                componies: result[2],
+                page,
+                iterator,
+                endingLink,
+                numberOfPages,
+                userId,
+              });
             });
-          }
-        );
-      } else {
-        res.redirect("/");
+          });
+        } else {
+          res.redirect("/");
+        }
       }
-    });
+    );
   },
   getOrders: (req, res) => {
     const token = req.params.admin;
     db.query(
-      "SELECT Admin,Stuff FROM Users WHERE id=?",
+      "SELECT Admin,Stuff,id FROM Users WHERE id=?",
       [token],
       (err, result) => {
         if (err) throw err;
+        const userId = result[0].id;
         if (result[0].Admin === 1) {
-          db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY delivered ASC LIMIT 0,50",
-            (err, result) => {
-              if (err) throw err;
-              res.render("admin/orders", { orders: result });
+          db.query("SELECT * FROM TheOrders", (err, result) => {
+            if (err) throw err;
+            const numOfResults = result.length;
+            const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            let page = req.query.page ? Number(req.query.page) : 1;
+            if (page > numberOfPages) {
+              res.redirect(
+                "/admin/panle/orders/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent(numberOfPages)
+              );
+            } else if (page < 1) {
+              res.redirect(
+                "/admin/panle/orders/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent("1")
+              );
             }
-          );
+            const startingLimit = (page - 1) * resultsPerPage;
+            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.address, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
+            db.query(sql, (err, result) => {
+              if (err) throw err;
+              let iterator = page - 5 < 1 ? 1 : page - 5;
+              let endingLink =
+                iterator + 9 < numberOfPages
+                  ? iterator + 9
+                  : page + (numberOfPages - page);
+
+              if (endingLink < page + 4) {
+                iterator -= page + 4 - numberOfPages;
+              }
+              res.render("admin/orders", {
+                orders: result,
+                page,
+                iterator,
+                endingLink,
+                numberOfPages,
+                userId,
+              });
+            });
+          });
         } else if (result[0].Stuff === 1) {
-          db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY  delivered ASC LIMIT 0,50",
-            (err, result) => {
-              if (err) throw err;
-              res.render("admin/orders", { orders: result });
+          db.query("SELECT * FROM TheOrders", (err, result) => {
+            if (err) throw err;
+            const numOfResults = result.length;
+            const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            let page = req.query.page ? Number(req.query.page) : 1;
+            if (page > numberOfPages) {
+              res.redirect(
+                "/admin/panle/orders/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent(numberOfPages)
+              );
+            } else if (page < 1) {
+              res.redirect(
+                "/admin/panle/orders/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent("1")
+              );
             }
-          );
+            const startingLimit = (page - 1) * resultsPerPage;
+            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.address, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
+            db.query(sql, (err, result) => {
+              if (err) throw err;
+              let iterator = page - 5 < 1 ? 1 : page - 5;
+              let endingLink =
+                iterator + 9 < numberOfPages
+                  ? iterator + 9
+                  : page + (numberOfPages - page);
+
+              if (endingLink < page + 4) {
+                iterator -= page + 4 - numberOfPages;
+              }
+              res.render("admin/orders", {
+                orders: result,
+                page,
+                iterator,
+                endingLink,
+                numberOfPages,
+                userId,
+              });
+            });
+          });
         } else {
           res.redirect("/");
         }
@@ -157,7 +269,7 @@ const controller = {
         if (err) throw err;
         if (result[0].Admin === 1) {
           db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id WHERE `Order`.`id` = ?",
+            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.email FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
             [order],
             (err, result) => {
               if (err) throw err;
@@ -166,7 +278,7 @@ const controller = {
           );
         } else if (result[0].Stuff === 1) {
           db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id WHERE `Order`.`id` = ?",
+            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.email FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
             [order],
             (err, result) => {
               if (err) throw err;
@@ -246,7 +358,7 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
       db.query(
-        "SELECT `Order`.`id`, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.`email` FROM `Order` INNER JOIN `Users` ON `Order`.`user` = `Users`.`id` WHERE `Order`.`id` LIKE ?",
+        "SELECT `TheOrders`.`id`, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.`email` FROM `TheOrders` INNER JOIN `Users` ON `TheOrders`.`user` = `Users`.`id` WHERE `TheOrders`.`id` LIKE ?",
         [search],
         (err, result) => {
           if (err) throw err;
@@ -392,7 +504,7 @@ const controller = {
   deleteOrder: (req, res) => {
     const id = req.body.orderid;
     db.query(
-      "DELETE FROM `Order` WHERE `Order`.`id` = ?",
+      "DELETE FROM `TheOrders` WHERE `TheOrders`.`id` = ?",
       [id],
       (err, result) => {
         if (err) throw err;

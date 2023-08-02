@@ -24,18 +24,26 @@ input:focus {
   flex-wrap: wrap;
   flex-direction: column;
 }
+.cate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
 .catecontainer {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .category {
   background: #fff;
   padding: 5px;
   border-radius: 5px;
-  width: 90%;
+  width: 200px;
   margin: 10px 0;
 }
 
@@ -52,7 +60,7 @@ input:focus {
   background: #fff;
   padding: 5px;
   border-radius: 5px;
-  width: 90%;
+  width: 200px;
 }
 
 .editform input,
@@ -76,4 +84,24 @@ select {
   background: #eee;
   height: 35px;
   border: none;
+}
+
+.addform {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  width: 80%;
+}
+
+.addform input,
+button {
+  margin: 10px 0;
+  width: 100%;
+  background: #eee;
+  border: none;
+  height: 35px;
 }

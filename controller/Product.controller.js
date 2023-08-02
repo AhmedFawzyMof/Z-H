@@ -31,7 +31,7 @@ const controller = {
     const images = "/img/offer/" + product + ".png";
     let base64Image = image.split(";base64,").pop();
     fs.writeFile(
-      `public/img/offer/${images}`,
+      `public/${images}`,
       base64Image,
       { encoding: "base64" },
       function (err) {
