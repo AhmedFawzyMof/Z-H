@@ -199,12 +199,16 @@ const controller = {
     db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
       if (err) throw err;
       if (result[0].Admin == 1) {
-        db.query("SELECT * FROM `Offer`", (err, result) => {
-          if (err) throw err;
-          res.render("admin/offer", {
-            offer: result,
-          });
-        });
+        db.query(
+          "SELECT * FROM `Offer`;SELECT * FROM Componies",
+          (err, result) => {
+            if (err) throw err;
+            res.render("admin/offer", {
+              offer: result[0],
+              componies: result[1],
+            });
+          }
+        );
       } else {
         res.redirect("/");
       }

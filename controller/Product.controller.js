@@ -27,7 +27,7 @@ const controller = {
     );
   },
   addOffer: (req, res) => {
-    const { product, image } = req.body;
+    const body = req.body;
     // const images = "/img/offer/" + product + ".png";
     // let base64Image = image.split(";base64,").pop();
     // fs.writeFile(
@@ -38,18 +38,34 @@ const controller = {
     //     console.log("File created");
     //   }
     // );
-    db.query(
-      "INSERT INTO `Offer` ( `product`,  `image` ) VALUES (?,?)",
-      [product, image],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+    if (body.product !== "") {
+      db.query(
+        "INSERT INTO `Offer` ( `product`,  `image` ) VALUES (?,?)",
+        [body.product, body.image],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
+        }
+      );
+    }
+    if (body.compony !== "") {
+      db.query(
+        "INSERT INTO `Offer` (`image`, `company`) VALUES (?,?)",
+        [body.image, body.compony],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+    <script>
+      window.history.back();
+      location.reload()
+    </script>`);
+        }
+      );
+    }
   },
   getOne: (req, res) => {
     const { id } = req.params;

@@ -33,6 +33,14 @@
       </div>
       <form style="margin: 25px 0" class="editform" id="addform">
         <input type="text" name="product" placeholder="المنتج" />
+        او
+        <select name="compony">
+          <option selected disabled>الشركة</option>
+
+          <% componies.forEach(compony => {%>
+          <option value="<%= compony.name %>"><%= compony.name %></option>
+          <%}); %>
+        </select>
         <input type="file" id="image" onchange="imageUploaded()" />
       </form>
     </div>
