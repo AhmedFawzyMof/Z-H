@@ -267,3 +267,9 @@ nav ul li a {
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 1050px) {
+  .categories {
+    justify-content: flex-start;
+  }
+}
