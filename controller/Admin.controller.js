@@ -32,7 +32,7 @@ const controller = {
         if (err) throw err;
         if (result[0].Admin === 1) {
           db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY delivered ASC LIMIT 0,50",
             (err, result) => {
               if (err) throw err;
               res.render("admin/orders", { orders: result });
@@ -40,7 +40,7 @@ const controller = {
           );
         } else if (result[0].Stuff === 1) {
           db.query(
-            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY paid, delivered ASC LIMIT 0,50",
+            "SELECT `Order`.id, `Order`.`user`, `Order`.`address`, `Order`.`phone`, `Order`.`spare_phone`, `Order`.`delivered`, `Order`.`paid`, `Order`.`total`, `Order`.`date`, `Order`.`cart`, `Users`.email FROM `Order` INNER JOIN Users ON `Order`.user = Users.id ORDER BY  delivered ASC LIMIT 0,50",
             (err, result) => {
               if (err) throw err;
               res.render("admin/orders", { orders: result });
