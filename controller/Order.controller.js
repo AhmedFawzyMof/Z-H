@@ -5,7 +5,9 @@ const controller = {
   addOne: (req, res) => {
     const {
       where,
-      address,
+      addrSt,
+      addrB,
+      addrF,
       phone,
       phone2,
       user,
@@ -17,7 +19,8 @@ const controller = {
     } = req.body;
     const id = uuidv4();
     const date = new Date();
-    console.log(total);
+    const ph = phone.toString();
+    const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
@@ -29,13 +32,15 @@ const controller = {
             }
           });
           db.query(
-            "INSERT INTO TheOrders (`id`, `user`, `address`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
+            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
             [
               id,
               user,
-              address,
-              phone.toString(),
-              phone2.toString(),
+              addrSt,
+              addrB,
+              addrF,
+              ph,
+              sph,
               delivered,
               paid,
               total,

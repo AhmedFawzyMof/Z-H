@@ -49,7 +49,9 @@
         </div>
         <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
         <p>تاريخ الطلب: <%=order.date%></p>
-        <p>العنوان: <%=order.address%></p>
+        <p>شارع: <%=order.addrSt%></p>
+        <p>عماره: <%=order.addrB%></p>
+        <p>طابق: <%=order.addrF%></p>
         <p>المستخدم: <%=order.email%></p>
         <p>رقم الهاتف: <%="0"+order.phone%></p>
         <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>

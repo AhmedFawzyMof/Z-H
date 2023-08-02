@@ -17,6 +17,12 @@
         place-items: center;
         margin: 5px 0;
       }
+      .table {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        place-items: center;
+        border: 1px solid #333;
+      }
     </style>
   </head>
   <body>
@@ -26,6 +32,7 @@
     >
       <div class="orderRec" style="position: relative">
         <img src="/img/print.jpeg" style="width: 100%" />
+        <p>رقم الطلب : <%=order.id.substr(24, 25)%></p>
 
         <div
           class="p"
@@ -44,9 +51,9 @@
               place-items: center;
             "
           >
-            رقم الطلب
+            المستخدم
           </p>
-          <p><%=order.id.substr(24, 25)%></p>
+          <p><%=order.username%></p>
         </div>
         <div
           class="p"
@@ -65,9 +72,93 @@
               place-items: center;
             "
           >
-            العنوان
+            رقم الهاتف
           </p>
-          <p><%=order.address%></p>
+          <p><%=order.phone%></p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: 30% 70%;
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            "
+          >
+            هاتف اخر
+          </p>
+          <p><%=order.spare_phone%></p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: 30% 70%;
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            "
+          >
+            شارع
+          </p>
+          <p><%=order.addrSt%></p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: 30% 70%;
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            "
+          >
+            عماره
+          </p>
+          <p><%=order.addrB%></p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: 30% 70%;
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            "
+          >
+            طابق
+          </p>
+          <p><%=order.addrF%></p>
         </div>
         <div
           class="p"
@@ -90,11 +181,68 @@
           </p>
           <p id="date"><%=order.date %></p>
         </div>
+        <h3 class="title"></h3>
+        <table>
+          <tr
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              place-items: center;
+            "
+          >
+            <th style="border: 1px solid #333; width: 100%">اسم المنتج</th>
+            <th style="border: 1px solid #333; width: 100%">الكمية</th>
+            <th style="border: 1px solid #333; width: 100%">السعر</th>
+          </tr>
+          <% JSON.parse(order.cart).forEach(item => { %>
+          <tr
+            style="
+              display: grid;
+              grid-template-columns: repeat(3, 1fr);
+              place-items: center;
+            "
+          >
+            <td
+              style="
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-items: center;
+                border: 1px solid #333;
+              "
+            >
+              <%= item.name %>
+            </td>
+            <td
+              style="
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-items: center;
+                border: 1px solid #333;
+              "
+            >
+              <%= item.quantity %>
+            </td>
+            <td
+              style="
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-items: center;
+                border: 1px solid #333;
+              "
+            >
+              <%= item.price %>
+            </td>
+          </tr>
+          <% }) %>
+        </table>
         <div
           class="p"
           style="
             display: grid;
-            grid-template-columns: 30% 70%;
+            grid-template-columns: repeat(3, 1fr);
             place-items: center;
             border: 1px solid #333;
           "
@@ -105,17 +253,27 @@
               width: 100%;
               display: grid;
               place-items: center;
+              grid-column: 1/2;
             "
           >
-            المستخدم
+            سعر التوصيل
           </p>
-          <p><%=order.email%></p>
+          <p
+            style="
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 2/4;
+            "
+          >
+            20 ج
+          </p>
         </div>
         <div
           class="p"
           style="
             display: grid;
-            grid-template-columns: 30% 70%;
+            grid-template-columns: repeat(3, 1fr);
             place-items: center;
             border: 1px solid #333;
           "
@@ -126,120 +284,21 @@
               width: 100%;
               display: grid;
               place-items: center;
+              grid-column: 1/2;
             "
           >
-            رقم الهاتف
+            الإجمالي
           </p>
-          <p><%="0"+order.phone%></p>
-        </div>
-        <div
-          class="p"
-          style="
-            display: grid;
-            grid-template-columns: 35% 65%;
-            place-items: center;
-            border: 1px solid #333;
-          "
-        >
           <p
             style="
-              border-left: 1px solid #333;
               width: 100%;
               display: grid;
               place-items: center;
+              grid-column: 2/4;
             "
           >
-            هاتف احتياطي
+            <%= order.total %> ج
           </p>
-          <p><%="0"+order.spare_phone%></p>
-        </div>
-        <h3 class="title">المنتجات</h3>
-        <% JSON.parse(order.cart).forEach(item => { %>
-        <div
-          class="p"
-          style="
-            display: grid;
-            grid-template-columns: 35% 65%;
-            place-items: center;
-            border: 1px solid #333;
-          "
-        >
-          <p
-            style="
-              border-left: 1px solid #333;
-              width: 100%;
-              display: grid;
-              place-items: center;
-            "
-          >
-            اسم المنتج
-          </p>
-          <p><%= item.name %></p>
-        </div>
-        <div
-          class="p"
-          style="
-            display: grid;
-            grid-template-columns: 35% 65%;
-            place-items: center;
-            border: 1px solid #333;
-          "
-        >
-          <p
-            style="
-              border-left: 1px solid #333;
-              width: 100%;
-              display: grid;
-              place-items: center;
-            "
-          >
-            الكمية
-          </p>
-          <p><%= item.quantity %></p>
-        </div>
-        <div
-          class="p"
-          style="
-            display: grid;
-            grid-template-columns: 35% 65%;
-            place-items: center;
-            border: 1px solid #333;
-          "
-        >
-          <p
-            style="
-              border-left: 1px solid #333;
-              width: 100%;
-              display: grid;
-              place-items: center;
-            "
-          >
-            السعر
-          </p>
-          <p><%= item.price %> ج</p>
-        </div>
-        <% }) %>
-        <h3 class="title">الإجمالي</h3>
-        <div
-          class="p"
-          style="
-            display: grid;
-            grid-template-columns: 65% 35%;
-            place-items: center;
-            border: 1px solid #333;
-          "
-        >
-          <p
-            style="
-              border-left: 1px solid #333;
-              width: 100%;
-              display: grid;
-              place-items: center;
-            "
-          >
-            السعر الإجمالي للطلب
-          </p>
-          <p><%= order.total %> ج</p>
         </div>
       </div>
     </div>

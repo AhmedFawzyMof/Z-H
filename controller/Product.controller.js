@@ -1,5 +1,5 @@
 const db = require("../db/index");
-const fs = require("fs");
+// const fs = require("fs");
 const controller = {
   addOne: (req, res) => {
     const { category, subcategory, name_ar, dis_ar, price, image } = req.body;

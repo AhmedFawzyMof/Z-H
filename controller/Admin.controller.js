@@ -92,7 +92,7 @@ const controller = {
               );
             }
             const startingLimit = (page - 1) * resultsPerPage;
-            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.address, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
+            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
             db.query(sql, (err, result) => {
               if (err) throw err;
               let iterator = page - 5 < 1 ? 1 : page - 5;
@@ -136,7 +136,7 @@ const controller = {
               );
             }
             const startingLimit = (page - 1) * resultsPerPage;
-            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.address, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
+            const sql = `SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ${startingLimit},${resultsPerPage}`;
             db.query(sql, (err, result) => {
               if (err) throw err;
               let iterator = page - 5 < 1 ? 1 : page - 5;
@@ -253,7 +253,7 @@ const controller = {
         if (err) throw err;
         if (result[0].Admin === 1) {
           db.query(
-            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.email FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
+            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.username FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
             [order],
             (err, result) => {
               if (err) throw err;
@@ -262,7 +262,7 @@ const controller = {
           );
         } else if (result[0].Stuff === 1) {
           db.query(
-            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.email FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
+            "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.username FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
             [order],
             (err, result) => {
               if (err) throw err;
@@ -342,7 +342,7 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
       db.query(
-        "SELECT `TheOrders`.`id`, `TheOrders`.`user`, `TheOrders`.`address`, `TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.`email` FROM `TheOrders` INNER JOIN `Users` ON `TheOrders`.`user` = `Users`.`id` WHERE `TheOrders`.`id` LIKE ?",
+        "SELECT `TheOrders`.`id`, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.`email` FROM `TheOrders` INNER JOIN `Users` ON `TheOrders`.`user` = `Users`.`id` WHERE `TheOrders`.`id` LIKE ?",
         [search],
         (err, result) => {
           if (err) throw err;
@@ -387,7 +387,9 @@ const controller = {
                       </form>
                       <p>معرف الطلب: ${order.id.substr(24, 25)}</p>
                       <p>تاريخ الطلب: ${order.date}</p>
-                      <p>العنوان: ${order.address}</p>
+                      <p>شارع: <%=order.addrSt%></p>
+                      <p>عماره: <%=order.addrB%></p>
+                      <p>طابق: <%=order.addrF%></p>
                       <p>المستخدم: ${order.email}</p>
                       <p>رقم الهاتف:  ${order.phone}</p>
                       <p>هاتف احتياطي: ${order.spare_phone}</p>
