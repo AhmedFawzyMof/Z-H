@@ -27,12 +27,36 @@
         <p>السعر :<%= product.price %></p>
         <form action="/edit/product" method="post" id="edit">
           <input type="hidden" name="productid" value="<%= product.id %>" />
-          <input type="number" name="price" required />
+          <input type="number" name="price" required placeholder="السعر" />
           <button class="delete" type="submit">تأكيد</button>
         </form>
         <div>
           <p>شركة :<%= product.compony %></p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="<%= product.id %>" />
+            <select name="compony" required>
+              <option value="<%= product.compony %>" selected disabled>
+                <%= product.compony %>
+              </option>
+              <% componies.forEach(compony => { %>
+              <option value="<%= compony.name %>"><%= compony.name %></option>
+              <% }) %>
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
           <p>فئة :<%= product.category %></p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="<%= product.id %>" />
+            <select name="cate" required>
+              <option value="<%= product.category %>" selected disabled>
+                <%= product.category %>
+              </option>
+              <% categories.forEach(category => { %>
+              <option value="<%= category.name %>"><%= category.name %></option>
+              <% }) %>
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
           <p>
             متاح : <% if (product.available ) { %> نعم <% } else { %> ﻻ <% } %>
           </p>

@@ -145,6 +145,36 @@ const controller = {
         }
       );
     }
+    if (body.cate !== undefined) {
+      const cate = req.body.cate;
+      db.query(
+        "UPDATE `Products` SET `category` = ? WHERE `Products`.`id` = ?",
+        [cate, id],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+      <script>
+        window.history.back();
+        location.reload();
+      </script>`);
+        }
+      );
+    }
+    if (body.compony !== undefined) {
+      const compony = req.body.compony;
+      db.query(
+        "UPDATE `Products` SET `compony` = ? WHERE `Products`.`id` = ?",
+        [compony, id],
+        (err, result) => {
+          if (err) throw err;
+          res.send(`
+      <script>
+        window.history.back();
+        location.reload();
+      </script>`);
+        }
+      );
+    }
   },
   editOffer: (req, res) => {
     const { id, product } = req.body;
