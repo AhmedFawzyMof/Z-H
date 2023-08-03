@@ -47,6 +47,7 @@ router.post("/add/category", CategoryController.addOne);
 router.post("/add/subcategory", SubcategoryController.addOne);
 router.post("/contact", UserController.contact);
 router.post("/add/product", ProductController.addOne);
+router.post("/filter/product", AdminController.filterProduct);
 router.post("/add/to/offer", ProductController.addOffer);
 router.post("/get/promocode", ProductController.getCode);
 router.post("/categories", CategoryController.getCategory);

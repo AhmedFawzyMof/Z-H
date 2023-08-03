@@ -50,3 +50,57 @@ window.addEventListener("pageshow", function (event) {
     window.location.reload();
   }
 });
+
+const myForm = document.getElementById("myForm");
+myForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const formData = new FormData(this);
+  const searchParams = new URLSearchParams();
+
+  for (const pair of formData) {
+    searchParams.append(pair[0], pair[1]);
+  }
+
+  fetch("/search/product", {
+    method: "post",
+    body: searchParams,
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      ordersL(res.data);
+    });
+});
+function ordersL(data) {
+  const Container = document.getElementById("result");
+
+  Container.innerHTML = data;
+}
+
+const FilterForms = document.querySelectorAll(".selectCom");
+FilterForms.forEach((FilterForm) => {
+  FilterForm.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const searchParams = new URLSearchParams();
+
+    for (const pair of formData) {
+      searchParams.append(pair[0], pair[1]);
+    }
+
+    fetch("/filter/product", {
+      method: "post",
+      body: searchParams,
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        Filtered(res.products);
+      });
+  });
+});
+function Filtered(data) {
+  const productsContainer = document.querySelector(".products");
+
+  productsContainer.innerHTML = data;
+}

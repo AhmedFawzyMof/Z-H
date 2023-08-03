@@ -329,14 +329,81 @@ const controller = {
     }
   },
   searchProduct: (req, res) => {
-    const Searchquery = req.body.searchProducts;
-    console.log(req.body);
+    const Searchquery = req.body.searchProduct;
+    console.log(Searchquery);
+
     db.query(
-      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%'`,
+      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%';SELECT * FROM Categories;SELECT name FROM Componies`,
       (err, result) => {
         if (err) throw err;
+        const componiesOpt = result[2].forEach((compony) => {
+          return `<option value="${compony.name}">${compony.name}</option>`;
+        });
+        const categoriesOpt = result[1].forEach((category) => {
+          return `<option value="${category.name}">${category.name}</option>`;
+        });
+        const available = () => {
+          if (result[0][0].available) {
+            return "نعم";
+          } else {
+            return "ﻻ";
+          }
+        };
+        const product = `<div class="product">
+        <form action="/delete/product" method="post" id="delete">
+          <input type="hidden" name="productid" value="${result[0][0].id}" />
+          <button class="delete" type="submit">
+            <i class="bx bx-trash"></i>
+          </button>
+        </form>
+        <p>${result[0][0].id}</p>
+        <p>اسم :${result[0][0].name}</p>
+        <p>الوصف :${result[0][0].description}</p>
+        <p>السعر :${result[0][0].price}</p>
+        <form action="/edit/product" method="post" id="edit">
+          <input type="hidden" name="productid" value="${result[0][0].id}" />
+          <input type="number" name="price" required placeholder="السعر" />
+          <button class="delete" type="submit">تأكيد</button>
+        </form>
+        <div>
+          <p>شركة :${result[0][0].compony}</p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${result[0][0].id}" />
+            <select name="compony" required>
+              <option value="${result[0][0].compony}" selected disabled>
+                ${result[0][0].compony}
+              </option>
+              ${componiesOpt}
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+          <p>فئة :${result[0][0].category}</p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${result[0][0].id}" />
+            <select name="cate" required>
+              <option value="${result[0][0].category}" selected disabled>
+                ${result[0][0].category}
+              </option>
+              ${categoriesOpt}
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+          <p>
+            متاح : ${available()}
+          </p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${result[0][0].id}" />
+            <select name="available" required>
+              <option value="1">نعم</option>
+              <option value="0">لا</option>
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+        </div>
+        <img src="${result[0][0].image}" />
+      </div>`;
         res.json({
-          data: result,
+          data: product,
         });
       }
     );
@@ -391,9 +458,9 @@ const controller = {
                       </form>
                       <p>معرف الطلب: ${order.id.substr(24, 25)}</p>
                       <p>تاريخ الطلب: ${order.date}</p>
-                      <p>شارع: <%=order.addrSt%></p>
-                      <p>عماره: <%=order.addrB%></p>
-                      <p>طابق: <%=order.addrF%></p>
+                      <p>شارع: ${order.addrSt}</p>
+                      <p>عماره: ${order.addrB}</p>
+                      <p>طابق: ${order.addrF}</p>
                       <p>المستخدم: ${order.email}</p>
                       <p>رقم الهاتف:  ${order.phone}</p>
                       <p>هاتف احتياطي: ${order.spare_phone}</p>
@@ -428,6 +495,81 @@ const controller = {
         }
       );
     }
+  },
+  filterProduct: (req, res) => {
+    const compony = req.body.compony;
+    db.query(
+      "SELECT * FROM `Products` WHERE compony = ?;SELECT * FROM Categories;SELECT name FROM Componies",
+      [compony],
+      (err, result) => {
+        if (err) throw err;
+        const componiesOpt = result[2].forEach((compony) => {
+          return `<option value="${compony.name}">${compony.name}</option>`;
+        });
+        const categoriesOpt = result[1].forEach((category) => {
+          return `<option value="${category.name}">${category.name}</option>`;
+        });
+        let products = ``;
+        result[0].forEach((product) => {
+          return (products += ` <div class="product">
+        <form action="/delete/product" method="post" id="delete">
+          <input type="hidden" name="productid" value="${product.id}" />
+          <button class="delete" type="submit">
+            <i class="bx bx-trash"></i>
+          </button>
+        </form>
+        <p>${product.id}</p>
+        <p>اسم :${product.name}</p>
+        <p>الوصف :${product.description}</p>
+        <p>السعر :${product.price}</p>
+        <form action="/edit/product" method="post" id="edit">
+          <input type="hidden" name="productid" value="${product.id}" />
+          <input type="number" name="price" required placeholder="السعر" />
+          <button class="delete" type="submit">تأكيد</button>
+        </form>
+        <div>
+          <p>شركة :${product.compony}</p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${product.id}" />
+            <select name="compony" required>
+              <option value="${product.compony}" selected disabled>
+                ${product.compony}
+              </option>
+              ${componiesOpt}            
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+          <p>فئة :${product.category}</p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${product.id}" />
+            <select name="cate" required>
+              <option value="${product.category}" selected disabled>
+                ${product.category}
+              </option>
+              ${categoriesOpt}
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+          <p>
+            متاح : 
+          </p>
+          <form action="/edit/product" method="post" id="edit">
+            <input type="hidden" name="productid" value="${product.id}" />
+            <select name="available" required>
+              <option value="1">نعم</option>
+              <option value="0">لا</option>
+            </select>
+            <button class="delete" type="submit">تأكيد</button>
+          </form>
+        </div>
+        <img src="${product.image}" />
+      </div>`);
+        });
+        res.json({
+          products: products,
+        });
+      }
+    );
   },
   //!}
   //! DELETE {

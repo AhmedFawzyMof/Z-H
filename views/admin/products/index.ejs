@@ -12,66 +12,89 @@
     <link rel="stylesheet" href="/css/admin/product.css" />
   </head>
   <body>
+    <div class="category">
+      <% for(let i =0; i < componies.length; i++) {%>
+      <form class="selectCom">
+        <input type="hidden" name="compony" value="<%= componies[i].name %>" />
+        <button><%= componies[i].name %></button>
+      </form>
+      <% } %>
+    </div>
+    <div class="searchForUser">
+      <form id="myForm">
+        البحث عن الطلبات
+        <input type="search" name="searchProduct" />
+        <button type="submit">
+          <i class="bx bx-search"></i>
+        </button>
+      </form>
+      <div id="result"></div>
+    </div>
     <div id="container">
-      <% products.forEach(product => { %>
-      <div class="product">
-        <form action="/delete/product" method="post" id="delete">
-          <input type="hidden" name="productid" value="<%= product.id %>" />
-          <button class="delete" type="submit">
-            <i class="bx bx-trash"></i>
-          </button>
-        </form>
-        <p><%= product.id %></p>
-        <p>اسم :<%= product.name %></p>
-        <p>الوصف :<%= product.description %></p>
-        <p>السعر :<%= product.price %></p>
-        <form action="/edit/product" method="post" id="edit">
-          <input type="hidden" name="productid" value="<%= product.id %>" />
-          <input type="number" name="price" required placeholder="السعر" />
-          <button class="delete" type="submit">تأكيد</button>
-        </form>
-        <div>
-          <p>شركة :<%= product.compony %></p>
+      <div class="products">
+        <% products.forEach(product => { %>
+        <div class="product">
+          <form action="/delete/product" method="post" id="delete">
+            <input type="hidden" name="productid" value="<%= product.id %>" />
+            <button class="delete" type="submit">
+              <i class="bx bx-trash"></i>
+            </button>
+          </form>
+          <p><%= product.id %></p>
+          <p>اسم :<%= product.name %></p>
+          <p>الوصف :<%= product.description %></p>
+          <p>السعر :<%= product.price %></p>
           <form action="/edit/product" method="post" id="edit">
             <input type="hidden" name="productid" value="<%= product.id %>" />
-            <select name="compony" required>
-              <option value="<%= product.compony %>" selected disabled>
-                <%= product.compony %>
-              </option>
-              <% componies.forEach(compony => { %>
-              <option value="<%= compony.name %>"><%= compony.name %></option>
-              <% }) %>
-            </select>
+            <input type="number" name="price" required placeholder="السعر" />
             <button class="delete" type="submit">تأكيد</button>
           </form>
-          <p>فئة :<%= product.category %></p>
-          <form action="/edit/product" method="post" id="edit">
-            <input type="hidden" name="productid" value="<%= product.id %>" />
-            <select name="cate" required>
-              <option value="<%= product.category %>" selected disabled>
-                <%= product.category %>
-              </option>
-              <% categories.forEach(category => { %>
-              <option value="<%= category.name %>"><%= category.name %></option>
-              <% }) %>
-            </select>
-            <button class="delete" type="submit">تأكيد</button>
-          </form>
-          <p>
-            متاح : <% if (product.available ) { %> نعم <% } else { %> ﻻ <% } %>
-          </p>
-          <form action="/edit/product" method="post" id="edit">
-            <input type="hidden" name="productid" value="<%= product.id %>" />
-            <select name="available" required>
-              <option value="1">نعم</option>
-              <option value="0">لا</option>
-            </select>
-            <button class="delete" type="submit">تأكيد</button>
-          </form>
+          <div>
+            <p>شركة :<%= product.compony %></p>
+            <form action="/edit/product" method="post" id="edit">
+              <input type="hidden" name="productid" value="<%= product.id %>" />
+              <select name="compony" required>
+                <option value="<%= product.compony %>" selected disabled>
+                  <%= product.compony %>
+                </option>
+                <% componies.forEach(compony => { %>
+                <option value="<%= compony.name %>"><%= compony.name %></option>
+                <% }) %>
+              </select>
+              <button class="delete" type="submit">تأكيد</button>
+            </form>
+            <p>فئة :<%= product.category %></p>
+            <form action="/edit/product" method="post" id="edit">
+              <input type="hidden" name="productid" value="<%= product.id %>" />
+              <select name="cate" required>
+                <option value="<%= product.category %>" selected disabled>
+                  <%= product.category %>
+                </option>
+                <% categories.forEach(category => { %>
+                <option value="<%= category.name %>">
+                  <%= category.name %>
+                </option>
+                <% }) %>
+              </select>
+              <button class="delete" type="submit">تأكيد</button>
+            </form>
+            <p>
+              متاح : <% if (product.available ) { %> نعم <% } else { %> ﻻ <% }
+              %>
+            </p>
+            <form action="/edit/product" method="post" id="edit">
+              <input type="hidden" name="productid" value="<%= product.id %>" />
+              <select name="available" required>
+                <option value="1">نعم</option>
+                <option value="0">لا</option>
+              </select>
+              <button class="delete" type="submit">تأكيد</button>
+            </form>
+          </div>
+          <img src="<%= product.image  %>" />
         </div>
-        <img src="<%= product.image  %>" />
+        <% }) %>
       </div>
-      <% }) %>
       <form style="margin: 25px 0" class="editform" id="addform">
         <select name="category">
           <% categories.forEach(category => { %>
