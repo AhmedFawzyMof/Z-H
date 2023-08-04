@@ -41,7 +41,14 @@
     </div>
     <div class="container">
       <% for(var i = 0; i < category.length; i++) { %>
-      <div class="categories">
+      <% if (category[i].soon) { %>
+        <div class="categories soon">
+          <div id="soon">
+            <h1>قريباً</h1>
+          </div>
+          <% } else { %>
+            <div class="categories">
+            <% } %>
         <a href="/<%=category[i].name%>">
           <img src="<%=category[i].image%>" alt="<%=category[i].name%>" />
           <p><%= category[i].name %></p>

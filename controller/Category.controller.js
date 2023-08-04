@@ -65,7 +65,7 @@ const controller = {
   },
   getAll: (req, res) => {
     db.query(
-      "SELECT * FROM `Componies`;SELECT * FROM `Offer`;SELECT * FROM Categories",
+      "SELECT * FROM `Componies` ORDER BY soon ASC;SELECT * FROM `Offer`;SELECT * FROM Categories",
       (err, result) => {
         if (err) throw err;
         res.render("index", {
