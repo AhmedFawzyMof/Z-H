@@ -3,19 +3,19 @@ const db = require("../db/index");
 const controller = {
   addOne: (req, res) => {
     const { category, subcategory, name_ar, dis_ar, price, image } = req.body;
-    const images = "/img/product/" + name_ar + ".png";
-    let base64Image = image.split(";base64,").pop();
-    fs.writeFile(
-      `public/img/product/${name_ar}.png`,
-      base64Image,
-      { encoding: "base64" },
-      function (err) {
-        console.log("File created");
-      }
-    );
+    // const images = "/img/product/" + name_ar + ".png";
+    // let base64Image = image.split(";base64,").pop();
+    // fs.writeFile(
+    //   `public/img/product/${name_ar}.png`,
+    //   base64Image,
+    //   { encoding: "base64" },
+    //   function (err) {
+    //     console.log("File created");
+    //   }
+    // );
     db.query(
       "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`) VALUES ( ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, images],
+      [name_ar, dis_ar, category, subcategory, price, image],
       (err, result) => {
         if (err) throw err;
         res.send(`
