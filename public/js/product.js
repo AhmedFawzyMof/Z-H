@@ -123,3 +123,43 @@ function myFunction() {
     header.classList.remove("sticky");
   }
 }
+
+const favourites = document.querySelectorAll("#favourite");
+favourites.forEach((favourite) => {
+  favourite.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const product = favourite.querySelector("#productinp").value;
+    console.log(product);
+    const userinp = JSON.parse(token);
+    const searchParams = new URLSearchParams();
+    searchParams.append("user", userinp);
+    searchParams.append("product", product);
+
+    addFav(searchParams);
+  });
+});
+
+const message = document.getElementById("message");
+const errmsg = document.getElementById("errmsg");
+async function addFav(data) {
+  const log = await fetch("/favourite", {
+    method: "post",
+    body: data,
+  });
+
+  const response = await log.json();
+
+  if (response.success == 1) {
+    message.style.right = "5px";
+    message.textContent = response.msg;
+    setTimeout(() => {
+      message.style.right = "-255px";
+    }, 3000);
+  } else {
+    errmsg.style.right = "5px";
+    errmsg.textContent = response.msg;
+    setTimeout(() => {
+      errmsg.style.right = "-255px";
+    }, 3000);
+  }
+}

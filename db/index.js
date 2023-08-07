@@ -5,12 +5,11 @@ const connection = mysql.createPool({
   user: process.env.USER,
   password: process.env.PASS,
   database: process.env.DB,
+  insecureAuth: true,
   waitForConnections: true,
   connectionLimit: 10,
-  maxIdle: 10,
-  enableKeepAlive: true,
-  keepAliveInitialDelay: 0,
   multipleStatements: true,
+  // ssl: "Amazon RDS",
 });
 
 module.exports = connection;

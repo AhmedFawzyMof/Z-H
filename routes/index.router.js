@@ -11,6 +11,7 @@ router.get("/", CategoryController.getAll);
 router.get("/:subcategory", CategoryController.getProducts);
 router.get("/product/show/:id", ProductController.getOne);
 router.get("/cart/show/items", ProductController.getCart);
+router.get("/fav/show/:user", ProductController.getfav);
 router.get("/user/info/login", UserController.getLogin);
 router.get("/zh/info/about", UserController.about);
 router.get("/zh/info/contact_us", UserController.contactus);
@@ -51,6 +52,7 @@ router.post("/filter/product", AdminController.filterProduct);
 router.post("/add/to/offer", ProductController.addOffer);
 router.post("/get/promocode", ProductController.getCode);
 router.post("/categories", CategoryController.getCategory);
+router.post("/favourite", ProductController.fav);
 //? }
 //? DELETE {
 router.post("/delete/user", AdminController.deleteUser);

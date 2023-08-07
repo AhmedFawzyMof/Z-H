@@ -31,6 +31,24 @@
       if (localStorage.getItem("Token") === "noToken") {
         location.replace("/");
       }
+      function getCoupon() {
+        fetch("/getcoupon", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ user: parsedToken }),
+        })
+          .then((res) => res.json())
+          .then((res) => {
+            if (res.success !== 0) {
+              localStorage.setItem("coupon", res.success);
+            } else {
+              localStorage.setItem("coupon", "0");
+            }
+          });
+      }
+      getCoupon();
     </script>
   </body>
 </html>

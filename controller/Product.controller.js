@@ -222,6 +222,45 @@ const controller = {
       }
     );
   },
+  fav: (req, res) => {
+    const { user, product } = req.body;
+    db.query(
+      "SELECT `product`, `user` FROM `favourite` WHERE user=?",
+      [user, parseInt(product)],
+      (err, result) => {
+        if (err) throw err;
+        if (result[0].product === parseInt(product)) {
+          res.json({
+            success: 0,
+            msg: "المنتج موجود بالفعل في المفضلة",
+          });
+        } else {
+          db.query(
+            "INSERT INTO `favourite`(`product`, `user`) VALUES (?,?)",
+            [product, user],
+            (err, result) => {
+              if (err) throw err;
+              res.json({
+                success: 1,
+                msg: "تم إضافة المنتج إلى المفضلة",
+              });
+            }
+          );
+        }
+      }
+    );
+  },
+  getfav: (req, res) => {
+    const userId = req.params.user;
+    db.query(
+      "SELECT * FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
+      [userId],
+      (err, result) => {
+        if (err) throw err;
+        res.render("User/favourite.ejs", { products: result });
+      }
+    );
+  },
 };
 
 module.exports = controller;

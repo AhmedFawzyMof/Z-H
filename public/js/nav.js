@@ -33,7 +33,9 @@ function cartLen() {
     CartLength.style.display = "none";
   }
 }
+const fav = document.getElementById("favIcon");
 function logedUser() {
+  fav.href = "/fav/show/" + JSON.parse(token);
   if (localStorage.getItem("Token") === "noToken") {
     MenuBar.innerHTML = `    <li
  
@@ -100,6 +102,7 @@ id="adPage"
 
 >
 </li>`;
+
     const TheCoupon = localStorage.getItem("coupon");
     if (TheCoupon !== "0") {
       const coupons = document.querySelectorAll("#userInfo");
@@ -136,21 +139,4 @@ function logout() {
   location.replace("/");
 }
 
-function getCoupon() {
-  fetch("/getcoupon", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ user: parsedToken }),
-  })
-    .then((res) => res.json())
-    .then((res) => {
-      if (res.success !== 0) {
-        localStorage.setItem("coupon", res.success);
-      } else {
-        localStorage.setItem("coupon", "0");
-      }
-    });
-}
-window.onload(logedUser(), getCoupon());
+window.onload(logedUser());
