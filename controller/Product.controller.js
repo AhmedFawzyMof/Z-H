@@ -229,11 +229,25 @@ const controller = {
       [user, parseInt(product)],
       (err, result) => {
         if (err) throw err;
-        if (result[0].product === parseInt(product)) {
-          res.json({
-            success: 0,
-            msg: "المنتج موجود بالفعل في المفضلة",
-          });
+        if (result.length > 1) {
+          if (result[0].product === parseInt(product)) {
+            res.json({
+              success: 0,
+              msg: "المنتج موجود بالفعل في المفضلة",
+            });
+          } else {
+            db.query(
+              "INSERT INTO `favourite`(`product`, `user`) VALUES (?,?)",
+              [product, user],
+              (err, result) => {
+                if (err) throw err;
+                res.json({
+                  success: 1,
+                  msg: "تم إضافة المنتج إلى المفضلة",
+                });
+              }
+            );
+          }
         } else {
           db.query(
             "INSERT INTO `favourite`(`product`, `user`) VALUES (?,?)",

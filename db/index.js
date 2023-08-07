@@ -1,15 +1,15 @@
 const mysql = require("mysql2");
 
 const connection = mysql.createPool({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASS,
-  database: process.env.DB,
+  host: "database-1.cnf0bsmcldvz.eu-central-1.rds.amazonaws.com",
+  user: "ahmedfawzi",
+  password: "Ahmedfawzi20",
+  database: "zhmarket",
   insecureAuth: true,
   waitForConnections: true,
   connectionLimit: 10,
   multipleStatements: true,
-  // ssl: "Amazon RDS",
+  ssl: "Amazon RDS",
 });
 
 module.exports = connection;
