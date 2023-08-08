@@ -37,6 +37,7 @@ const fav = document.getElementById("favIcon");
 function logedUser() {
   fav.href = "/fav/show/" + JSON.parse(token);
   if (localStorage.getItem("Token") === "noToken") {
+    fav.style.display = "none";
     MenuBar.innerHTML = `    <li
  
 >
