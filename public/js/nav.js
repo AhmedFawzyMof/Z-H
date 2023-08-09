@@ -35,6 +35,21 @@ function cartLen() {
 }
 const fav = document.getElementById("favIcon");
 function logedUser() {
+  if (navigator.onLine) {
+    console.log("online");
+  }
+
+  window.addEventListener("online", () => {
+    location.reload();
+  });
+
+  window.addEventListener("offline", () => {
+    const links = document.querySelectorAll("a");
+    links.forEach((link) => {
+      link.href = "#";
+    });
+  });
+
   fav.href = "/fav/show/" + JSON.parse(token);
   if (localStorage.getItem("Token") === "noToken") {
     fav.style.display = "none";
@@ -131,13 +146,6 @@ id="adPage"
     const adPage = document.getElementById("adPage");
     adPage.style.display = "none";
   }
-}
-
-function logout() {
-  localStorage.setItem("Token", "noToken");
-  localStorage.setItem("State", "noState");
-  localStorage.removeItem("coupon");
-  location.replace("/");
 }
 
 window.onload(logedUser());

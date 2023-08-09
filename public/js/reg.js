@@ -1,6 +1,21 @@
 if (localStorage.getItem("Token") !== "noToken") {
   location.replace("/");
 }
+if (navigator.onLine) {
+  console.log("online");
+}
+
+window.addEventListener("online", () => {
+  location.reload();
+});
+
+window.addEventListener("offline", () => {
+  const links = document.querySelectorAll("a");
+  links.forEach((link) => {
+    link.href = "#";
+  });
+});
+
 const myForm = document.getElementById("myForm");
 const message = document.getElementById("err");
 
