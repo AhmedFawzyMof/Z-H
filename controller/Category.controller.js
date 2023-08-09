@@ -20,21 +20,21 @@ const controller = {
   getProducts: (req, res) => {
     const subcategory = req.params.subcategory;
     db.query(
-      "SELECT * FROM `Products` WHERE compony = ?; SELECT * FROM `Categories`",
+      //SELECT * FROM `Categories`
+      "SELECT * FROM `Products` WHERE compony = ?;",
       [subcategory],
       (err, result) => {
         if (err) throw err;
-        if (result[0].length > 0) {
-          res.render("Product", {
-            products: result[0],
-            subcate: subcategory,
-            categories: result[1],
-          });
-        } else {
+        console.log(result.length);
+        if (result.length == 0) {
           res.render("Product", {
             products: [],
             subcate: subcategory,
-            categories: result[1],
+          });
+        } else {
+          res.render("Product", {
+            products: result,
+            subcate: subcategory,
           });
         }
       }

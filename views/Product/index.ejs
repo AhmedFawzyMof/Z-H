@@ -15,19 +15,6 @@
     <%- include('../components/nav') %>
     <div id="message"></div>
     <div id="errmsg"></div>
-    <div class="categories">
-      <% for(let i =0; i < categories.length; i++) {%>
-      <form action="/sub/categories" method="post" class="selectCate">
-        <input type="hidden" name="compony" value="<%= subcate %>" />
-        <input
-          type="hidden"
-          name="category"
-          value="<%= categories[i].name %>"
-        />
-        <button><%= categories[i].name %></button>
-      </form>
-      <% } %>
-    </div>
     <div class="container">
       <% if (products.length > 0) { %> <% for(let i = 0; i < products.length;
       i++) { %>
