@@ -250,9 +250,7 @@ const controller = {
               Object.assign(Tproduct, prod);
             }
           });
-          console.log(Tproduct);
           if (Tproduct.product !== JSON.parse(product)) {
-            console.log(Tproduct, "not");
             db.query(
               "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
               [product, user],
@@ -266,7 +264,6 @@ const controller = {
               }
             );
           } else {
-            console.log(Tproduct, "hamasa");
             res.json({
               success: 0,
               msg: "المنتج موجود بالفعل في المفضلة",
