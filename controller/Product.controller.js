@@ -229,37 +229,40 @@ const controller = {
       [user, parseInt(product)],
       (err, result) => {
         if (err) throw err;
-        if (result.length > 1) {
-          if (result[0].product === parseInt(product)) {
-            res.json({
-              success: 0,
-              msg: "المنتج موجود بالفعل في المفضلة",
-            });
-          } else {
-            db.query(
-              "INSERT INTO `favourite`(`product`, `user`) VALUES (?,?)",
-              [product, user],
-              (err, result) => {
-                if (err) throw err;
-                res.json({
-                  success: 1,
-                  msg: "تم إضافة المنتج إلى المفضلة",
-                });
-              }
-            );
-          }
-        } else {
+        if (result.length === 0) {
+          console.log(result);
           db.query(
-            "INSERT INTO `favourite`(`product`, `user`) VALUES (?,?)",
+            "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
             [product, user],
             (err, result) => {
               if (err) throw err;
               res.json({
                 success: 1,
-                msg: "تم إضافة المنتج إلى المفضلة",
+                msg: "تم حفظ المنتج في قائمة المفضلة",
               });
             }
           );
+        }
+        const pr = result.find((Rproduct) => {
+          return Rproduct.product == product;
+        });
+        if (pr === undefined) {
+          db.query(
+            "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
+            [product, user],
+            (err, result) => {
+              if (err) throw err;
+              res.json({
+                success: 1,
+                msg: "تم حفظ المنتج في قائمة المفضلة",
+              });
+            }
+          );
+        } else {
+          res.json({
+            success: 0,
+            msg: "المنتج موجود بالفعل في المفضلة",
+          });
         }
       }
     );

@@ -110,7 +110,6 @@ favourites.forEach((favourite) => {
   favourite.addEventListener("submit", (e) => {
     e.preventDefault();
     const product = favourite.querySelector("#productinp").value;
-    console.log(product);
     const userinp = JSON.parse(token);
     const searchParams = new URLSearchParams();
     searchParams.append("user", userinp);
@@ -128,9 +127,7 @@ async function addFav(data) {
     body: data,
   });
 
-  console.log(log);
   const response = await log.json();
-  console.log(response);
 
   if (response.success == 1) {
     message.style.right = "5px";
