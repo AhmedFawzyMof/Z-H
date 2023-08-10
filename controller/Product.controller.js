@@ -244,7 +244,7 @@ const controller = {
           );
         }
         const pr = result.find((Rproduct) => {
-          return Rproduct.product == product;
+          return Rproduct.product == parseInt(product);
         });
         if (pr === undefined) {
           db.query(
