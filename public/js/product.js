@@ -127,7 +127,7 @@ delFav.forEach((fav) => {
   user.type = "hidden";
   const length = document.createElement("input");
   length.name = "length";
-  length.value = localStorage.getItem("fav");
+  length.value = localStorage.getItem("favlist");
   length.type = "hidden";
   fav.appendChild(user);
   fav.appendChild(length);
@@ -151,9 +151,9 @@ async function addFav(data) {
     }, 3000);
     if (response.length === 1) {
       console.log(response);
-      localStorage.setItem("fav", "1");
+      localStorage.setItem("favlist", "1");
     } else {
-      localStorage.setItem("fav", `${response.length}`);
+      localStorage.setItem("favlist", `${response.length}`);
     }
     favLength();
   } else {

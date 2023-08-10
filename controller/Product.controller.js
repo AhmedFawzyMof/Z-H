@@ -298,14 +298,14 @@ const controller = {
           res.send(`
         <script>
         location.replace('/fav/show/${user}')
-        localStorage.setItem('fav',${length})
+        localStorage.setItem('favlist',${length})
         </script>
         `);
         } else {
           res.send(`
         <script>
         location.replace('/fav/show/${user}')
-        localStorage.setItem('fav',${JSON.parse(length) - 1})
+        localStorage.setItem('favlist',${JSON.parse(length) - 1})
         </script>
         `);
         }
