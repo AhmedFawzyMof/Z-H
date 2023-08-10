@@ -90,6 +90,9 @@ nav ul li a {
   position: absolute;
   top: 5px;
   left: 5px;
+  background: #fff;
+  padding: 5px 0;
+  border-radius: 5px;
 }
 
 .quantity button {
@@ -141,4 +144,107 @@ nav ul li a {
   background: #fff;
   border: none;
   cursor: pointer;
+}
+
+.notAvailable {
+  background: #33333329;
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 9;
+  color: #fff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#message {
+  width: 250px;
+  height: 40px;
+  background: green;
+  color: #fff;
+  position: absolute;
+  top: 100px;
+  right: -255px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+#errmsg {
+  width: 250px;
+  height: 40px;
+  background: red;
+  color: #fff;
+  position: absolute;
+  top: 100px;
+  right: -255px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+#favourite {
+  position: absolute;
+  top: 5px;
+  left: 55px;
+}
+
+#favourite button {
+  background: #fff;
+  color: #333;
+  border: none;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25px;
+  cursor: pointer;
+  transition: 0.3s;
+  border-radius: 50px;
+}
+
+#favourite button:hover {
+  color: red;
+}
+
+#message {
+  width: 250px;
+  height: 40px;
+  background: green;
+  color: #fff;
+  position: absolute;
+  top: 100px;
+  right: -255px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
+}
+
+#errmsg {
+  width: 250px;
+  height: 40px;
+  background: red;
+  color: #fff;
+  position: absolute;
+  top: 100px;
+  right: -255px;
+  border-radius: 5px;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 30;
 }

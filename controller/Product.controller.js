@@ -229,7 +229,8 @@ const controller = {
       [user, parseInt(product)],
       (err, result) => {
         if (err) throw err;
-        if (result.length === 0) {
+        const lengthR = result.length;
+        if (lengthR === 0) {
           console.log(result);
           db.query(
             "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
@@ -239,6 +240,7 @@ const controller = {
               res.json({
                 success: 1,
                 msg: "تم حفظ المنتج في قائمة المفضلة",
+                lengthR: lengthR,
               });
             }
           );
@@ -255,6 +257,7 @@ const controller = {
               res.json({
                 success: 1,
                 msg: "تم حفظ المنتج في قائمة المفضلة",
+                length: lengthR + 1,
               });
             }
           );

@@ -9,31 +9,46 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/css/product.css" />
+    <link rel="stylesheet" href="/css/productId.css" />
   </head>
   <body onload="cartLen()">
     <%- include('../components/nav') %>
+
+    <div id="message"></div>
+    <div id="errmsg"></div>
     <div id="Product">
       <div class="img">
+        <form id="favourite">
+          <input type="hidden" value="<%=product.id%>" id="productinp" />
+          <button type="submit"><i class="bx bx-heart"></i></button>
+        </form>
         <img src="<%= product.image %>" alt="<%= product.name %>" />
       </div>
       <div class="info">
         <h3><%= product.name %></h3>
         <p><%= product.description %></p>
         <p>سعر: <%= product.price %> ج</p>
-        <% if (product.available) { %>
-        <input type="hidden" id="id" value="<%=product.id%>" />
-        <input type="hidden" id="name" value="<%=product.name%>" />
-        <input type="hidden" id="price" value="<%=product.price%>" />
-        <input type="hidden" id="image" value="<%=product.image%>" />
-        <button
-          onclick="addItemToCart(parseInt('<%=product.id%>'))"
-          class="addToCart"
-          type="submit"
-        >
-          أضف إلى السلة <i class="bx bxs-cart-add"></i>
-        </button>
-        <% } %>
+        <div class="addOrFav">
+          <% if (product.available) { %>
+          <input type="hidden" id="id" value="<%=product.id%>" />
+          <input type="hidden" id="name" value="<%=product.name%>" />
+          <input type="hidden" id="price" value="<%=product.price%>" />
+          <input type="hidden" id="image" value="<%=product.image%>" />
+          <button
+            onclick="addItemToCart(parseInt('<%=product.id%>'))"
+            class="addToCart"
+            id="outside"
+            type="submit"
+          >
+            <i class="bx bxs-cart-add"></i>
+            أضف إلى السلة
+          </button>
+          <% } else { %>
+          <div class="notAvailable">
+            <h1>غير متاح</h1>
+          </div>
+          <% } %>
+        </div>
       </div>
     </div>
     <%- include('../components/footer') %>
@@ -64,6 +79,47 @@
         }
         cartLen();
         localStorage.setItem("cart", JSON.stringify(cart));
+      }
+
+      const favourites = document.querySelectorAll("#favourite");
+      favourites.forEach((favourite) => {
+        favourite.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const product = favourite.querySelector("#productinp").value;
+          const userinp = JSON.parse(token);
+          const searchParams = new URLSearchParams();
+          searchParams.append("user", userinp);
+          searchParams.append("product", product);
+
+          addFav(searchParams);
+        });
+      });
+
+      const message = document.getElementById("message");
+      const errmsg = document.getElementById("errmsg");
+      async function addFav(data) {
+        const log = await fetch("/favourite", {
+          method: "post",
+          body: data,
+        });
+
+        const response = await log.json();
+
+        if (response.success == 1) {
+          message.style.right = "5px";
+          message.textContent = response.msg;
+          setTimeout(() => {
+            message.style.right = "-255px";
+          }, 3000);
+          localStorage.setItem("favlist", JSON.stringify(response.length));
+          favLength();
+        } else {
+          errmsg.style.right = "5px";
+          errmsg.textContent = response.msg;
+          setTimeout(() => {
+            errmsg.style.right = "-255px";
+          }, 3000);
+        }
       }
     </script>
   </body>

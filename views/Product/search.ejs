@@ -13,6 +13,8 @@
   </head>
   <body onload="cartLen()">
     <%- include('../components/nav') %>
+    <div id="message"></div>
+    <div id="errmsg"></div>
     <div class="container">
       <% SearchedProduct.forEach(products => { %>
       <div class="Product" id="<%= products.id %>">
@@ -29,7 +31,15 @@
         >
           <i class="bx bxs-cart-add"></i>
         </button>
+        <% } else { %>
+        <div class="notAvailable">
+          <h1>غير متاح</h1>
+        </div>
         <% } %>
+        <form id="favourite">
+          <input type="hidden" value="<%=products.id%>" id="productinp" />
+          <button type="submit"><i class="bx bx-heart"></i></button>
+        </form>
         <a href="/product/show/<%= products.id %>">
           <img src="<%= products.image %>" alt="<%= products.name %>" />
           <div class="body">
