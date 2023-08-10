@@ -12,9 +12,4 @@ const connection = mysql.createPool({
   // ssl: "Amazon RDS",
 });
 
-console.log(process.env.HOSTDB);
-console.log(process.env.USERNAME);
-console.log(process.env.PASSDB);
-console.log(process.env.THEDB);
-
 module.exports = connection;

@@ -128,7 +128,8 @@ input:focus {
   width: 40px;
   cursor: pointer;
   font-size: 1.7rem;
-  background: #ff971f;
+  background: #eee;
+  z-index: -1;
   color: #fff;
   line-height: 40px;
   text-align: center;

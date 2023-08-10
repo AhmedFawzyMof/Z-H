@@ -128,7 +128,9 @@ async function addFav(data) {
     body: data,
   });
 
+  console.log(log);
   const response = await log.json();
+  console.log(response);
 
   if (response.success == 1) {
     message.style.right = "5px";
