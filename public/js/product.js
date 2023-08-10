@@ -149,6 +149,7 @@ async function addFav(data) {
     setTimeout(() => {
       message.style.right = "-255px";
     }, 3000);
+    console.log(response);
     localStorage.setItem("favlist", JSON.stringify(response.length));
     favLength();
   } else {
