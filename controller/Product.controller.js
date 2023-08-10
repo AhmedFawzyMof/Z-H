@@ -239,7 +239,7 @@ const controller = {
               res.json({
                 success: 1,
                 msg: "تم حفظ المنتج في قائمة المفضلة",
-                lengthR: lengthR + 1,
+                length: 1,
               });
             }
           );
@@ -280,7 +280,10 @@ const controller = {
       [userId],
       (err, result) => {
         if (err) throw err;
-        res.render("User/favourite.ejs", { products: result });
+        res.render("User/favourite.ejs", {
+          products: result,
+          length: result.length,
+        });
       }
     );
   },
@@ -295,14 +298,14 @@ const controller = {
           res.send(`
         <script>
         location.replace('/fav/show/${user}')
-        localStorage.setItem('favlist',${length})
+        localStorage.setItem('fav',${length})
         </script>
         `);
         } else {
           res.send(`
         <script>
         location.replace('/fav/show/${user}')
-        localStorage.setItem('favlist',${JSON.parse(length) - 1})
+        localStorage.setItem('fav',${JSON.parse(length) - 1})
         </script>
         `);
         }

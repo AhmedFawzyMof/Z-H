@@ -9,6 +9,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/css/product.css" />
+    <script>
+      document.addEventListener("DOMcontentloaded", () => {
+        localStorage.setItem("favlist", "<%=length%>");
+      });
+    </script>
   </head>
   <body>
     <%- include('../components/nav') %>

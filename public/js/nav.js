@@ -3,8 +3,8 @@ function favLength() {
   const favList = document.getElementById("favIcon");
   const faLength = document.createElement("span");
   favList.appendChild(faLength);
-  if (localStorage.getItem("favlist")) {
-    length = JSON.parse(localStorage.getItem("favlist"));
+  if (localStorage.getItem("fav")) {
+    length = localStorage.getItem("fav");
   } else {
     length = 0;
   }
