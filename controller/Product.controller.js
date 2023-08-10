@@ -226,12 +226,11 @@ const controller = {
     const { user, product } = req.body;
     db.query(
       "SELECT `product`, `user` FROM `favourite` WHERE user=?",
-      [user, parseInt(product)],
+      [user],
       (err, result) => {
         if (err) throw err;
         const lengthR = result.length;
         if (lengthR === 0) {
-          console.log(result);
           db.query(
             "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
             [product, user],
@@ -240,32 +239,39 @@ const controller = {
               res.json({
                 success: 1,
                 msg: "تم حفظ المنتج في قائمة المفضلة",
-                lengthR: lengthR,
-              });
-            }
-          );
-        }
-        const pr = result.find((Rproduct) => {
-          return Rproduct.product == parseInt(product);
-        });
-        if (pr === undefined) {
-          db.query(
-            "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
-            [product, user],
-            (err, result) => {
-              if (err) throw err;
-              res.json({
-                success: 1,
-                msg: "تم حفظ المنتج في قائمة المفضلة",
-                length: lengthR + 1,
+                lengthR: lengthR + 1,
               });
             }
           );
         } else {
-          res.json({
-            success: 0,
-            msg: "المنتج موجود بالفعل في المفضلة",
+          const Tproduct = {};
+          result.forEach((prod) => {
+            if (prod.product === JSON.parse(product)) {
+              Object.assign(Tproduct, prod);
+            }
           });
+          console.log(Tproduct);
+          if (Tproduct.product !== JSON.parse(product)) {
+            console.log(Tproduct, "not");
+            db.query(
+              "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
+              [product, user],
+              (err, result) => {
+                if (err) throw err;
+                res.json({
+                  success: 1,
+                  msg: "تم حفظ المنتج في قائمة المفضلة",
+                  length: lengthR + 1,
+                });
+              }
+            );
+          } else {
+            console.log(Tproduct, "hamasa");
+            res.json({
+              success: 0,
+              msg: "المنتج موجود بالفعل في المفضلة",
+            });
+          }
         }
       }
     );
@@ -278,6 +284,31 @@ const controller = {
       (err, result) => {
         if (err) throw err;
         res.render("User/favourite.ejs", { products: result });
+      }
+    );
+  },
+  deleteFav: (req, res) => {
+    const { product, user, length } = req.body;
+    db.query(
+      "DELETE FROM favourite	WHERE (product,user) = (?,?)",
+      [product, user],
+      (err, result) => {
+        if (err) throw err;
+        if (length === "0") {
+          res.send(`
+        <script>
+        location.replace('/fav/show/${user}')
+        localStorage.setItem('favlist',${length})
+        </script>
+        `);
+        } else {
+          res.send(`
+        <script>
+        location.replace('/fav/show/${user}')
+        localStorage.setItem('favlist',${JSON.parse(length) - 1})
+        </script>
+        `);
+        }
       }
     );
   },

@@ -119,6 +119,20 @@ favourites.forEach((favourite) => {
   });
 });
 
+const delFav = document.querySelectorAll("#delfavourite");
+delFav.forEach((fav) => {
+  const user = document.createElement("input");
+  user.name = "user";
+  user.value = JSON.parse(token);
+  user.type = "hidden";
+  const length = document.createElement("input");
+  length.name = "length";
+  length.value = localStorage.getItem("favlist");
+  length.type = "hidden";
+  fav.appendChild(user);
+  fav.appendChild(length);
+});
+
 const message = document.getElementById("message");
 const errmsg = document.getElementById("errmsg");
 async function addFav(data) {

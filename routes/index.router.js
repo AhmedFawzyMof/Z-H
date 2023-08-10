@@ -62,6 +62,7 @@ router.post("/delete/subcategory", AdminController.deleteSubcategory);
 router.post("/delete/product", AdminController.deleteProduct);
 router.post("/delete/offer", AdminController.deleteOffer);
 router.post("/delete/promocode", AdminController.deletePromo);
+router.post("/delete/fav", ProductController.deleteFav);
 //? }
 //? EDIT {
 router.post("/edit/user", UserController.editManger);

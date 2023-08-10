@@ -34,6 +34,15 @@
           <h1>غير متاح</h1>
         </div>
         <% } %>
+        <form id="delfavourite" method="post" action="/delete/fav">
+          <input
+            type="hidden"
+            value="<%=products[i].id%>"
+            name="product"
+            id="productinp"
+          />
+          <button type="submit"><i class="bx bx-x-circle"></i></button>
+        </form>
         <a href="/product/show/<%= products[i].id %>">
           <img src="<%= products[i].image %>" alt="<%= products[i].name %>" />
           <div class="body">
