@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my coupons</title>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <% if (JSON.parse(coupons).length !== 0) { %>
+      <div
+        class="coupons"
+        style="
+          width: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background: #fff;
+          padding: 0 10px;
+        "
+      >
+        <h3>القسائم</h3>
+        <% JSON.parse(coupons).forEach(coupon => { %>
+        <div
+          class="code"
+          style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <p>كوبون: <%= coupon.code %></p>
+          <p>قيمة: <%= coupon.value %></p>
+        </div>
+        <% }) %>
+      </div>
+      <% } else { %>
+      <p>للأسف لا يوجد قسيمة</p>
+      <% } %>
+      <div class="share">
+        <form id="share">
+          <p>شاركها مع أصدقائك واحصل على خصم يصل إلى 60 جنيه</p>
+          <input type="hidden" id="user" />
+          <button type="submit">share</button>
+        </form>
+        <div class="res"></div>
+      </div>
+    </div>
+    <%- include('../components/footer') %>
+    <script>
+      const Form = document.getElementById("share");
+      Form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const url = new URLSearchParams();
+
+        url.append("user", JSON.parse(token));
+
+        makeRefLink(url);
+      });
+      async function makeRefLink(user) {
+        const create = await fetch("/share/link", {
+          method: "POST",
+          body: user,
+        });
+        const code = await create.json();
+      }
+    </script>
+  </body>
+</html>
