@@ -227,3 +227,18 @@ input:focus {
     width: calc(90% / 3);
   }
 }
+
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background: #ff971f;
+  border-radius: 50px;
+  margin: 15px 5px;
+}

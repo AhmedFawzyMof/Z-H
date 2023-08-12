@@ -210,3 +210,15 @@ a {
   margin: 0 2.5px;
   padding: 0 2.5px;
 }
+
+#emptyCart {
+  width: 300px;
+}
+
+#goToShop {
+  background: #ff971f;
+  padding: 5px;
+  border-radius: 5px;
+  color: #fff;
+  margin: 10px 0;
+}

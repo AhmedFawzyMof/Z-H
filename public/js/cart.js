@@ -60,18 +60,7 @@ function calContainer() {
     }
   } else {
     const countContainer = document.getElementById("countContainer");
-    countContainer.innerHTML = `<p style="
-      background: #fff;
-      padding: 5px;
-      width: 95%;
-      display:flex;
-      align-items: center;
-      justify-content: center;
-      text-transform: capitalize;
-      border-radius: 5px;
-      ">عربة التسوق فارغة <a href='/' style='margin-left: 5px;
-  text-decoration: none;
-  color: #2660ff;'> اذهب للتسوق</a> </p>`;
+    countContainer.innerHTML = `<img  id='emptyCart' src='/img/cart.png'/> <a id='goToShop' href='/'>اذهب للتسوق</a>`;
   }
 }
 function cartItems() {
@@ -139,3 +128,15 @@ function dicQuantity(productId) {
   }
   localStorage.setItem("cart", JSON.stringify(cart));
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (cart.length == 0) {
+    const checkoutContainer = document.getElementById("checkoutContainer");
+    checkoutContainer.style.height = "100vh";
+    const container = document.getElementById("countContainer");
+    container.style.display = "flex";
+    container.style.alignItems = "center";
+    container.style.justifyContent = "center";
+    container.style.flexDirection = "column";
+  }
+});

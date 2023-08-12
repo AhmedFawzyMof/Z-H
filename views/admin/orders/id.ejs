@@ -194,7 +194,7 @@
             <th style="border: 1px solid #333; width: 100%">الكمية</th>
             <th style="border: 1px solid #333; width: 100%">السعر</th>
           </tr>
-          <% JSON.parse(order.cart).forEach(item => { %>
+          <% order.cart.forEach(item => { %>
           <tr
             style="
               display: grid;

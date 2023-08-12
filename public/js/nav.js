@@ -94,12 +94,16 @@ function logedUser() {
 </li>`;
   } else {
     MenuBar.innerHTML = `
-    <li style="position:relative;"
+    <li 
 ><a href="/user/info/profile/${parsedToken}" style="color: #fff; text-decoration: none"
 >الملف الشخصي</a
 >
-<div id="userInfo" ></div>
-</li>    
+</li>
+<li style="position:relative;"
+>
+  <a href="/show/coupon/${parsedToken}" style="color: #fff; text-decoration: none">القسائم</a>
+  <div id="userInfo" ></div>
+  </li>
 <li
 >
   <a href="/" style="color: #fff; text-decoration: none">الصفحة الرئيسية</a>
@@ -172,4 +176,6 @@ function logout() {
   location.replace("/");
 }
 
-window.onload(logedUser(), favLength());
+document.addEventListener("DOMContentLoaded", () => {
+  logedUser(), favLength();
+});

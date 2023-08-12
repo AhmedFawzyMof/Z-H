@@ -32,7 +32,7 @@ const controller = {
             }
           });
           db.query(
-            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
+            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
             [
               id,
               user,
@@ -45,8 +45,9 @@ const controller = {
               paid,
               total,
               date,
-              cart,
+              JSON.stringify(JSON.parse(cart)),
               where,
+              discount,
               JSON.stringify(coupons),
               user,
             ],

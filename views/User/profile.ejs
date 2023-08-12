@@ -32,38 +32,6 @@
 
         <button type="submit">تغيير</button>
       </form>
-      <% if (JSON.parse(profile.coupons).length !== 0) { %>
-      <div
-        class="coupons"
-        style="
-          width: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          background: #fff;
-          padding: 0 10px;
-        "
-      >
-        <h3>القسائم</h3>
-        <% JSON.parse(profile.coupons).forEach(coupon => { %>
-        <div
-          class="code"
-          style="
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          "
-        >
-          <p>كوبون: <%= coupon.code %></p>
-          <p>قيمة: <%= coupon.value %></p>
-        </div>
-        <% }) %>
-      </div>
-      <% } else { %>
-      <p>للأسف لا يوجد قسيمة</p>
-      <% } %>
     </div>
     <%- include('../components/footer') %>
 

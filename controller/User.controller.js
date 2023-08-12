@@ -168,5 +168,29 @@ const controller = {
       });
     }
   },
+  getCouponsPage: (req, res) => {
+    const user = req.params.user;
+    db.query("SELECT coupons FROM Users WHERE id=?", [user], (err, result) => {
+      if (err) throw err;
+      res.render("User/coupon", { coupons: result[0].coupons });
+    });
+  },
+  makeRef: (req, res) => {
+    const user = req.body.user;
+    const userId = user.slice(0, 8);
+    const random = Math.floor(Math.random() * 1000000);
+    const discountCode = userId + "_" + random;
+    const date = Date.now();
+    db.query(
+      "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `number`, `value`) VALUES (?,?,?,?,?)",
+      [user, date, discountCode, 0, 10],
+      (err, result) => {
+        if (err) throw err;
+        res.json({
+          refCode: discountCode,
+        });
+      }
+    );
+  },
 };
 module.exports = controller;

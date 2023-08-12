@@ -57,7 +57,7 @@
         <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
         <p>المجموع: <%=order.total%> ج</p>
 
-        <% JSON.parse(order.cart).forEach(item => { %>
+        <% order.cart.forEach(item => { %>
         <div class="orderitem">
           <img src="<%= item.image %>" alt="<%= item.name %>" />
           <div class="itemInfo">

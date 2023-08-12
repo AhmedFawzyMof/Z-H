@@ -22,9 +22,14 @@
           <img src="<%= offer.image %>" draggable="false"
         /></a>
         <% }) %>
+        
       </div>
-
       <i id="right" class="bx bx-chevron-right"></i>
+      <div class="dots">
+        <% offers.forEach(offer => {  %>
+          <p class="dot"></p>
+          <% }) %>
+      </div>
     </div>
     <% } %>
     <div class="category">

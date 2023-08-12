@@ -30,9 +30,11 @@ router.get("/admin/panle/subcategorys/:admin", AdminController.getSubCategory);
 router.get("/admin/panle/orders/:admin", AdminController.getOrders);
 router.get("/info/contact_us/success", UserController.contact_success);
 router.get("/order/info/admin/:admin/:order", AdminController.orderPage);
+router.get("/show/coupon/:user", UserController.getCouponsPage);
 //? }
 //? POST {
 router.get("/contact", UserController.contact);
+router.post("/share/link", UserController.makeRef);
 router.get("/paypal", OrderController.postPaypal);
 router.post("/login", UserController.Login);
 router.post("/getcoupon", UserController.getCoupon);

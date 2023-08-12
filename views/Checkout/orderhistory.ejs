@@ -35,7 +35,7 @@
         </div>
         <div class="Orderitems">
           <h3>منتجات الطلب</h3>
-          <% JSON.parse(order.cart).forEach(orderItem => { %>
+          <% order.cart.forEach(orderItem => { %>
           <div class="orderitem">
             <img src="<%= orderItem.image %>" alt="<%= orderItem.name %>" />
             <div class="itemInfo">
