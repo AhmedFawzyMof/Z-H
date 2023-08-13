@@ -20,6 +20,7 @@
           align-items: center;
           justify-content: center;
           flex-wrap: wrap;
+          gap: 10px;
         "
       >
         <% users.forEach((user, index) => { %>
@@ -64,6 +65,28 @@
         </form>
         <div id="result"></div>
       </div>
+    </div>
+    <br />
+    <div class="paginaiton">
+      <% if(page > 1) { %>
+      <a href="/admin/panle/users/<%=userId%>/?page=<%=page-1%>" class="before">
+        <i class="bx bxs-skip-previous-circle"></i>
+      </a>
+      <% } %> <% for(let i = iterator; i <= endingLink; i++) { %> <% if(i ===
+      page) { %>
+      <a
+        class="selectedLink"
+        href="/admin/panle/users/<%=userId%>/?page=<%=i%>"
+      >
+        <%=i%>
+      </a>
+      <% continue; %> <% } %> <%if (!i <0) {%>
+      <a href="/admin/panle/users/<%=userId%>/?page=<%=i%>"><%=i%></a>
+      <%}%> <% } %> <% if(page < numberOfPages) { %>
+      <a href="/admin/panle/users/<%=userId%>/?page=<%=page+1%>" class="after"
+        ><i class="bx bxs-skip-next-circle"></i>
+      </a>
+      <% } %>
     </div>
     <script src="/js/admin/user.js"></script>
   </body>

@@ -44,71 +44,8 @@
       </div>
       <% } else { %>
       <p>للأسف لا يوجد قسيمة</p>
-      <% } %> <% if (refCode.length > 0) {%>
-      <div
-        class="coupons"
-        style="
-          width: 300px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-direction: column;
-          background: #fff;
-          padding: 0 10px;
-        "
-      >
-        <h3>القسائم المشاركة</h3>
-        <div
-          class="code"
-          style="
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          "
-        >
-          <p>كوبون: <%= refCode[0].code %></p>
-          <p>قيمة: <%= refCode[0].value %></p>
-        </div>
-      </div>
-      <% }else { %>
-      <p>آسف لا يوجد رمز المشاركة</p>
       <% } %>
-      <div class="share">
-        <form id="share">
-          <p>شاركها مع أصدقائك واحصل على خصم يصل إلى 60 جنيه</p>
-          <input type="hidden" id="user" />
-          <button type="submit">share</button>
-        </form>
-        <div class="res"></div>
-      </div>
     </div>
     <%- include('../components/footer') %>
-    <script>
-      const Form = document.getElementById("share");
-      Form.addEventListener("submit", (e) => {
-        e.preventDefault();
-
-        const url = new URLSearchParams();
-
-        url.append("user", JSON.parse(token));
-
-        makeRefLink(url);
-      });
-      async function makeRefLink(user) {
-        const create = await fetch("/share/link", {
-          method: "POST",
-          body: user,
-        });
-        const code = await create.json();
-        const response = document.querySelector(".res");
-        if (code.refCode !== "") {
-          response.innerHTML =
-            "<p> كود الخصم: </p>" + "<p>" + code.refCode + "</p>";
-        } else {
-          ("<p> آسف لكنك قمت بالفعل بعمل رمز المشاركة </p>");
-        }
-      }
-    </script>
   </body>
 </html>

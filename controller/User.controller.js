@@ -39,7 +39,8 @@ const controller = {
     }
   },
   Login: (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, code } = req.body;
+    console.log(req.body);
     const pass = crypto.createHmac("sha256", password).digest("hex");
     db.query(
       "SELECT id,Admin,Stuff,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
@@ -47,17 +48,120 @@ const controller = {
       (err, result) => {
         if (err) throw err;
         let stuff = false;
+        const coupons = result[0].coupons;
+        const id = result[0].id;
+        const TheUser = result[0];
+        if (result[0].Stuff !== 0) {
+          stuff = true;
+        }
         if (result.length > 0) {
-          if (result[0].Stuff !== 0) {
-            stuff = true;
+          if (code !== "") {
+            db.query(
+              "SELECT * FROM `Referral_Link` WHERE code=?",
+              [code],
+              (err, result) => {
+                if (err) throw err;
+                const value = result[0].value;
+                const CodeUser = result[0].user;
+                if (CodeUser == id) {
+                  res.json({
+                    success: 1,
+                    Stuff: stuff,
+                    user: TheUser.id,
+                    StateM: TheUser.Admin,
+                    code: coupons.length,
+                  });
+                } else if (result[0].users == null) {
+                  users = [];
+                  users.push(id);
+                  db.query(
+                    "SELECT coupons FROM `Users` WHERE id=?",
+                    [result[0].user],
+                    (err, result) => {
+                      result[0].coupons.push({ code: code, value: value });
+                      db.query(
+                        "UPDATE `Users` SET `coupons`=? WHERE id=?",
+                        [JSON.stringify(result[0].coupons), CodeUser],
+                        (err, result) => {
+                          return;
+                        }
+                      );
+                      db.query(
+                        "UPDATE `Users` SET `coupons`=? WHERE id=?",
+                        [JSON.stringify(result[0].coupons), id],
+                        (err, result) => {
+                          return;
+                        }
+                      );
+                    }
+                  );
+                  db.query(
+                    "UPDATE `Referral_Link` SET `users`=? WHERE code =?",
+                    [JSON.stringify(users), code],
+                    (err, result) => {
+                      if (err) throw err;
+                      res.json({
+                        success: 1,
+                        Stuff: stuff,
+                        user: TheUser.id,
+                        StateM: TheUser.Admin,
+                        code: coupons.length,
+                      });
+                    }
+                  );
+                } else if (result[0].users.length > 0) {
+                  users = result[0].users;
+                  const theUser = [];
+                  users.forEach((use) => {
+                    if (use == id) {
+                      theUser.push(use);
+                    }
+                  });
+                  if (theUser[0] == id) {
+                    console.log(theUser);
+                    console.log();
+                    res.json({
+                      success: 1,
+                      Stuff: stuff,
+                      user: TheUser.id,
+                      StateM: TheUser.Admin,
+                      code: coupons.length,
+                    });
+                  } else {
+                    db.query(
+                      "SELECT coupons FROM `Users` WHERE id=?",
+                      [result[0].user],
+                      (err, result) => {
+                        result[0].coupons.push({ code: code, value: value });
+                        db.query(
+                          "UPDATE `Users` SET `coupons`=? WHERE id=?",
+                          [JSON.stringify(result[0].coupons), id],
+                          (err, result) => {
+                            return;
+                          }
+                        );
+                        res.json({
+                          success: 1,
+                          Stuff: stuff,
+                          user: TheUser.id,
+                          StateM: TheUser.Admin,
+                          code: coupons.length,
+                        });
+                      }
+                    );
+                  }
+                }
+              }
+            );
+          } else {
+            res.json({
+              success: 1,
+              Stuff: stuff,
+              user: TheUser.id,
+              StateM: TheUser.Admin,
+              code: coupons.length,
+            });
           }
-          res.json({
-            success: 1,
-            Stuff: stuff,
-            user: result[0].id,
-            StateM: result[0].Admin,
-            code: result[0].coupons.length,
-          });
         } else {
           res.json({
             success: 0,
@@ -171,13 +275,13 @@ const controller = {
   getCouponsPage: (req, res) => {
     const user = req.params.user;
     db.query(
-      "SELECT coupons FROM Users WHERE id=?;SELECT code,value FROM `Referral_Link` WHERE user=?",
+      "SELECT coupons FROM Users WHERE id=?;",
       [user, user],
       (err, result) => {
         if (err) throw err;
+        console.log(result);
         res.render("User/coupon", {
-          coupons: result[0],
-          refCode: result[1],
+          coupons: result,
         });
       }
     );

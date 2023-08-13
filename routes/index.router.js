@@ -20,6 +20,7 @@ router.get("/pay/info/cash_on_delivery", OrderController.getCash);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);
 router.get("/pay/info/success", OrderController.getSuccess);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);
+router.get("/admin/panle/contact/:admin", AdminController.getContactUs);
 router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);
 router.get("/user/info/profile/:userId", UserController.getProfile);
 router.get("/admin/panle/users/:admin", AdminController.getUser);

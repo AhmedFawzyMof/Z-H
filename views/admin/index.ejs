@@ -25,7 +25,9 @@
       <a class="orders" href="/admin/panle/orders/${parsedToken}"
         ><p>الطلبات</p>
         <i class="bx bxs-package"></i
-      ></a>
+      >
+      <p class="count"><%=orderslen%></p>
+      </a>
       <a class="products" href="/admin/panle/products/${parsedToken}"
         ><p>المنتجات</p>
         <i class="bx bxs-baguette"></i
@@ -39,6 +41,9 @@
         <i class="bx bxs-food-menu"></i
       ></a><a class="subcategorys" href="/admin/panle/offer/${parsedToken}"
         ><p>المجله</p>
+        <i class="bx bxs-food-menu"></i
+      ></a><a class="subcategorys" href="/admin/panle/contact/${parsedToken}"
+        ><p>الرسائل</p>
         <i class="bx bxs-food-menu"></i
       ></a>`;
       }

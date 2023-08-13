@@ -71,3 +71,18 @@ a i {
     height: 150px;
   }
 }
+
+.orders {
+  position: relative;
+}
+
+.count {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #ff971f;
+  padding: 0 5px;
+  font-size: 20px;
+  color: #fff;
+  border-radius: 5px;
+}

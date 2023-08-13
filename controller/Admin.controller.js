@@ -217,13 +217,53 @@ const controller = {
   getUser: (req, res) => {
     const token = req.params.admin;
     db.query(
-      "SELECT Admin FROM Users WHERE id=? LIMIT 0,50",
+      "SELECT Admin,id FROM Users WHERE id=?",
       [token],
       (err, result) => {
         if (err) throw err;
+        const userId = result[0].id;
         if (result[0].Admin === 1) {
-          db.query("SELECT * FROM Users", [token], (err, result) => {
-            res.render("admin/users", { users: result });
+          db.query("SELECT * FROM Users", (err, result) => {
+            const numOfResults = result.length;
+            const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+            let page = req.query.page ? Number(req.query.page) : 1;
+            if (page > numberOfPages) {
+              res.redirect(
+                "/admin/panle/users/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent(numberOfPages)
+              );
+            } else if (page < 1) {
+              res.redirect(
+                "/admin/panle/users/" +
+                  userId +
+                  "/?page=" +
+                  encodeURIComponent("1")
+              );
+            }
+            const startingLimit = (page - 1) * resultsPerPage;
+            const sql = `SELECT * FROM Users LIMIT ${startingLimit},${resultsPerPage}`;
+            db.query(sql, (err, result) => {
+              if (err) throw err;
+              let iterator = page - 5 < 1 ? 1 : page - 5;
+              let endingLink =
+                iterator + 9 < numberOfPages
+                  ? iterator + 9
+                  : page + (numberOfPages - page);
+
+              if (endingLink < page + 4) {
+                iterator -= page + 4 - numberOfPages;
+              }
+              res.render("admin/users", {
+                users: result,
+                page,
+                iterator,
+                endingLink,
+                numberOfPages,
+                userId,
+              });
+            });
           });
         } else {
           res.redirect("/");
@@ -231,17 +271,32 @@ const controller = {
       }
     );
   },
+  getContactUs: (req, res) => {
+    const token = req.params.admin;
+    db.query("SELECT Admin FROM Users WHERE id=?", [token], (err, result) => {
+      if (err) throw err;
+      if (result[0].Admin === 1) {
+        db.query("SELECT * FROM Contact", [token], (err, result) => {
+          res.render("admin/contactus", { users: result });
+        });
+      } else {
+        res.redirect("/");
+      }
+    });
+  },
   getAdmin: (req, res) => {
     const token = req.params.admin;
     db.query(
-      "SELECT Admin,Stuff,id FROM Users WHERE id=?",
+      "SELECT Admin,Stuff,id FROM Users WHERE id=?;SELECT COUNT(*) as 'OrdersLen' FROM `TheOrders`",
       [token],
       (err, result) => {
         if (err) throw err;
-        if (result[0].Admin == 1) {
-          res.render("admin");
-        } else if (result[0].Stuff == 1) {
-          res.redirect("/admin/panle/orders/" + result[0].id);
+        const res0 = result[0];
+        const res1 = result[1];
+        if (res0[0].Admin == 1) {
+          res.render("admin/index.ejs", { orderslen: res1[0].OrdersLen });
+        } else if (res0[0].Stuff == 1) {
+          res.redirect("/admin/panle/orders/" + res0[0].id);
         } else {
           res.redirect("/");
         }
