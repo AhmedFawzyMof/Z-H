@@ -13,7 +13,7 @@
   <body onload="cartLen()">
     <%- include('../components/nav') %>
     <div class="container">
-      <% if (JSON.parse(coupons).length !== 0) { %>
+      <% if (coupons.length !== 0) { %>
       <div
         class="coupons"
         style="
@@ -27,7 +27,7 @@
         "
       >
         <h3>القسائم</h3>
-        <% JSON.parse(coupons).forEach(coupon => { %>
+        <% coupons[0].coupons.forEach(coupon => { %>
         <div
           class="code"
           style="
@@ -44,6 +44,35 @@
       </div>
       <% } else { %>
       <p>للأسف لا يوجد قسيمة</p>
+      <% } %> <% if (refCode.length > 0) {%>
+      <div
+        class="coupons"
+        style="
+          width: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          background: #fff;
+          padding: 0 10px;
+        "
+      >
+        <h3>القسائم المشاركة</h3>
+        <div
+          class="code"
+          style="
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          "
+        >
+          <p>كوبون: <%= refCode[0].code %></p>
+          <p>قيمة: <%= refCode[0].value %></p>
+        </div>
+      </div>
+      <% }else { %>
+      <p>آسف لا يوجد رمز المشاركة</p>
       <% } %>
       <div class="share">
         <form id="share">
@@ -72,6 +101,13 @@
           body: user,
         });
         const code = await create.json();
+        const response = document.querySelector(".res");
+        if (code.refCode !== "") {
+          response.innerHTML =
+            "<p> كود الخصم: </p>" + "<p>" + code.refCode + "</p>";
+        } else {
+          ("<p> آسف لكنك قمت بالفعل بعمل رمز المشاركة </p>");
+        }
       }
     </script>
   </body>

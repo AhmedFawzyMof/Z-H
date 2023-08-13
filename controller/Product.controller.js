@@ -1,5 +1,79 @@
 const db = require("../db/index");
 // const fs = require("fs");
+const takeRef = (req, res, code, user) => {
+  db.query(
+    "SELECT * FROM `Referral_Link` WHERE code=? ",
+    [code],
+    (err, result) => {
+      if (err) throw err;
+      const value = result[0].value;
+      const CodeUser = result[0].user;
+      let users;
+      if (result[0].user == user) {
+        res.send(`
+        <script>
+        localStorage.setItem('disCount', '0')
+        window.location.replace("/cart/show/items");
+        </script>
+        `);
+      } else if (result[0].users == null) {
+        users = [];
+        users.push(user);
+        db.query(
+          "SELECT coupons FROM `Users` WHERE id=?",
+          [result[0].user],
+          (err, result) => {
+            result[0].coupons.push({ code: code, value: value });
+            console.log(result[0].coupons);
+            db.query(
+              "UPDATE `Users` SET `coupons`=? WHERE id=?",
+              [JSON.stringify(result[0].coupons), CodeUser],
+              (err, result) => {
+                return;
+              }
+            );
+          }
+        );
+        db.query(
+          "UPDATE `Referral_Link` SET `users`=? WHERE code =?",
+          [JSON.stringify(users), code],
+          (err, result) => {
+            if (err) throw err;
+            res.send(`
+           <script>
+           localStorage.setItem('disCount', '${value}')
+           window.location.replace("/cart/show/items");
+           </script>
+           `);
+          }
+        );
+      } else if (result[0].users.length) {
+        users = result[0].users;
+        const TheUser = [];
+        users.forEach((use) => {
+          if (use == user) {
+            TheUser.push(use);
+          }
+        });
+        if (TheUser.length > 0) {
+          res.send(`
+        <script>
+        localStorage.setItem('disCount', '0')
+        window.location.replace("/cart/show/items");
+        </script>
+        `);
+        } else {
+          res.send(`
+          <script>
+          localStorage.setItem('disCount', '${value}')
+          window.location.replace("/cart/show/items");
+          </script>
+          `);
+        }
+      }
+    }
+  );
+};
 const controller = {
   addOne: (req, res) => {
     const { category, subcategory, name_ar, dis_ar, price, image } = req.body;
@@ -86,20 +160,22 @@ const controller = {
         [Id],
         (err, result) => {
           if (err) throw err;
-          const ress = JSON.parse(result[0].coupons);
-          const coupon = {};
+          const ress = result[0].coupons;
+          const coupon = [];
           ress.forEach((Tcode) => {
             if (Tcode.code === code.toLowerCase()) {
-              Object.assign(coupon, Tcode);
+              coupon.push(Tcode);
             }
           });
-          if (result.length > 0) {
+          if (coupon.length !== 0) {
             res.send(`
            <script>
            localStorage.setItem('disCount', '${coupon.value}')
            window.location.replace("/cart/show/items");
            </script>
            `);
+          } else {
+            takeRef(req, res, code, Id);
           }
         }
       );

@@ -56,7 +56,7 @@ const controller = {
             Stuff: stuff,
             user: result[0].id,
             StateM: result[0].Admin,
-            code: JSON.parse(result[0].coupons).length,
+            code: result[0].coupons.length,
           });
         } else {
           res.json({
@@ -170,25 +170,49 @@ const controller = {
   },
   getCouponsPage: (req, res) => {
     const user = req.params.user;
-    db.query("SELECT coupons FROM Users WHERE id=?", [user], (err, result) => {
-      if (err) throw err;
-      res.render("User/coupon", { coupons: result[0].coupons });
-    });
+    db.query(
+      "SELECT coupons FROM Users WHERE id=?;SELECT code,value,number FROM `Referral_Link` WHERE user=?",
+      [user, user],
+      (err, result) => {
+        if (err) throw err;
+        res.render("User/coupon", {
+          coupons: result[0],
+          refCode: result[1],
+        });
+      }
+    );
   },
   makeRef: (req, res) => {
     const user = req.body.user;
     const userId = user.slice(0, 8);
     const random = Math.floor(Math.random() * 1000000);
+    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     const discountCode = userId + "_" + random;
-    const date = Date.now();
+    const year = new Date().getUTCFullYear();
+    const month = new Date().getUTCMonth();
+    const day = new Date().getUTCDate();
+    const date = new Date(`${year}-${months[month]}-${day}`);
     db.query(
-      "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `number`, `value`) VALUES (?,?,?,?,?)",
-      [user, date, discountCode, 0, 10],
+      "SELECT user FROM `Referral_Link` WHERE user=?",
+      [user],
       (err, result) => {
         if (err) throw err;
-        res.json({
-          refCode: discountCode,
-        });
+        if (result.length > 0) {
+          res.json({
+            refCode: "",
+          });
+        } else {
+          db.query(
+            "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `number`, `value`) VALUES (?,?,?,?,?)",
+            [user, date, discountCode, 0, 10],
+            (err, result) => {
+              if (err) throw err;
+              res.json({
+                refCode: discountCode,
+              });
+            }
+          );
+        }
       }
     );
   },

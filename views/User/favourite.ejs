@@ -13,7 +13,7 @@
       localStorage.setItem("favlist", "<%=length%>");
     </script>
   </head>
-  <body>
+  <body onload="cartLen()">
     <%- include('../components/nav') %>
     <div class="container">
       <% if (products.length > 0) { %> <% for(let i = 0; i < products.length;
