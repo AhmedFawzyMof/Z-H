@@ -203,8 +203,8 @@ const controller = {
           });
         } else {
           db.query(
-            "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `number`, `value`) VALUES (?,?,?,?,?)",
-            [user, date, discountCode, 0, 10],
+            "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `value`) VALUES (?,?,?,?)",
+            [user, date, discountCode, 10],
             (err, result) => {
               if (err) throw err;
               res.json({
