@@ -171,7 +171,7 @@ const controller = {
   getCouponsPage: (req, res) => {
     const user = req.params.user;
     db.query(
-      "SELECT coupons FROM Users WHERE id=?;SELECT code,value,number FROM `Referral_Link` WHERE user=?",
+      "SELECT coupons FROM Users WHERE id=?;SELECT code,value FROM `Referral_Link` WHERE user=?",
       [user, user],
       (err, result) => {
         if (err) throw err;
