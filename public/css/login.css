@@ -67,6 +67,19 @@ a {
   cursor: pointer;
 }
 
+#myForm .input p {
+  height: 35px;
+  border-radius: 5px;
+  padding: 0 2.5px;
+  border: none;
+  font-family: Roboto, Cairo;
+  cursor: pointer;
+  background: #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 280px) {
   .container form .input {
     width: 260px;

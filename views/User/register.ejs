@@ -38,8 +38,29 @@
           <label>تأكيد كلمة المرور:</label>
           <input id="pass2" type="password" required name="password2" />
         </div>
+        <div
+          class="input"
+          style="
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            justify-content: space-between;
+            direction: rtl;
+          "
+        >
+          <label for="terms"
+            >أوافق على <a href="/users/info/terms">الشروط والأحكام</a></label
+          >
+          <input
+            type="checkbox"
+            id="terms"
+            name="terms"
+            value="yes"
+            style="width: 20px"
+          />
+        </div>
         <div class="input">
-          <button>تسجيل حساب</button>
+          <button id="submit">تسجيل حساب</button>
         </div>
         <p>لديك حساب ؟ قم ب<a href="/user/info/login">تسجيل الدخول</a></p>
       </form>

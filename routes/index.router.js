@@ -17,6 +17,7 @@ router.get("/zh/info/about", UserController.about);
 router.get("/zh/info/contact_us", UserController.contactus);
 router.get("/user/info/register", UserController.getRegister);
 router.get("/pay/info/cash_on_delivery", OrderController.getCash);
+router.get("/users/info/terms", UserController.getTerms);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);
 router.get("/pay/info/success", OrderController.getSuccess);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);

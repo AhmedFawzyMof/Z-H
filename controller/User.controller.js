@@ -8,34 +8,48 @@ const controller = {
     const email = req.body.email;
     const password = req.body.password;
     const password2 = req.body.password2;
-    const coupons =
-      '[{"code": "13102019","value":10},{"code":"80402002","value":15},{"code":"29072002","value":20}]';
-    if (password != password2) {
-      res.json({ success: 0, message: "كلمات السر لا تتطابق" });
-    } else {
-      db.query(
-        "SELECT * FROM `Users` WHERE email = ?",
-        [email],
-        (err, result) => {
-          if (err) throw err;
-          if (result.length > 0) {
-            res.json({ success: 0, message: "البريد الإلكتروني مسجل بالفعل" });
-          } else {
-            const pass = crypto.createHmac("sha256", password).digest("hex");
-            const id = uuidv4();
-            db.query(
-              "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
-              [id, name, email, pass, coupons],
-              (err, result) => {
-                if (err) throw err;
-                res.json({
-                  success: 1,
-                });
-              }
-            );
+    const terms = req.body.terms;
+    if (terms === "yes") {
+      const coupons = [
+        { code: "13102019", value: 10 },
+        { code: "80402002", value: 15 },
+        { code: "29072002", value: 20 },
+      ];
+      if (password != password2) {
+        res.json({ success: 0, message: "كلمات السر لا تتطابق" });
+      } else {
+        db.query(
+          "SELECT * FROM `Users` WHERE email = ?",
+          [email],
+          (err, result) => {
+            if (err) throw err;
+            if (result.length > 0) {
+              res.json({
+                success: 0,
+                message: "البريد الإلكتروني مسجل بالفعل",
+              });
+            } else {
+              const pass = crypto.createHmac("sha256", password).digest("hex");
+              const id = uuidv4();
+              db.query(
+                "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
+                [id, name, email, pass, JSON.stringify(coupons)],
+                (err, result) => {
+                  if (err) throw err;
+                  res.json({
+                    success: 1,
+                  });
+                }
+              );
+            }
           }
-        }
-      );
+        );
+      }
+    } else {
+      res.json({
+        success: 0,
+        message: "لا يمكن التسجيل دون الموافقة على الشروط والأحكام",
+      });
     }
   },
   Login: (req, res) => {
@@ -319,6 +333,9 @@ const controller = {
         }
       }
     );
+  },
+  getTerms: (req, res) => {
+    res.render("termandcondtions");
   },
 };
 module.exports = controller;
