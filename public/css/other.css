@@ -37,6 +37,7 @@ body {
   background: #fff;
   padding: 5px;
   border-radius: 5px;
+  margin-bottom: 20px;
 }
 .container form input {
   margin: 10px 0;

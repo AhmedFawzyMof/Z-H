@@ -25,7 +25,7 @@ const controller = {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
         if (result.length > 0) {
-          const coupons = JSON.parse(result[0].coupons);
+          const coupons = result[0].coupons;
           coupons.forEach((coupon, index) => {
             if (coupon.value === JSON.parse(discount)) {
               coupons.splice(index, 1);

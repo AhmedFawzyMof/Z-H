@@ -62,13 +62,13 @@ const controller = {
       (err, result) => {
         if (err) throw err;
         let stuff = false;
-        const coupons = result[0].coupons;
-        const id = result[0].id;
-        const TheUser = result[0];
-        if (result[0].Stuff !== 0) {
-          stuff = true;
-        }
         if (result.length > 0) {
+          const coupons = result[0].coupons;
+          const id = result[0].id;
+          const TheUser = result[0];
+          if (result[0].Stuff !== 0) {
+            stuff = true;
+          }
           if (code !== "") {
             db.query(
               "SELECT * FROM `Referral_Link` WHERE code=?",
@@ -270,9 +270,9 @@ const controller = {
     if (user !== "noToken") {
       db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
         if (err) throw err;
-        if (JSON.parse(result[0].coupons).length > 0) {
+        if (result[0].coupons.length > 0) {
           res.json({
-            success: JSON.parse(result[0].coupons).length,
+            success: result[0].coupons.length,
           });
         } else {
           res.json({
@@ -336,6 +336,26 @@ const controller = {
   },
   getTerms: (req, res) => {
     res.render("termandcondtions");
+  },
+  getDelUser: (req, res) => {
+    res.render("delUser");
+  },
+  delUser: (req, res) => {
+    const email = req.body.email;
+    db.query("DELETE FROM Users WHERE email =?", [email], (err, result) => {
+      if (err) throw err;
+      if (result.length > 0) {
+        res.json({
+          success: 1,
+          message: "تم حذف حسابك بنجاح",
+        });
+      } else {
+        res.json({
+          success: 0,
+          message: "آسف لا يوجد حساب مع هذا البريد الإلكتروني",
+        });
+      }
+    });
   },
 };
 module.exports = controller;
