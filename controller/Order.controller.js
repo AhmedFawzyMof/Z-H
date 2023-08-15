@@ -45,7 +45,7 @@ const controller = {
               paid,
               total,
               date,
-              JSON.stringify(JSON.parse(cart)),
+              cart,
               where,
               discount,
               JSON.stringify(coupons),
