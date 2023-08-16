@@ -4,38 +4,37 @@ const promisePool = db.promise();
 
 const controller = {
   addOne: async (req, res) => {
-    const where = req.body.where;
-    const addrSt = req.body.addrSt;
-    const addrB = req.body.addrB;
-    const addrF = req.body.addrF;
-    const phone = req.body.phone;
-    const phone2 = req.body.phone2;
-    const user = req.body.user;
-    const total = req.body.total;
-    const cart = req.body.cart;
-    const delivered = req.body.delivered;
-    const paid = req.body.paid;
-    const discount = req.body.discount;
+    const {
+      where,
+      addrSt,
+      addrB,
+      addrF,
+      phone,
+      phone2,
+      user,
+      total,
+      cart,
+      delivered,
+      paid,
+      discount,
+    } = req.body;
     const id = uuidv4();
     const date = new Date();
     const ph = phone.toString();
     const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
-      const [r1, f1] = await promisePool.query(
+      const [rows, fields] = await promisePool.query(
         "SELECT coupons FROM Users WHERE id = ?",
         [user]
       );
-
-      console.log(r1);
-
-      let coupons = r1[0].coupons;
+      let coupons = rows[0].coupons;
       coupons.forEach((coupon, index) => {
-        if (JSON.stringify(coupon) == discount) {
+        if (JSON.stringify(coupon) === discount) {
           coupons.splice(index, 1);
         }
       });
-      const [r2, f2] = await promisePool.query(
-        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+      const [rows2, fields2] = await promisePool.query(
+        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
           user,
@@ -48,34 +47,28 @@ const controller = {
           paid,
           total,
           date,
-          cart,
+          JSON.stringify(JSON.parse(cart)),
           where,
           discount,
         ]
       );
-      console.log(r2);
-
-      const [r3, f3] = await promisePool.query(
-        "UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
+      const [rows3, fields3] = await promisePool.query(
+        "UPDATE `Users` SET `coupons`= ? WHERE id = ?",
         [JSON.stringify(coupons), user]
       );
-      console.log(r3);
 
-      res.send(
-        `
-          <script>
-            localStorage.setItem("cart","[]")
-            localStorage.removeItem("coupon")
-            localStorage.removeItem("disCount")
-            location.replace("/pay/info/success");
-            location.reload();
-          </script>
-        `
-      );
+      res.send(`
+        <script>
+          localStorage.setItem("cart","[]")
+          localStorage.removeItem("coupon")
+          localStorage.removeItem("disCount")
+          location.replace("/pay/info/success");
+        </script>`);
     } else {
       res.redirect("/");
     }
   },
+
   getSuccess: (req, res) => {
     res.render("Checkout/success");
   },
