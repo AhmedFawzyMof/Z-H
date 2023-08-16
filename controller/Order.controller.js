@@ -4,20 +4,18 @@ const promisePool = db.promise();
 
 const controller = {
   addOne: async (req, res) => {
-    const {
-      where,
-      addrSt,
-      addrB,
-      addrF,
-      phone,
-      phone2,
-      user,
-      total,
-      cart,
-      delivered,
-      paid,
-      discount,
-    } = req.body;
+    const where = req.body.where;
+    const addrSt = req.body.addrSt;
+    const addrB = req.body.addrB;
+    const addrF = req.body.addrF;
+    const phone = req.body.phone;
+    const phone2 = req.body.phone2;
+    const user = req.body.user;
+    const total = req.body.total;
+    const cart = req.body.cart;
+    const delivered = req.body.delivered;
+    const paid = req.body.paid;
+    const discount = req.body.discount;
     const id = uuidv4();
     const date = new Date();
     const ph = phone.toString();
@@ -27,6 +25,8 @@ const controller = {
         "SELECT coupons FROM Users WHERE id = ?",
         [user]
       );
+
+      console.log(r1);
 
       let coupons = r1[0].coupons;
       coupons.forEach((coupon, index) => {
@@ -53,10 +53,13 @@ const controller = {
           discount,
         ]
       );
+      console.log(r2);
+
       const [r3, f3] = await promisePool.query(
         "UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
         [JSON.stringify(coupons), user]
       );
+      console.log(r3);
 
       res.send(
         `
