@@ -5,7 +5,7 @@ let disCount;
 if (localStorage.getItem("disCount")) {
   disCount = JSON.parse(localStorage.getItem("disCount"));
 } else {
-  disCount = 0;
+  disCount = { code: "", value: 0 };
 }
 function calContainer() {
   function getTotal() {
@@ -17,7 +17,7 @@ function calContainer() {
       return prev + next;
     }, 0);
 
-    let total = sum - disCount;
+    let total = sum - disCount.value;
     if (total < 0) {
       total = sum;
     } else if (total == NaN) {

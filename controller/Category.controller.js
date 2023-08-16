@@ -1,111 +1,110 @@
 const db = require("../db/index");
 const fs = require("fs");
+const promisePool = db.promise();
 
 const controller = {
-  addOne: (req, res) => {
+  addOne: async (req, res) => {
     const { name } = req.body;
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "INSERT INTO `Categories` (`name`) VALUES (?)",
-      [name],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [name]
+    );
+    res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
   },
-  getProducts: (req, res) => {
-    const subcategory = req.params.subcategory;
-    db.query(
-      //SELECT * FROM `Categories`
+  getProducts: async (req, res) => {
+    const compony = req.params.subcategory;
+    const [rows, fields] = await promisePool.query(
       "SELECT * FROM `Products` WHERE compony = ?;",
-      [subcategory],
-      (err, result) => {
-        if (err) throw err;
-        console.log(result.length);
-        if (result.length == 0) {
-          res.render("Product", {
-            products: [],
-            subcate: subcategory,
-          });
-        } else {
-          res.render("Product", {
-            products: result,
-            subcate: subcategory,
-          });
-        }
-      }
+      [compony]
     );
-  },
-  getProductsByCate: (req, res) => {
-    const { compony, category } = req.body;
-    db.query(
-      "SELECT * FROM `Products` WHERE (compony, category) = (?, ?); SELECT * FROM `Categories`",
-      [compony, category],
-      (err, result) => {
-        if (err) throw err;
-        if (result[0].length > 0) {
-          res.render("Product", {
-            products: result[0],
-            subcate: compony,
-            categories: result[1],
-          });
-        } else {
-          res.render("Product", {
-            products: [],
-            subcate: compony,
-            categories: result[1],
-          });
-        }
-      }
-    );
-  },
-  getAll: (req, res) => {
-    db.query(
-      "SELECT * FROM `Componies` ORDER BY soon ASC;SELECT * FROM `Offer`;SELECT * FROM Categories",
-      (err, result) => {
-        if (err) throw err;
-        res.render("index", {
-          categories: result[2],
-          category: result[0],
-          offers: result[1],
+    switch (rows.length) {
+      case 0:
+        res.render("Product", {
+          products: [],
+          subcate: compony,
         });
-      }
-    );
+        break;
+      default:
+        res.render("Product", {
+          products: rows,
+          subcate: compony,
+        });
+        break;
+    }
   },
-  editCategory: (req, res) => {
+  getProductsByCate: async (req, res) => {
+    const { compony, category } = req.body;
+    const [rows, fields] = await promisePool.query(
+      "SELECT * FROM `Products` WHERE (compony, category) = (?, ?); SELECT * FROM `Categories`",
+      [compony, category]
+    );
+    let products = [];
+    let categories = [];
+    switch (rows[0].length) {
+      case 0:
+        categories = rows[1];
+        res.render("Product", {
+          products: products,
+          subcate: compony,
+          categories: categories,
+        });
+        break;
+      default:
+        products = rows[0];
+        categories = rows[1];
+        res.render("Product", {
+          products: products,
+          subcate: compony,
+          categories: categories,
+        });
+        break;
+    }
+  },
+  getAll: async (req, res) => {
+    const [rows, fields] = await promisePool.query(
+      "SELECT name,image,soon FROM `Componies` ORDER BY soon ASC;SELECT * FROM `Offer`;SELECT name FROM Categories;"
+    );
+    const companies = rows[0];
+    const categories = rows[2];
+    const offers = rows[1];
+
+    res.render("index", {
+      categories: categories,
+      category: companies,
+      offers: offers,
+    });
+  },
+  editCategory: async (req, res) => {
     const { categoryid, name } = req.body;
-    console.log(req.body);
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "UPDATE `category` SET  `name_ar` = ? WHERE `category`.`id` = ?",
-      [name, categoryid],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [name, categoryid]
+    );
+    res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
   },
-  getCategory: (req, res) => {
+  getCategory: async (req, res) => {
     const category = req.body.category;
-    db.query(
-      "SELECT * FROM `Products` WHERE category = ?;SELECT * FROM `Offer`;SELECT * FROM Categories",
-      [category],
-      (err, result) => {
-        if (err) throw err;
-        res.render("category", {
-          categories: result[2],
-          category: result[0],
-          offers: result[1],
-        });
-      }
+    const [rows, fields] = await promisePool.query(
+      "SELECT * FROM `Products` WHERE category = ?;SELECT * FROM `Offer`;SELECT name FROM Categories;",
+      [category]
     );
+    const products = rows[0];
+    const categories = rows[2];
+    const offers = rows[1];
+
+    res.render("category", {
+      categories: categories,
+      category: products,
+      offers: offers,
+    });
   },
 };
 

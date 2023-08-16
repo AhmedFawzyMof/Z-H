@@ -1,8 +1,9 @@
 const db = require("../db/index");
 const { v4: uuidv4 } = require("uuid");
+const promisePool = db.promise();
 
 const controller = {
-  addOne: (req, res) => {
+  addOne: async (req, res) => {
     const {
       where,
       addrSt,
@@ -22,48 +23,52 @@ const controller = {
     const ph = phone.toString();
     const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
-      db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
-        if (err) throw err;
-        if (result.length > 0) {
-          const coupons = result[0].coupons;
-          coupons.forEach((coupon, index) => {
-            if (coupon.value === JSON.parse(discount)) {
-              coupons.splice(index, 1);
-            }
-          });
-          db.query(
-            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
-            [
-              id,
-              user,
-              addrSt,
-              addrB,
-              addrF,
-              ph,
-              sph,
-              delivered,
-              paid,
-              total,
-              date,
-              cart,
-              where,
-              discount,
-              JSON.stringify(coupons),
-              user,
-            ],
-            (err, result) => {
-              if (err) throw err;
-              res.send(`
+      const [r1, f1] = await promisePool.query(
+        "SELECT coupons FROM Users WHERE id = ?",
+        [user]
+      );
+
+      let coupons = r1[0].coupons;
+      coupons.forEach((coupon, index) => {
+        if (JSON.stringify(coupon) == discount) {
+          coupons.splice(index, 1);
+        }
+      });
+      const [r2, f2] = await promisePool.query(
+        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);",
+        [
+          id,
+          user,
+          addrSt,
+          addrB,
+          addrF,
+          ph,
+          sph,
+          delivered,
+          paid,
+          total,
+          date,
+          cart,
+          where,
+          discount,
+        ]
+      );
+      const [r3, f3] = await promisePool.query(
+        "UPDATE `Users` SET coupons= ? WHERE Users.id= ?",
+        [JSON.stringify(coupons), user]
+      );
+
+      res.send(
+        `
           <script>
             localStorage.setItem("cart","[]")
             localStorage.removeItem("coupon")
             localStorage.removeItem("disCount")
             location.replace("/pay/info/success");
-          </script>`);
-            }
-          );
-        }
-      });
+            location.reload();
+          </script>
+        `
+      );
     } else {
       res.redirect("/");
     }
@@ -71,70 +76,65 @@ const controller = {
   getSuccess: (req, res) => {
     res.render("Checkout/success");
   },
-  getOrderHistory: (req, res) => {
+  getOrderHistory: async (req, res) => {
     const userId = req.params.userId;
     const name = {};
-    db.query(
+    const [r1, f1] = await promisePool.query(
       "SELECT username,email FROM Users WHERE id = ?",
-      [userId],
-      (err, result) => {
-        if (err) throw err;
-        if (result.length > 0) {
-          Object.assign(name, result[0]);
-          db.query(
-            "SELECT * FROM TheOrders WHERE user = ?",
-            [userId],
-            (err, result) => {
-              if (err) throw err;
-
-              res.render("Checkout/orderhistory", {
-                orders: result,
-                name: name,
-              });
-            }
-          );
-        }
-      }
+      [userId]
     );
+    Object.assign(name, r1[0]);
+    console.log(name);
+    const [r2, f2] = await promisePool.query(
+      "SELECT * FROM TheOrders WHERE user = ?",
+      [userId]
+    );
+
+    res.render("Checkout/orderhistory", {
+      orders: r2,
+      name: name,
+    });
   },
   getCash: (req, res) => {
     res.render("Checkout/cash.ejs");
   },
-  editDelivered: (req, res) => {
+  editDelivered: async (req, res) => {
     const { id, isDelivered } = req.body;
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?",
-      [isDelivered, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [isDelivered, id]
+    );
+
+    res.send(
+      `
         <script>
           window.history.back();
           location.reload()
-        </script>`);
-      }
+        </script>
+      `
     );
   },
-  editPaid: (req, res) => {
+  editPaid: async (req, res) => {
     const { id, isPaid } = req.body;
-    db.query(
-      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?",
-      [isPaid, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
-      <script>
-        window.history.back();
-        location.reload()
-      </script>`);
-      }
+    const [rows, fields] = await promisePool.query(
+      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?",
+      [isPaid, id]
+    );
+
+    res.send(
+      `
+        <script>
+          window.history.back();
+          location.reload()
+        </script>
+      `
     );
   },
-  getCreditCard: (req, res) => {
-    res.render("Checkout/paypal", {
-      paypalClientId: process.env.PAYPAL_CLIENT_ID,
-    });
-  },
+  // getCreditCard: (req, res) => {
+  //   res.render("Checkout/paypal", {
+  //     paypalClientId: process.env.PAYPAL_CLIENT_ID,
+  //   });
+  // },
   postPaypal: (req, res) => {
     console.log(req);
   },

@@ -1,9 +1,10 @@
 const db = require("../db/index");
 const { v4: uuidv4 } = require("uuid");
 const crypto = require("crypto");
+const promisePool = db.promise();
 
 const controller = {
-  Register: (req, res) => {
+  Register: async (req, res) => {
     const name = req.body.name;
     const email = req.body.email;
     const password = req.body.password;
@@ -18,32 +19,26 @@ const controller = {
       if (password != password2) {
         res.json({ success: 0, message: "كلمات السر لا تتطابق" });
       } else {
-        db.query(
+        const [rows, fields] = await promisePool.query(
           "SELECT * FROM `Users` WHERE email = ?",
-          [email],
-          (err, result) => {
-            if (err) throw err;
-            if (result.length > 0) {
-              res.json({
-                success: 0,
-                message: "البريد الإلكتروني مسجل بالفعل",
-              });
-            } else {
-              const pass = crypto.createHmac("sha256", password).digest("hex");
-              const id = uuidv4();
-              db.query(
-                "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
-                [id, name, email, pass, JSON.stringify(coupons)],
-                (err, result) => {
-                  if (err) throw err;
-                  res.json({
-                    success: 1,
-                  });
-                }
-              );
-            }
-          }
+          [email]
         );
+        if (rows.length > 0) {
+          res.json({
+            success: 0,
+            message: "البريد الإلكتروني مسجل بالفعل",
+          });
+        } else {
+          const pass = crypto.createHmac("sha256", password).digest("hex");
+          const id = uuidv4();
+          const [rows, fields] = await promisePool.query(
+            "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
+            [id, name, email, pass, JSON.stringify(coupons)]
+          );
+          res.json({
+            success: 1,
+          });
+        }
       }
     } else {
       res.json({
@@ -52,122 +47,100 @@ const controller = {
       });
     }
   },
-  Login: (req, res) => {
+  Login: async (req, res) => {
     const { email, password, code } = req.body;
-    console.log(req.body);
     const pass = crypto.createHmac("sha256", password).digest("hex");
-    db.query(
+
+    const [r1, f1] = await promisePool.query(
       "SELECT id,Admin,Stuff,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
-      [email, pass],
-      (err, result) => {
-        if (err) throw err;
-        let stuff = false;
-        if (result.length > 0) {
-          const coupons = result[0].coupons;
-          const id = result[0].id;
-          const TheUser = result[0];
-          if (result[0].Stuff !== 0) {
-            stuff = true;
-          }
-          if (code !== "") {
-            db.query(
-              "SELECT * FROM `Referral_Link` WHERE code=?",
-              [code],
-              (err, result) => {
-                if (err) throw err;
-                const value = result[0].value;
-                const CodeUser = result[0].user;
-                if (CodeUser == id) {
-                  res.json({
-                    success: 1,
-                    Stuff: stuff,
-                    user: TheUser.id,
-                    StateM: TheUser.Admin,
-                    code: coupons.length,
-                  });
-                } else if (result[0].users == null) {
-                  users = [];
-                  users.push(id);
-                  db.query(
-                    "SELECT coupons FROM `Users` WHERE id=?",
-                    [result[0].user],
-                    (err, result) => {
-                      result[0].coupons.push({ code: code, value: value });
-                      db.query(
-                        "UPDATE `Users` SET `coupons`=? WHERE id=?",
-                        [JSON.stringify(result[0].coupons), CodeUser],
-                        (err, result) => {
-                          return;
-                        }
-                      );
-                      db.query(
-                        "UPDATE `Users` SET `coupons`=? WHERE id=?",
-                        [JSON.stringify(result[0].coupons), id],
-                        (err, result) => {
-                          return;
-                        }
-                      );
-                    }
-                  );
-                  db.query(
-                    "UPDATE `Referral_Link` SET `users`=? WHERE code =?",
-                    [JSON.stringify(users), code],
-                    (err, result) => {
-                      if (err) throw err;
-                      res.json({
-                        success: 1,
-                        Stuff: stuff,
-                        user: TheUser.id,
-                        StateM: TheUser.Admin,
-                        code: coupons.length,
-                      });
-                    }
-                  );
-                } else if (result[0].users.length > 0) {
-                  users = result[0].users;
-                  const theUser = [];
-                  users.forEach((use) => {
-                    if (use == id) {
-                      theUser.push(use);
-                    }
-                  });
-                  if (theUser[0] == id) {
-                    console.log(theUser);
-                    console.log();
-                    res.json({
-                      success: 1,
-                      Stuff: stuff,
-                      user: TheUser.id,
-                      StateM: TheUser.Admin,
-                      code: coupons.length,
-                    });
-                  } else {
-                    db.query(
-                      "SELECT coupons FROM `Users` WHERE id=?",
-                      [result[0].user],
-                      (err, result) => {
-                        result[0].coupons.push({ code: code, value: value });
-                        db.query(
-                          "UPDATE `Users` SET `coupons`=? WHERE id=?",
-                          [JSON.stringify(result[0].coupons), id],
-                          (err, result) => {
-                            return;
-                          }
-                        );
-                        res.json({
-                          success: 1,
-                          Stuff: stuff,
-                          user: TheUser.id,
-                          StateM: TheUser.Admin,
-                          code: coupons.length,
-                        });
-                      }
-                    );
-                  }
-                }
-              }
-            );
+      [email, pass]
+    );
+    if (r1.length > 0) {
+      let stuff = false;
+      let coupons = r1[0].coupons;
+      const id = r1[0].id;
+      const TheUser = r1[0];
+      let users = [];
+      if (r1[0].Stuff !== 0) {
+        stuff = true;
+      }
+      if (code !== "") {
+        const [r2, f2] = await promisePool.query(
+          "SELECT * FROM `Referral_Link` WHERE code=?",
+          [code]
+        );
+        const value = r2[0].value;
+        const CodeUser = r2[0].user;
+        if (CodeUser == id) {
+          res.json({
+            success: 1,
+            Stuff: stuff,
+            user: TheUser.id,
+            StateM: TheUser.Admin,
+            code: coupons.length,
+          });
+        }
+        if (r2[0].users == null) {
+          users.push(id);
+          const [r3, f3] = await promisePool.query(
+            "SELECT coupons FROM `Users` WHERE id=?",
+            [CodeUser]
+          );
+
+          r3[0].coupons.push({ code: code, value: value });
+          const [r4, f4] = await promisePool.query(
+            db.query("UPDATE `Users` SET `coupons`=? WHERE id=?", [
+              JSON.stringify(r3[0].coupons),
+              CodeUser,
+            ])
+          );
+
+          coupons.push({ code: code, value: value });
+          const [r5, f5] = await promisePool.query(
+            "UPDATE `Users` SET `coupons`=? WHERE id=?",
+            [JSON.stringify(coupons), id]
+          );
+
+          const [r6, f6] = await promisePool.query(
+            "UPDATE `Referral_Link` SET `users`=? WHERE code =?",
+            [JSON.stringify(users), code]
+          );
+
+          res.json({
+            success: 1,
+            Stuff: stuff,
+            user: TheUser.id,
+            StateM: TheUser.Admin,
+            code: coupons.length,
+          });
+        }
+        if (result[0].users.length > 0) {
+          users = result[0].users;
+          const theUser = [];
+          users.forEach((use) => {
+            if (use == id) {
+              theUser.push(use);
+            }
+          });
+          if (theUser[0] == id) {
+            res.json({
+              success: 1,
+              Stuff: stuff,
+              user: TheUser.id,
+              StateM: TheUser.Admin,
+              code: coupons.length,
+            });
           } else {
+            const [r7, f7] = await promisePool.query(
+              "SELECT coupons FROM `Users` WHERE id=?",
+              [id]
+            );
+            r7[0].coupons.push({ code: code, value: value });
+            const [r8, f8] = await promisePool.query(
+              "UPDATE `Users` SET `coupons`=? WHERE id=?",
+              [JSON.stringify(r7[0].coupons), id]
+            );
+
             res.json({
               success: 1,
               Stuff: stuff,
@@ -176,14 +149,22 @@ const controller = {
               code: coupons.length,
             });
           }
-        } else {
-          res.json({
-            success: 0,
-            message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
-          });
         }
+      } else {
+        res.json({
+          success: 1,
+          Stuff: stuff,
+          user: TheUser.id,
+          StateM: TheUser.Admin,
+          code: coupons.length,
+        });
       }
-    );
+    } else {
+      res.json({
+        success: 0,
+        message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
+      });
+    }
   },
   getLogin: (req, res) => {
     res.render("User/login.ejs");
@@ -191,19 +172,19 @@ const controller = {
   getRegister: (req, res) => {
     res.render("User/register");
   },
-  editManger: (req, res) => {
+  editManger: async (req, res) => {
     const { id, isManger } = req.body;
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "UPDATE `Users` SET `Admin` = ? WHERE `Users`.`id` = ?",
-      [isManger, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [isManger, id]
+    );
+    res.send(
+      `
         <script>
           window.history.back();
           location.reload()
-        </script>`);
-      }
+        </script>
+      `
     );
   },
   about: (req, res) => {
@@ -212,31 +193,31 @@ const controller = {
   contactus: (req, res) => {
     res.render("contactus");
   },
-  contact: (req, res) => {
+  contact: async (req, res) => {
     const { name, email, phone, message } = req.body;
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "INSERT INTO `Contact` (`name`, `email`, `phone`, `message`) VALUES (?, ?, ?, ?)",
-      [name, email, phone, message],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [name, email, phone, message]
+    );
+
+    res.send(`
         <script>
         location.replace('/info/contact_us/success')
         </script>`);
-      }
-    );
   },
   contact_success: (req, res) => {
     res.render("contact_success");
   },
-  getProfile: (req, res) => {
+  getProfile: async (req, res) => {
     const userId = req.params.userId;
-    db.query("SELECT * FROM Users WHERE id = ?", [userId], (err, result) => {
-      if (err) throw err;
-      res.render("User/profile", { profile: result[0] });
-    });
+    const [rows, fields] = await promisePool.query(
+      "SELECT * FROM Users WHERE id = ?",
+      [userId]
+    );
+    res.render("User/profile", { profile: rows[0] });
   },
-  editProfile: (req, res) => {
+  editProfile: async (req, res) => {
     const { id, name, email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
     if (id === "") {
@@ -251,54 +232,48 @@ const controller = {
       res.render("Err/profile", { err: "كلمة المرور مفقودة" });
     } else {
       console.log("ok");
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "UPDATE `Users` SET `username` = ?, `email` = ?, `password` = ? WHERE `Users`.`id` = ?",
-        [name, email, pass, id],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
-          <script>
-            window.history.back();
-            location.reload()
-          </script>`);
-        }
+        [name, email, pass, id]
       );
+      res.send(`
+      <script>
+        window.history.back();
+        location.reload()
+      </script>`);
     }
   },
-  getCoupon: (req, res) => {
+  getCoupon: async (req, res) => {
     const user = req.body.user;
     if (user !== "noToken") {
-      db.query("SELECT * FROM Users WHERE id = ?", [user], (err, result) => {
-        if (err) throw err;
-        if (result[0].coupons.length > 0) {
-          res.json({
-            success: result[0].coupons.length,
-          });
-        } else {
-          res.json({
-            success: 0,
-          });
-        }
-      });
+      const [rows, fields] = await promisePool.query(
+        "SELECT * FROM Users WHERE id = ?",
+        [user]
+      );
+      if (rows[0].coupons.length > 0) {
+        res.json({
+          success: rows[0].coupons.length,
+        });
+      } else {
+        res.json({
+          success: 0,
+        });
+      }
     } else {
       res.json({
         success: 0,
       });
     }
   },
-  getCouponsPage: (req, res) => {
+  getCouponsPage: async (req, res) => {
     const user = req.params.user;
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "SELECT coupons FROM Users WHERE id=?;",
-      [user, user],
-      (err, result) => {
-        if (err) throw err;
-        console.log(result);
-        res.render("User/coupon", {
-          coupons: result,
-        });
-      }
+      [user]
     );
+    res.render("User/coupon", {
+      coupons: rows,
+    });
   },
   makeRef: (req, res) => {
     const user = req.body.user;

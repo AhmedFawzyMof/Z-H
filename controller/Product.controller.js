@@ -1,8 +1,9 @@
 const db = require("../db/index");
+const promisePool = db.promise();
 // const fs = require("fs");
 
 const controller = {
-  addOne: (req, res) => {
+  addOne: async (req, res) => {
     const { category, subcategory, name_ar, dis_ar, price, image } = req.body;
     // const images = "/img/product/" + name_ar + ".png";
     // let base64Image = image.split(";base64,").pop();
@@ -14,20 +15,21 @@ const controller = {
     //     console.log("File created");
     //   }
     // );
-    db.query(
+    const [rows, fields] = await promisePool.query(
       "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`) VALUES ( ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, image],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
-    <script>
-      window.history.back();
-      location.reload()
-    </script>`);
-      }
+      [name_ar, dis_ar, category, subcategory, price, image]
+    );
+
+    res.send(
+      `
+        <script>
+          window.history.back();
+          location.reload()
+        </script>
+      `
     );
   },
-  addOffer: (req, res) => {
+  addOffer: async (req, res) => {
     const body = req.body;
     // const images = "/img/offer/" + product + ".png";
     // let base64Image = image.split(";base64,").pop();
@@ -40,17 +42,17 @@ const controller = {
     //   }
     // );
     if (body.product !== "") {
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "INSERT INTO `Offer` ( `product`,  `image` ) VALUES (?,?)",
-        [body.product, body.image],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
-    <script>
-      window.history.back();
-      location.reload()
-    </script>`);
-        }
+        [body.product, body.image]
+      );
+      res.send(
+        `
+          <script>
+            window.history.back();
+            location.reload()
+          </script>
+        `
       );
     }
     if (body.compony !== "") {
@@ -68,53 +70,53 @@ const controller = {
       );
     }
   },
-  getOne: (req, res) => {
+  getOne: async (req, res) => {
     const { id } = req.params;
-    db.query("SELECT * FROM `Products` WHERE id = ?", id, (err, result) => {
-      if (err) throw err;
+    const [rows, fields] = await promisePool.query(
+      "SELECT * FROM `Products` WHERE id = ?",
+      [id]
+    );
 
-      res.render("Product/id", {
-        product: result[0],
-      });
+    const product = rows[0];
+    res.render("Product/id", {
+      product: product,
     });
   },
-  getCode: (req, res) => {
+  getCode: async (req, res) => {
     const { code, id } = req.body;
     const Id = JSON.parse(id);
     if (code !== "") {
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "SELECT coupons FROM `Users` WHERE id = ?",
-        [Id],
-        (err, result) => {
-          if (err) throw err;
-          const ress = result[0].coupons;
-          const coupon = [];
-          ress.forEach((Tcode) => {
-            if (Tcode.code === code.toLowerCase()) {
-              coupon.push(Tcode);
-            }
-          });
-          if (coupon.length !== 0) {
-            res.send(`
+        [Id]
+      );
+      const coupons = rows[0].coupons;
+      let coupon;
+      coupons.forEach((cou) => {
+        if (code == cou.code) {
+          coupon = cou;
+        }
+      });
+      const dis = { code: "", value: 0 };
+      if (coupon.length !== 0) {
+        res.send(`
            <script>
-           localStorage.setItem('disCount', '${coupon.value}')
+           localStorage.setItem('disCount', '${JSON.stringify(coupon)}')
            window.location.replace("/cart/show/items");
            </script>
            `);
-          } else {
-            res.send(`
+      } else {
+        res.send(`
             <script>
-            localStorage.setItem('disCount', '0')
+            localStorage.setItem('disCount', '${JSON.stringify(dis)}')
             window.location.replace("/cart/show/items");
             </script>
             `);
-          }
-        }
-      );
+      }
     } else {
       res.send(`
           <script>
-          localStorage.setItem('disCount', '0')
+          localStorage.setItem('disCount', '${JSON.stringify(dis)}')
           window.location.replace("/cart/show/items");
           </script>
           `);
@@ -123,202 +125,173 @@ const controller = {
   getCart: (req, res) => {
     res.render("cart.ejs");
   },
-  searchProduct: (req, res) => {
+  searchProduct: async (req, res) => {
     const Searchquery = req.body.search;
-    db.query(
-      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%'`,
-      (err, result) => {
-        if (err) throw err;
-        res.render("Product/search", {
-          SearchedProduct: result,
-          search: Searchquery,
-        });
-      }
+    const [rows, fields] = await promisePool.query(
+      `SELECT * FROM Products WHERE name LIKE '%${Searchquery}%'`
     );
+    res.render("Product/search", {
+      SearchedProduct: rows,
+      search: Searchquery,
+    });
   },
-  editProduct: (req, res) => {
+  editProduct: async (req, res) => {
     const body = req.body;
     const id = req.body.productid;
     if (body.price !== undefined) {
       const price = req.body.price;
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "UPDATE `Products` SET `price` = ? WHERE `Products`.`id` = ?",
-        [price, id],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
+        [price, id]
+      );
+      res.send(`
       <script>
         window.history.back();
         location.reload();
       </script>`);
-        }
-      );
     }
     if (body.available !== undefined) {
       const available = req.body.available;
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "UPDATE `Products` SET `available` = ? WHERE `Products`.`id` = ?",
-        [available, id],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
+        [available, id]
+      );
+      res.send(`
       <script>
         window.history.back();
         location.reload();
       </script>`);
-        }
-      );
     }
     if (body.cate !== undefined) {
       const cate = req.body.cate;
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "UPDATE `Products` SET `category` = ? WHERE `Products`.`id` = ?",
-        [cate, id],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
-      <script>
-        window.history.back();
-        location.reload();
-      </script>`);
-        }
+        [cate, id]
+      );
+      res.send(
+        `
+          <script>
+            window.history.back();
+            location.reload();
+          </script>
+        `
       );
     }
     if (body.compony !== undefined) {
       const compony = req.body.compony;
-      db.query(
+      const [rows, fields] = await promisePool.query(
         "UPDATE `Products` SET `compony` = ? WHERE `Products`.`id` = ?",
-        [compony, id],
-        (err, result) => {
-          if (err) throw err;
-          res.send(`
+        [compony, id]
+      );
+      res.send(`
       <script>
         window.history.back();
         location.reload();
       </script>`);
-        }
-      );
     }
   },
-  editOffer: (req, res) => {
+  editOffer: async (req, res) => {
     const { id, product } = req.body;
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "UPDATE `Offer` SET `product` = ? WHERE `Offer`.`id` = ?",
-      [image, product, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [product, id]
+    );
+    res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
   },
-  editPromo: (req, res) => {
+  editPromo: async (req, res) => {
     const { id, code, value } = req.body;
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "UPDATE `PromoCode` SET `code` = ?, `value` = ? WHERE `PromoCode`.`id` = ?",
-      [code, value, id],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [code, value, id]
+    );
+    res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
   },
-  fav: (req, res) => {
+  fav: async (req, res) => {
     const { user, product } = req.body;
-    db.query(
+    const [r1, f1] = await promisePool.query(
       "SELECT `product`, `user` FROM `favourite` WHERE user=?",
-      [user],
-      (err, result) => {
-        if (err) throw err;
-        const lengthR = result.length;
-        if (lengthR === 0) {
-          db.query(
-            "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
-            [product, user],
-            (err, result) => {
-              if (err) throw err;
-              res.json({
-                success: 1,
-                msg: "تم حفظ المنتج في قائمة المفضلة",
-                length: 1,
-              });
-            }
-          );
-        } else {
-          const Tproduct = {};
-          result.forEach((prod) => {
-            if (prod.product === JSON.parse(product)) {
-              Object.assign(Tproduct, prod);
-            }
-          });
-          if (Tproduct.product !== JSON.parse(product)) {
-            db.query(
-              "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
-              [product, user],
-              (err, result) => {
-                if (err) throw err;
-                res.json({
-                  success: 1,
-                  msg: "تم حفظ المنتج في قائمة المفضلة",
-                  length: lengthR + 1,
-                });
-              }
-            );
-          } else {
-            res.json({
-              success: 0,
-              msg: "المنتج موجود بالفعل في المفضلة",
-            });
-          }
-        }
-      }
+      [user]
     );
-  },
-  getfav: (req, res) => {
-    const userId = req.params.user;
-    db.query(
-      "SELECT * FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
-      [userId],
-      (err, result) => {
-        if (err) throw err;
-        res.render("User/favourite.ejs", {
-          products: result,
-          length: result.length,
+    if (r1.length == 0) {
+      const [r2, f2] = await promisePool.query(
+        "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
+        [product, user]
+      );
+
+      res.json({
+        success: 1,
+        msg: "تم حفظ المنتج في قائمة المفضلة",
+        length: 1,
+      });
+    } else {
+      let Product;
+      r1.forEach((prod) => {
+        if (prod.product === JSON.parse(product)) {
+          Product = prod;
+        }
+      });
+      if (Product.product !== JSON.parse(product)) {
+        const [r3, f3] = await promisePool.query(
+          "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
+          [product, user]
+        );
+        res.json({
+          success: 1,
+          msg: "تم حفظ المنتج في قائمة المفضلة",
+          length: lengthR + 1,
+        });
+      } else {
+        res.json({
+          success: 0,
+          msg: "المنتج موجود بالفعل في المفضلة",
         });
       }
-    );
+    }
   },
-  deleteFav: (req, res) => {
+  getfav: async (req, res) => {
+    const userId = req.params.user;
+    const [rows, fields] = await promisePool.query(
+      "SELECT * FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
+      [userId]
+    );
+    res.render("User/favourite.ejs", {
+      products: rows,
+      length: rows.length,
+    });
+  },
+  deleteFav: async (req, res) => {
     const { product, user, length } = req.body;
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "DELETE FROM favourite	WHERE (product,user) = (?,?)",
-      [product, user],
-      (err, result) => {
-        if (err) throw err;
-        if (length === "0") {
-          res.send(`
-        <script>
-        location.replace('/fav/show/${user}')
-        localStorage.setItem('favlist',${length})
-        </script>
-        `);
-        } else {
-          res.send(`
+      [product, user]
+    );
+
+    if (length === "0") {
+      res.send(`
+    <script>
+    location.replace('/fav/show/${user}')
+    localStorage.setItem('favlist',${length})
+    </script>
+    `);
+    } else {
+      res.send(`
         <script>
         location.replace('/fav/show/${user}')
         localStorage.setItem('favlist',${JSON.parse(length) - 1})
         </script>
         `);
-        }
-      }
-    );
+    }
   },
 };
 

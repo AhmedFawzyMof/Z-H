@@ -27,7 +27,10 @@
           <h3>تفاصيل الطلب</h3>
           <p>الاسم: <%= name.username %></p>
           <p>بريد إلكتروني: <%= name.email %></p>
-          <p>العنوان: <%= order.address %></p>
+          <p>
+            العنوان: ش<%= order.addrSt %> ع<%= order.addrB %> ط<%= order.addrF
+            %>
+          </p>
           <p>رقم الهاتف: <%= order.phone %></p>
           <p>هاتف احتياطي: <%= order.spare_phone %></p>
           <p>المجموع: <%= order.total %> ج</p>

@@ -1,8 +1,9 @@
 const db = require("../db/index");
-const fs = require("fs");
+// const fs = require("fs");
+const promisePool = db.promise();
 
 const controller = {
-  addOne: (req, res) => {
+  addOne: async (req, res) => {
     const { name_ar, image } = req.body;
     // const images = "/img/compony/" + name_ar + ".png";
     // let base64Image = image.split(";base64,").pop();
@@ -14,33 +15,30 @@ const controller = {
     //     console.log("File created");
     //   }
     // );
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "INSERT INTO `Componies` (`name`, `image`) VALUES (?, ?)",
-      [name_ar, image],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [name_ar, image]
+    );
+
+    res.send(`
         <script>
           window.history.back();
           location.reload()
         </script>`);
-      }
-    );
   },
-  editSubcategory: (req, res) => {
+  editSubcategory: async (req, res) => {
     const { subcategoryid, name } = req.body;
-    db.query(
+
+    const [rows, fields] = await promisePool.query(
       "UPDATE `Componies` SET `name` = ? WHERE `Componies`.`id` = ?",
-      [name, subcategoryid],
-      (err, result) => {
-        if (err) throw err;
-        res.send(`
+      [name, subcategoryid]
+    );
+    res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
-      }
-    );
   },
 };
 
