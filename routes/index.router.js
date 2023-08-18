@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const cache = require("../routerCache");
 const CategoryController = require("../controller/Category.controller");
 const ProductController = require("../controller/Product.controller");
 const UserController = require("../controller/User.controller");
@@ -7,11 +8,11 @@ const OrderController = require("../controller/Order.controller");
 const AdminController = require("../controller/Admin.controller");
 const SubcategoryController = require("../controller/SubCategory.controller");
 //? GET {
-router.get("/", CategoryController.getAll);
-router.get("/:subcategory", CategoryController.getProducts);
-router.get("/product/show/:id", ProductController.getOne);
+router.get("/", cache(150), CategoryController.getAll);
+router.get("/:subcategory", cache(150), CategoryController.getProducts);
+router.get("/product/show/:id", cache(150), ProductController.getOne);
 router.get("/cart/show/items", ProductController.getCart);
-router.get("/fav/show/:user", ProductController.getfav);
+router.get("/fav/show/:user", cache(150), ProductController.getfav);
 router.get("/user/info/login", UserController.getLogin);
 router.get("/zh/info/about", UserController.about);
 router.get("/zh/info/contact_us", UserController.contactus);
@@ -23,8 +24,12 @@ router.get("/users/info/delete", UserController.getDelUser);
 router.get("/pay/info/success", OrderController.getSuccess);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);
 router.get("/admin/panle/contact/:admin", AdminController.getContactUs);
-router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);
-router.get("/user/info/profile/:userId", UserController.getProfile);
+router.get(
+  "/user/info/o_h/:userId",
+  cache(150),
+  OrderController.getOrderHistory
+);
+router.get("/user/info/profile/:userId", cache(150), UserController.getProfile);
 router.get("/admin/panle/users/:admin", AdminController.getUser);
 router.get("/admin/panle/offer/:admin", AdminController.getOffer);
 router.get("/admin/panle/products/:admin", AdminController.getProducut);
