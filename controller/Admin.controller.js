@@ -5,13 +5,11 @@ const controller = {
   //! GET {
   getProducut: async (req, res) => {
     const token = req.params.admin;
-
     const [rows, fields] = await promisePool.query(
-      "SELECT Admin,Stuff,id FROM Users WHERE id=?",
+      "SELECT Admin,id FROM Users WHERE id=?",
       [token]
     );
     const userId = rows[0].id;
-
     if (rows[0].Admin === 1) {
       const [rows, fields] = await promisePool.query("SELECT * FROM Products");
       const numOfResults = rows.length;
@@ -19,19 +17,22 @@ const controller = {
       let page = req.query.page ? Number(req.query.page) : 1;
       if (page > numberOfPages) {
         res.redirect(
-          "/admin/panle/orders/" +
+          "/admin/panle/products/" +
             userId +
             "/?page=" +
             encodeURIComponent(numberOfPages)
         );
       } else if (page < 1) {
         res.redirect(
-          "/admin/panle/orders/" + userId + "/?page=" + encodeURIComponent("1")
+          "/admin/panle/products/" +
+            userId +
+            "/?page=" +
+            encodeURIComponent("1")
         );
       }
       const startingLimit = (page - 1) * resultsPerPage;
       const [sql, fields1] = await promisePool.query(
-        "SELECT * FROM Products LIMIT ?,?",
+        "SELECT * FROM Products LIMIT ?,?;SELECT name FROM Categories;SELECT name FROM Componies;",
         [startingLimit, resultsPerPage]
       );
       let iterator = page - 5 < 1 ? 1 : page - 5;
@@ -43,47 +44,10 @@ const controller = {
       if (endingLink < page + 4) {
         iterator -= page + 4 - numberOfPages;
       }
-      res.render("admin/orders", {
-        orders: sql,
-        page,
-        iterator,
-        endingLink,
-        numberOfPages,
-        userId,
-      });
-    } else if (rows[0].Stuff === 1) {
-      const [rows, fields] = await promisePool.query("SELECT * FROM TheOrders");
-      const numOfResults = rows.length;
-      const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-      let page = req.query.page ? Number(req.query.page) : 1;
-      if (page > numberOfPages) {
-        res.redirect(
-          "/admin/panle/orders/" +
-            userId +
-            "/?page=" +
-            encodeURIComponent(numberOfPages)
-        );
-      } else if (page < 1) {
-        res.redirect(
-          "/admin/panle/orders/" + userId + "/?page=" + encodeURIComponent("1")
-        );
-      }
-      const startingLimit = (page - 1) * resultsPerPage;
-      const [sql, fields1] = await promisePool.query(
-        "SELECT * FROM Products LIMIT ?,?",
-        [startingLimit, resultsPerPage]
-      );
-      let iterator = page - 5 < 1 ? 1 : page - 5;
-      let endingLink =
-        iterator + 9 < numberOfPages
-          ? iterator + 9
-          : page + (numberOfPages - page);
-
-      if (endingLink < page + 4) {
-        iterator -= page + 4 - numberOfPages;
-      }
-      res.render("admin/orders", {
-        orders: sql,
+      res.render("admin/products", {
+        products: sql[0],
+        categories: sql[1],
+        componies: sql[2],
         page,
         iterator,
         endingLink,
