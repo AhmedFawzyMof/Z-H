@@ -67,7 +67,6 @@ router.post("/delete/category", AdminController.deleteCategory);
 router.post("/delete/subcategory", AdminController.deleteSubcategory);
 router.post("/delete/product", AdminController.deleteProduct);
 router.post("/delete/offer", AdminController.deleteOffer);
-router.post("/delete/promocode", AdminController.deletePromo);
 router.post("/delete/fav", ProductController.deleteFav);
 //? }
 //? EDIT {
@@ -80,5 +79,6 @@ router.post("/edit/subcategory", SubcategoryController.editSubcategory);
 router.post("/edit/product", ProductController.editProduct);
 router.post("/edit/offer", ProductController.editOffer);
 router.post("/edit/promocode", ProductController.editPromo);
+router.post("/seen", AdminController.seen);
 //? }
 module.exports = router;

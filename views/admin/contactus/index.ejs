@@ -10,12 +10,40 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <style>
+      #seen {
+        position: absolute;
+        top: -10px;
+        left: -10px;
+      }
+      #seen button {
+        background: none;
+        color: #ff971f;
+        cursor: pointer;
+      }
+      .category {
+        position: relative;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <div class="catecontainer">
         <% users.forEach(user => { %>
         <div class="category">
+          <% if(user.seen === 0){ %>
+          <form action="/seen" method="post" id="seen">
+            <input type="hidden" name="seen" value="1" />
+            <input type="hidden" name="id" value="<%= user.id %>" />
+            <button><i class="bx bxs-hide"></i></button>
+          </form>
+          <% }else {%>
+          <form action="/seen" method="post" id="seen">
+            <input type="hidden" name="seen" value="0" />
+            <input type="hidden" name="id" value="<%= user.id %>" />
+            <button><i class="bx bxs-show"></i></button>
+          </form>
+          <% } %>
           <p>معرف:<%= user.id %></p>
           <p>الاسم: <%= user.name %></p>
           <p>البريد: <%= user.email %></p>
@@ -25,5 +53,17 @@
         <% }) %>
       </div>
     </div>
+    <script>
+      window.addEventListener("pageshow", function (event) {
+        var historyTraversal =
+          event.persisted ||
+          (typeof window.performance != "undefined" &&
+            window.performance.navigation.type === 2);
+        if (historyTraversal) {
+          // Handle page restore.
+          window.location.reload();
+        }
+      });
+    </script>
   </body>
 </html>

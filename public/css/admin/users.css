@@ -103,3 +103,54 @@ input:focus {
   color: #fff;
   border: none;
 }
+
+.paginaiton a {
+  text-decoration: none;
+  background: #fff;
+  color: #333;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+}
+
+.paginaiton a.selectedLink {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  padding: 0 10px;
+}
+
+.paginaiton {
+  direction: ltr;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin: 10px 0;
+}
+
+.paginaiton .after {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  padding: 0 10px;
+}
+
+.paginaiton .before {
+  text-decoration: none;
+  background: #ff971f;
+  color: #fff;
+  border-radius: 5px;
+  display: grid;
+  place-items: center;
+  font-size: 30px;
+  padding: 0 10px;
+}

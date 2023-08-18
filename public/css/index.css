@@ -84,6 +84,7 @@ input:focus {
   border: none;
   background: #fff;
   color: #ff971f;
+  cursor: pointer;
   width: 150px;
 }
 

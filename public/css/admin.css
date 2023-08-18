@@ -75,6 +75,9 @@ a i {
 .orders {
   position: relative;
 }
+.contact {
+  position: relative;
+}
 
 .count {
   position: absolute;
