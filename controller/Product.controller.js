@@ -91,14 +91,11 @@ const controller = {
         [Id]
       );
       const coupons = rows[0].coupons;
-      let coupon;
-      coupons.forEach((cou) => {
-        if (code == cou.code) {
-          coupon = cou;
-        }
-      });
+      let coupon = coupons.find((coupon) => coupon.code == code);
+      console.log(coupon);
+
       const dis = { code: "", value: 0 };
-      if (coupon.length !== 0) {
+      if (coupon !== undefined) {
         res.send(`
            <script>
            localStorage.setItem('disCount', '${JSON.stringify(coupon)}')
@@ -234,12 +231,10 @@ const controller = {
         length: 1,
       });
     } else {
-      let Product;
-      r1.forEach((prod) => {
-        if (prod.product === JSON.parse(product)) {
-          Product = prod;
-        }
-      });
+      let Product = r1.find(
+        (product) => product.product === JSON.parse(product)
+      );
+
       if (Product.product !== JSON.parse(product)) {
         const [r3, f3] = await promisePool.query(
           "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",

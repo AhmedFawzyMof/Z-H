@@ -72,7 +72,7 @@ function cartItems() {
           <div class="cart" key=${index}>
                 <img src='${item.image}'>
                 <div class='info'>
-                 <a href="/product/${item.id}" ><p>${item.name.substr(
+                 <a href="/product/show/${item.id}" ><p>${item.name.substr(
         0,
         25
       )}</p></a>

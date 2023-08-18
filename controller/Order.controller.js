@@ -28,7 +28,8 @@ const controller = {
         [user]
       );
       let coupons = rows[0].coupons;
-      coupons.forEach((coupon, index) => {
+
+      coupons.find((coupon, index) => {
         if (JSON.stringify(coupon) === discount) {
           coupons.splice(index, 1);
         }
@@ -80,7 +81,6 @@ const controller = {
       [userId]
     );
     Object.assign(name, r1[0]);
-    console.log(name);
     const [r2, f2] = await promisePool.query(
       "SELECT * FROM TheOrders WHERE user = ?",
       [userId]
