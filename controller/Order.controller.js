@@ -29,7 +29,7 @@ const controller = {
       );
       let coupons = rows[0].coupons;
 
-      coupons.find((coupon, index) => {
+      coupons.forEach((coupon, index) => {
         if (JSON.stringify(coupon) === discount) {
           coupons.splice(index, 1);
         }
