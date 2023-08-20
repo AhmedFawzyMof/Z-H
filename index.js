@@ -33,4 +33,4 @@ const IndexRoute = require("./routes/index.router");
 app.use("/", IndexRoute);
 //? }
 
-app.listen(process.env.PORT || 3000);
+app.listen(3000);

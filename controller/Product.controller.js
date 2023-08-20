@@ -4,7 +4,8 @@ const promisePool = db.promise();
 
 const controller = {
   addOne: async (req, res) => {
-    const { category, subcategory, name_ar, dis_ar, price, image } = req.body;
+    const { category, subcategory, name_ar, dis_ar, price, image, offer } =
+      req.body;
     // const images = "/img/product/" + name_ar + ".png";
     // let base64Image = image.split(";base64,").pop();
     // fs.writeFile(
@@ -16,8 +17,8 @@ const controller = {
     //   }
     // );
     const [rows, fields] = await promisePool.query(
-      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`) VALUES ( ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, image]
+      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [name_ar, dis_ar, category, subcategory, price, image, 1, offer]
     );
 
     res.send(

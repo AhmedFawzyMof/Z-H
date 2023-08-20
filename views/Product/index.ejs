@@ -44,7 +44,11 @@
         <a href="/product/show/<%= products[i].id %>">
           <img src="<%= products[i].image %>" alt="<%= products[i].name %>" />
           <div class="body">
+            <%if(products[i].offer == 0){%>
             <p class="price"><%= products[i].price %> ج</p>
+            <%}else {%>
+            <p class="price"><%= products[i].offer %> ج</p>
+            <%}%>
             <p class="name"><%= products[i].name %></p>
           </div>
         </a>
@@ -52,6 +56,22 @@
       <% } %>
     </div>
     <script src="/js/product.js"></script>
+    <script>
+      window.onload = () => {
+        const offers = "<%= subcate %>";
+        if (offers == "عروض التوفير") {
+          const discountTag = document.createElement("span");
+          const Products = document.querySelectorAll(".Product");
+          Products.forEach((Product) => {
+            Product.classList.replace("Product", "Offer");
+            discountTag.classList.add("discountTag");
+            Product.appendChild(discountTag);
+
+            discountTag.innerHTML = "<p>توفير</p>";
+          });
+        }
+      };
+    </script>
     <%- include('../components/footer') %> <% } else { %>
     <p id="Err">لا توجد منتجات متاحة</p>
     <%- include('../components/footer') %>
