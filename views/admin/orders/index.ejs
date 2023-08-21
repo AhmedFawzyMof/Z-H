@@ -23,6 +23,7 @@
       <div id="result"></div>
     </div>
     <div id="container">
+      <% if (orders.length > 0){ %>
       <% orders.forEach((order, index) => { %>
 
       <div class="orderRec" key="<%= index %>">
@@ -92,6 +93,9 @@
         </div>
       </div>
       <% }) %>
+      <% } else { %>
+        <h1>no orders yet</h1>
+        <% } %>
     </div>
     <br />
     <div class="paginaiton">

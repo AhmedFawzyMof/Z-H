@@ -220,6 +220,7 @@ const controller = {
       "SELECT `product`, `user` FROM `favourite` WHERE user=?",
       [user]
     );
+
     if (r1.length == 0) {
       const [r2, f2] = await promisePool.query(
         "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
@@ -232,11 +233,15 @@ const controller = {
         length: 1,
       });
     } else {
-      let Product = r1.find(
-        (product) => product.product === JSON.parse(product)
-      );
-
-      if (Product.product !== JSON.parse(product)) {
+      let Product 
+      r1.forEach(prod => {
+        if( prod.product === parseInt(product)){
+          Product = prod.product
+        }
+      });
+      const [lengthR, fields] = await promisePool.query('SELECT COUNT(*) as Length FROM `favourite` WHERE user=?',[user])
+      console.log()
+      if (Product !== parseInt(product)) {
         const [r3, f3] = await promisePool.query(
           "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
           [product, user]
@@ -244,7 +249,7 @@ const controller = {
         res.json({
           success: 1,
           msg: "تم حفظ المنتج في قائمة المفضلة",
-          length: lengthR + 1,
+          length: lengthR[0].Length + 1,
         });
       } else {
         res.json({
