@@ -51,112 +51,105 @@ const controller = {
     const { email, password, code } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
 
-    const [r1, f1] = await promisePool.query(
+    const [r1, _] = await promisePool.query(
       "SELECT id,Admin,Stuff,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
       [email, pass]
     );
+
     if (r1.length > 0) {
+      const Coupons = r1[0].coupons;
+      const Admin = r1[0].Admin;
+      const Stuff = r1[0].Stuff;
+      const ID = r1[0].id;
       let stuff = false;
-      let coupons = r1[0].coupons;
-      const id = r1[0].id;
-      const TheUser = r1[0];
-      let users = [];
-      if (r1[0].Stuff !== 0) {
+      if (Stuff !== 0) {
         stuff = true;
       }
-      if (code !== "") {
-        const [r2, f2] = await promisePool.query(
+
+      if (code.length > 0) {
+        const [r2, _] = await promisePool.query(
           "SELECT * FROM `Referral_Link` WHERE code=?",
           [code]
         );
-        const value = r2[0].value;
-        const CodeUser = r2[0].user;
-        if (CodeUser == id) {
-          res.json({
-            success: 1,
-            Stuff: stuff,
-            user: TheUser.id,
-            StateM: TheUser.Admin,
-            code: coupons.length,
-          });
-        }
-        if (r2[0].users == null) {
-          users.push(id);
-          const [r3, f3] = await promisePool.query(
-            "SELECT coupons FROM `Users` WHERE id=?",
-            [CodeUser]
-          );
 
-          r3[0].coupons.push({ code: code, value: value });
-          const [r4, f4] = await promisePool.query(
-            db.query("UPDATE `Users` SET `coupons`=? WHERE id=?", [
-              JSON.stringify(r3[0].coupons),
-              CodeUser,
-            ])
+        if (r2.length > 0) {
+          let users = r2[0].users;
+          const user = r2[0].user;
+          const [r3, _] = await promisePool.query(
+            "SELECT coupons FROM `Users` WHERE id = ?",
+            [user]
           );
-
-          coupons.push({ code: code, value: value });
-          const [r5, f5] = await promisePool.query(
-            "UPDATE `Users` SET `coupons`=? WHERE id=?",
-            [JSON.stringify(coupons), id]
-          );
-
-          const [r6, f6] = await promisePool.query(
-            "UPDATE `Referral_Link` SET `users`=? WHERE code =?",
-            [JSON.stringify(users), code]
-          );
-
-          res.json({
-            success: 1,
-            Stuff: stuff,
-            user: TheUser.id,
-            StateM: TheUser.Admin,
-            code: coupons.length,
-          });
-        }
-        if (result[0].users.length > 0) {
-          users = result[0].users;
-          const theUser = [];
-          users.forEach((use) => {
-            if (use == id) {
-              theUser.push(use);
-            }
-          });
-          if (theUser[0] == id) {
+          if (user === ID) {
             res.json({
-              success: 1,
-              Stuff: stuff,
-              user: TheUser.id,
-              StateM: TheUser.Admin,
-              code: coupons.length,
-            });
-          } else {
-            const [r7, f7] = await promisePool.query(
-              "SELECT coupons FROM `Users` WHERE id=?",
-              [id]
-            );
-            r7[0].coupons.push({ code: code, value: value });
-            const [r8, f8] = await promisePool.query(
-              "UPDATE `Users` SET `coupons`=? WHERE id=?",
-              [JSON.stringify(r7[0].coupons), id]
-            );
-
-            res.json({
-              success: 1,
-              Stuff: stuff,
-              user: TheUser.id,
-              StateM: TheUser.Admin,
-              code: coupons.length,
+              success: 0,
+              message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
             });
           }
+          if (users == null) {
+            const offerCode = { code: r2[0].code, value: r2[0].value };
+            Coupons.push(offerCode);
+            r3[0].coupons.push(offerCode);
+            users = [];
+            users.push(ID);
+            const [rows, fields] = await promisePool.query(
+              "UPDATE Users SET coupons = CASE id WHEN ? THEN ? WHEN ? THEN ? else coupons END WHERE id IN (?,?);UPDATE Referral_Link SET users = ? WHERE code = ?",
+              [
+                ID,
+                JSON.stringify(Coupons),
+                user,
+                JSON.stringify(r3[0].coupons),
+                ID,
+                user,
+                JSON.stringify(users),
+                code,
+              ]
+            );
+            res.json({
+              success: 1,
+              Stuff: stuff,
+              user: ID,
+              StateM: Admin,
+              code: Coupons.length,
+            });
+          } else if (users.length > 0) {
+            if (users.includes(ID)) {
+              res.json({
+                success: 1,
+                Stuff: stuff,
+                user: ID,
+                StateM: Admin,
+                code: Coupons.length,
+              });
+            } else {
+              const [rows, fields] = await promisePool.query(
+                "UPDATE Users SET coupons = ? WHERE id = ?",
+                [ID]
+              );
+              res.json({
+                success: 1,
+                Stuff: stuff,
+                user: ID,
+                StateM: Admin,
+                code: Coupons.length,
+              });
+            }
+          }
+        } else {
+          res.json({
+            success: 1,
+            Stuff: stuff,
+            user: ID,
+            StateM: Admin,
+            code: Coupons.length,
+          });
         }
       } else {
         res.json({
           success: 1,
           Stuff: stuff,
-          user: TheUser.id,
-          StateM: TheUser.Admin,
-          code: coupons.length,
+          user: ID,
+          StateM: Admin,
+          code: Coupons.length,
         });
       }
     } else {
