@@ -4,8 +4,16 @@ const promisePool = db.promise();
 
 const controller = {
   addOne: async (req, res) => {
-    const { category, subcategory, name_ar, dis_ar, price, image, offer } =
-      req.body;
+    const {
+      category,
+      subcategory,
+      name_ar,
+      dis_ar,
+      price,
+      image,
+      available,
+      offer,
+    } = req.body;
     // const images = "/img/product/" + name_ar + ".png";
     // let base64Image = image.split(";base64,").pop();
     // fs.writeFile(
@@ -18,7 +26,7 @@ const controller = {
     // );
     const [rows, fields] = await promisePool.query(
       "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, image, 1, offer]
+      [name_ar, dis_ar, category, subcategory, price, image, available, offer]
     );
 
     res.send(
@@ -233,14 +241,17 @@ const controller = {
         length: 1,
       });
     } else {
-      let Product 
-      r1.forEach(prod => {
-        if( prod.product === parseInt(product)){
-          Product = prod.product
+      let Product;
+      r1.forEach((prod) => {
+        if (prod.product === parseInt(product)) {
+          Product = prod.product;
         }
       });
-      const [lengthR, fields] = await promisePool.query('SELECT COUNT(*) as Length FROM `favourite` WHERE user=?',[user])
-      console.log()
+      const [lengthR, fields] = await promisePool.query(
+        "SELECT COUNT(*) as Length FROM `favourite` WHERE user=?",
+        [user]
+      );
+      console.log();
       if (Product !== parseInt(product)) {
         const [r3, f3] = await promisePool.query(
           "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
