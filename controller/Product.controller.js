@@ -14,19 +14,8 @@ const controller = {
       available,
       offer,
     } = req.body;
-
-    const images = "/img/product/" + name_ar + ".png";
-    let base64Image = image.split(";base64,").pop();
-    console.log(
-      category,
-      subcategory,
-      name_ar,
-      dis_ar,
-      price,
-      images,
-      available,
-      offer
-    );
+    // const images = "/img/product/" + name_ar + ".png";
+    // let base64Image = image.split(";base64,").pop();
     // fs.writeFile(
     //   `public/img/product/${name_ar}.png`,
     //   base64Image,
@@ -35,19 +24,19 @@ const controller = {
     //     console.log("File created");
     //   }
     // );
-    // const [rows, fields] = await promisePool.query(
-    //   "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-    //   [name_ar, dis_ar, category, subcategory, price, images, available, offer]
-    // );
+    const [rows, fields] = await promisePool.query(
+      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [name_ar, dis_ar, category, subcategory, price, image, available, offer]
+    );
 
-    // res.send(
-    //   `
-    //     <script>
-    //       window.history.back();
-    //       location.reload()
-    //     </script>
-    //   `
-    // );
+    res.send(
+      `
+        <script>
+          window.history.back();
+          location.reload()
+        </script>
+      `
+    );
   },
   addOffer: async (req, res) => {
     const body = req.body;
