@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/other.css" />
+
+    <title>Share and win</title>
+  </head>
+  <body onload="cartLen()">
+    <%- include('components/nav') %>
+    <div class="content">
+      <div class="share-div">
+        <div class="icons">
+          <a
+            id="whatsapp"
+            href="whatsapp://send?text=شارك هذا الرابط: https://play.google.com/store/apps/details?id=com.ahmedfawzi.talgtna
+          وقم بتسجيل الدخول بهذا الكود: code
+          وهتكسب 15 جنيه"
+            target="_blank"
+            ><i class="bx bxl-whatsapp"></i
+          ></a>
+          <button id="facebook"><i class="bx bxl-facebook-circle"></i></button>
+          <a
+            href="tg://msg_url?url=https://play.google.com/store/apps/details?id=com.ahmedfawzi.talgtna&text=شارك هذا الرابط: 
+          وقم بتسجيل الدخول بهذا الكود: code
+          وهتكسب 15 جنيه"
+            id="telegram"
+            target="_blank"
+            ><i class="bx bxl-telegram"></i
+          ></a>
+        </div>
+        <div class="copy_normal">
+          <textarea cols="25" rows="3" readonly class="text">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Consectetur error corporis,
+          </textarea>
+          <i class="bx bx-copy" id="copyBtn"></i>
+        </div>
+      </div>
+    </div>
+    <%- include('components/footer') %>
+    <script>
+      const copyBtn = document.getElementById("copyBtn");
+      copyBtn.addEventListener("click", () => {
+        /* Get the text field */
+        const text = document.querySelector(".text");
+        text.select();
+        text.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+      });
+    </script>
+  </body>
+</html>

@@ -124,3 +124,78 @@ nav ul li a {
   align-items: center;
   padding: 0 5px;
 }
+
+.content {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.share-div {
+  background: #ff971f;
+  width: 300px;
+  min-height: 200px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+}
+
+.share-div .icons {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.share-div .icons button,
+a {
+  width: 50px;
+  height: 50px;
+  font-size: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+#whatsapp {
+  color: rgb(10, 230, 3);
+}
+
+#facebook {
+  color: blue;
+}
+
+#telegram {
+  color: #4444ff;
+}
+.share-div .copy_normal {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 30px;
+  color: #fff;
+}
+.share-div .copy_normal .text {
+  background: #fff;
+  width: 80%;
+  height: auto;
+  border-radius: 5px;
+  font-size: 17.5px;
+  overflow-x: hidden;
+  border: none;
+  color: #333;
+  resize: none;
+}
+
+#copyBtn {
+  cursor: pointer;
+}

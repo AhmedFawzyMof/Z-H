@@ -40,6 +40,9 @@ const controller = {
       location.reload()
     </script>`);
   },
+  share: (req, res) => {
+    res.render("share");
+  },
 };
 
 module.exports = controller;

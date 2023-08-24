@@ -10,8 +10,19 @@ function favLength() {
   }
   favList.style.position = "relative";
   faLength.innerText = length;
-  faLength.style =
-    "display: flex; position: absolute; background: rgb(255, 151, 31); color: rgb(255, 255, 255); width: 20px; height: 25px; border-radius: 5px; font-weight: 700; top: -7.5px; align-items: center; justify-content: center; left: 20px;";
+  faLength.style = `display: flex;
+    position: absolute;
+    background: rgb(255, 151, 31);
+    color: rgb(255, 255, 255);
+    width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    font-weight: 700;
+    top: 2.5px;
+    align-items: center;
+    justify-content: center;
+    right: 0;
+    font-size: 15px;`;
 }
 
 const MenuBtn = document.getElementById("menu");
@@ -123,6 +134,12 @@ function logedUser() {
 >
   <a href="/zh/info/about" style="color: #fff; text-decoration: none"
     >معلومات عنا</a
+  >
+</li>
+<li
+>
+  <a href="/zh/info/share" style="color: #fff; text-decoration: none"
+    >شارك واربح</a
   >
 </li>
 <li
