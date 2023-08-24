@@ -14,7 +14,7 @@ router.get("/product/show/:id", cache(150), ProductController.getOne);
 router.get("/cart/show/items", ProductController.getCart);
 router.get("/fav/show/:user", cache(150), ProductController.getfav);
 router.get("/user/info/login", UserController.getLogin);
-router.get("/zh/info/share", SubcategoryController.share);
+// router.get("/zh/info/share", SubcategoryController.share);
 router.get("/zh/info/about", cache(150), UserController.about);
 router.get("/zh/info/contact_us", cache(150), UserController.contactus);
 router.get("/user/info/register", UserController.getRegister);
