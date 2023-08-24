@@ -52,6 +52,13 @@
         text.setSelectionRange(0, 99999);
         document.execCommand("copy");
       });
+      const fb = document.getElementById("facebook");
+      fb.addEventListener("click", () => {
+        const navUrl =
+          "https://www.facebook.com/sharer/sharer.php?u=" +
+          "https://play.google.com/store/apps/details?id=com.ahmedfawzi.talgtna";
+        window.open(navUrl, "_blank");
+      });
     </script>
   </body>
 </html>
