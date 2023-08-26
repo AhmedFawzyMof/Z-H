@@ -1,5 +1,6 @@
 const db = require("../db/index");
-const fs = require("fs");
+// const fs = require("fs");
+const os = require("os-utils");
 const promisePool = db.promise();
 
 const controller = {
@@ -9,11 +10,15 @@ const controller = {
       "INSERT INTO `Categories` (`name`) VALUES (?)",
       [name]
     );
+
     res.send(`
     <script>
       window.history.back();
       location.reload()
     </script>`);
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   getProducts: async (req, res) => {
     const compony = req.params.subcategory;
@@ -27,11 +32,17 @@ const controller = {
           products: [],
           subcate: compony,
         });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
         break;
       default:
         res.render("Product", {
           products: rows,
           subcate: compony,
+        });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
         });
         break;
     }
@@ -52,6 +63,10 @@ const controller = {
           subcate: compony,
           categories: categories,
         });
+
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
         break;
       default:
         products = rows[0];
@@ -60,6 +75,10 @@ const controller = {
           products: products,
           subcate: compony,
           categories: categories,
+        });
+
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
         });
         break;
     }
@@ -76,6 +95,9 @@ const controller = {
       categories: categories,
       category: companies,
       offers: offers,
+    });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
     });
   },
   editCategory: async (req, res) => {
@@ -104,6 +126,9 @@ const controller = {
       categories: categories,
       category: products,
       offers: offers,
+    });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
     });
   },
 };

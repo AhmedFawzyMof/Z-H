@@ -2,6 +2,7 @@ const db = require("../db/index");
 const { v4: uuidv4 } = require("uuid");
 const crypto = require("crypto");
 const promisePool = db.promise();
+const os = require("os-utils");
 
 const controller = {
   Register: async (req, res) => {
@@ -28,6 +29,9 @@ const controller = {
             success: 0,
             message: "البريد الإلكتروني مسجل بالفعل",
           });
+          os.cpuUsage(function (v) {
+            console.log("CPU USAGE (%): " + v);
+          });
         } else {
           const pass = crypto.createHmac("sha256", password).digest("hex");
           const id = uuidv4();
@@ -37,6 +41,9 @@ const controller = {
           );
           res.json({
             success: 1,
+          });
+          os.cpuUsage(function (v) {
+            console.log("CPU USAGE (%): " + v);
           });
         }
       }
@@ -84,6 +91,9 @@ const controller = {
               success: 0,
               message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
             });
+            os.cpuUsage(function (v) {
+              console.log("CPU USAGE (%): " + v);
+            });
           }
           if (users == null) {
             const offerCode = { code: r2[0].code, value: r2[0].value };
@@ -111,6 +121,9 @@ const controller = {
               StateM: Admin,
               code: Coupons.length,
             });
+            os.cpuUsage(function (v) {
+              console.log("CPU USAGE (%): " + v);
+            });
           } else if (users.length > 0) {
             if (users.includes(ID)) {
               res.json({
@@ -132,6 +145,9 @@ const controller = {
                 StateM: Admin,
                 code: Coupons.length,
               });
+              os.cpuUsage(function (v) {
+                console.log("CPU USAGE (%): " + v);
+              });
             }
           }
         } else {
@@ -142,6 +158,9 @@ const controller = {
             StateM: Admin,
             code: Coupons.length,
           });
+          os.cpuUsage(function (v) {
+            console.log("CPU USAGE (%): " + v);
+          });
         }
       } else {
         res.json({
@@ -151,11 +170,17 @@ const controller = {
           StateM: Admin,
           code: Coupons.length,
         });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
       }
     } else {
       res.json({
         success: 0,
         message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
+      });
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
       });
     }
   },
@@ -179,6 +204,9 @@ const controller = {
         </script>
       `
     );
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   about: (req, res) => {
     res.render("about");
@@ -198,6 +226,9 @@ const controller = {
         <script>
         location.replace('/info/contact_us/success')
         </script>`);
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   contact_success: (req, res) => {
     res.render("contact_success");
@@ -234,6 +265,9 @@ const controller = {
         window.history.back();
         location.reload()
       </script>`);
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     }
   },
   getCoupon: async (req, res) => {
@@ -247,9 +281,15 @@ const controller = {
         res.json({
           success: rows[0].coupons.length,
         });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
       } else {
         res.json({
           success: 0,
+        });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
         });
       }
     } else {
@@ -266,6 +306,9 @@ const controller = {
     );
     res.render("User/coupon", {
       coupons: rows,
+    });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
     });
   },
   makeRef: (req, res) => {

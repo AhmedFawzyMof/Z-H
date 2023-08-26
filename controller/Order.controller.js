@@ -1,6 +1,7 @@
 const db = require("../db/index");
 const { v4: uuidv4 } = require("uuid");
 const promisePool = db.promise();
+const os = require("os-utils");
 
 const controller = {
   addOne: async (req, res) => {
@@ -65,11 +66,13 @@ const controller = {
           localStorage.removeItem("disCount")
           location.replace("/pay/info/success");
         </script>`);
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     } else {
       res.redirect("/");
     }
   },
-
   getSuccess: (req, res) => {
     res.render("Checkout/success");
   },
@@ -90,6 +93,9 @@ const controller = {
       orders: r2,
       name: name,
     });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   getCash: (req, res) => {
     res.render("Checkout/cash.ejs");
@@ -109,6 +115,9 @@ const controller = {
         </script>
       `
     );
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   editPaid: async (req, res) => {
     const { id, isPaid } = req.body;
@@ -125,6 +134,9 @@ const controller = {
         </script>
       `
     );
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   // getCreditCard: (req, res) => {
   //   res.render("Checkout/paypal", {

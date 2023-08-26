@@ -1,6 +1,7 @@
 const db = require("../db/index");
 const promisePool = db.promise();
 // const fs = require("fs");
+const os = require("os-utils");
 
 const controller = {
   addOne: async (req, res) => {
@@ -37,6 +38,9 @@ const controller = {
         </script>
       `
     );
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   addOffer: async (req, res) => {
     const body = req.body;
@@ -63,6 +67,9 @@ const controller = {
           </script>
         `
       );
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     }
     if (body.compony !== "") {
       db.query(
@@ -77,6 +84,9 @@ const controller = {
     </script>`);
         }
       );
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     }
   },
   getOne: async (req, res) => {
@@ -90,6 +100,9 @@ const controller = {
     res.render("Product/id", {
       product: product,
     });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   getCode: async (req, res) => {
     const { code, id } = req.body;
@@ -101,7 +114,6 @@ const controller = {
       );
       const coupons = rows[0].coupons;
       let coupon = coupons.find((coupon) => coupon.code == code);
-      console.log(coupon);
 
       const dis = { code: "", value: 0 };
       if (coupon !== undefined) {
@@ -111,6 +123,9 @@ const controller = {
            window.location.replace("/cart/show/items");
            </script>
            `);
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
       } else {
         res.send(`
             <script>
@@ -118,6 +133,9 @@ const controller = {
             window.location.replace("/cart/show/items");
             </script>
             `);
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
       }
     } else {
       res.send(`
@@ -126,6 +144,9 @@ const controller = {
           window.location.replace("/cart/show/items");
           </script>
           `);
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     }
   },
   getCart: (req, res) => {
@@ -139,6 +160,9 @@ const controller = {
     res.render("Product/search", {
       SearchedProduct: rows,
       search: Searchquery,
+    });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
     });
   },
   editProduct: async (req, res) => {
@@ -155,6 +179,9 @@ const controller = {
         window.history.back();
         location.reload();
       </script>`);
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     }
     if (body.available !== undefined) {
       const available = req.body.available;
@@ -208,6 +235,9 @@ const controller = {
       window.history.back();
       location.reload()
     </script>`);
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   editPromo: async (req, res) => {
     const { id, code, value } = req.body;
@@ -221,6 +251,9 @@ const controller = {
       window.history.back();
       location.reload()
     </script>`);
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
+    });
   },
   fav: async (req, res) => {
     const { user, product } = req.body;
@@ -240,6 +273,9 @@ const controller = {
         msg: "تم حفظ المنتج في قائمة المفضلة",
         length: 1,
       });
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     } else {
       let Product;
       r1.forEach((prod) => {
@@ -251,7 +287,6 @@ const controller = {
         "SELECT COUNT(*) as Length FROM `favourite` WHERE user=?",
         [user]
       );
-      console.log();
       if (Product !== parseInt(product)) {
         const [r3, f3] = await promisePool.query(
           "INSERT INTO `favourite` (`product`, `user`) VALUES (?, ?)",
@@ -262,10 +297,16 @@ const controller = {
           msg: "تم حفظ المنتج في قائمة المفضلة",
           length: lengthR[0].Length + 1,
         });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
+        });
       } else {
         res.json({
           success: 0,
           msg: "المنتج موجود بالفعل في المفضلة",
+        });
+        os.cpuUsage(function (v) {
+          console.log("CPU USAGE (%): " + v);
         });
       }
     }
@@ -273,12 +314,15 @@ const controller = {
   getfav: async (req, res) => {
     const userId = req.params.user;
     const [rows, fields] = await promisePool.query(
-      "SELECT * FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
+      "SELECT favourite.product, favourite.user, Products.name, Products.image, Products.price, Products.id FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
       [userId]
     );
     res.render("User/favourite.ejs", {
       products: rows,
       length: rows.length,
+    });
+    os.cpuUsage(function (v) {
+      console.log("CPU USAGE (%): " + v);
     });
   },
   deleteFav: async (req, res) => {

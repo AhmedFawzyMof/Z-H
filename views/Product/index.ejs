@@ -11,7 +11,7 @@
     />
     <link rel="stylesheet" href="/css/product.css" />
   </head>
-  <body onload="cartLen()">
+  <body>
     <%- include('../components/nav') %>
     <div id="message"></div>
     <div id="errmsg"></div>
@@ -70,6 +70,7 @@
             discountTag.innerHTML = "<p>توفير</p>";
           });
         }
+        cartLen();
       };
     </script>
     <%- include('../components/footer') %> <% } else { %>

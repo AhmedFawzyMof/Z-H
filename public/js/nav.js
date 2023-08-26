@@ -18,10 +18,10 @@ function favLength() {
     height: 25px;
     border-radius: 5px;
     font-weight: 700;
-    top: 2.5px;
+    top: -7.5px;
     align-items: center;
     justify-content: center;
-    right: 0;
+    right: -7.5px;
     font-size: 15px;`;
 }
 
@@ -196,3 +196,5 @@ function logout() {
 document.addEventListener("DOMContentLoaded", () => {
   logedUser(), favLength();
 });
+
+console.log(cart.length);
