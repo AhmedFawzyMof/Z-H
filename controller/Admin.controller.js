@@ -174,7 +174,7 @@ const controller = {
     );
     if (rows[0].Admin == 1) {
       const [rows, fields] = await promisePool.query(
-        "SELECT Admin FROM Users WHERE id=?",
+        "SELECT * FROM Componies",
         [token]
       );
       res.render("admin/subcategory", {
