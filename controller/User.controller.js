@@ -63,8 +63,6 @@ const controller = {
       [email, pass]
     );
 
-    const [fav, fields] = await promisePool.query();
-
     if (r1.length > 0) {
       const Coupons = r1[0].coupons;
       const Admin = r1[0].Admin;
