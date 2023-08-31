@@ -186,6 +186,17 @@ a {
   text-decoration: none;
   color: #fff;
 }
+.checkoutBtn button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: none;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+}
 
 #promocode {
   display: flex;
@@ -221,4 +232,37 @@ a {
   border-radius: 5px;
   color: #fff;
   margin: 10px 0;
+}
+
+.message {
+  position: fixed;
+  background: red;
+  width: 280px;
+  height: 40px;
+  top: -50px;
+  left: 50%;
+  transform: translateY(-50%);
+  border-radius: 5px;
+  color: #fff;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message #close {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  background: #ff971f;
+  border-radius: 2px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.message.active {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: 0.3s;
 }

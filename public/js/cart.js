@@ -1,6 +1,3 @@
-if (localStorage.getItem("Token")) {
-  const token = localStorage.getItem("Token");
-}
 let disCount;
 if (localStorage.getItem("disCount")) {
   disCount = JSON.parse(localStorage.getItem("disCount"));
@@ -56,7 +53,7 @@ function calContainer() {
     if (localStorage.getItem("Token") === "noToken") {
       auth.innerHTML = `<p> من فضلك سجل الدخول لمواصلة <a href='/user/info/login'>الشراء</a> </p>`;
     } else {
-      auth.innerHTML = ` <p class='checkoutBtn'><a href='/pay/info/cash_on_delivery'>الدفع عند الاستلام</a></p>        `;
+      return (auth.innerHTML = `<p class='checkoutBtn'><button id='show' onclick="CheckOrder45()">الدفع عند الاستلام</button></p>`);
     }
   } else {
     const countContainer = document.getElementById("countContainer");
@@ -127,6 +124,37 @@ function dicQuantity(productId) {
     }
   }
   localStorage.setItem("cart", JSON.stringify(cart));
+}
+
+function CheckOrder45() {
+  function getTotal() {
+    let temp = cart.map(function (item) {
+      return parseFloat(item.price * item.quantity);
+    });
+
+    let sum = temp.reduce(function (prev, next) {
+      return prev + next;
+    }, 0);
+
+    let total = sum - disCount.value;
+    if (total < 0) {
+      total = sum;
+    } else if (total == NaN) {
+      total = sum;
+    }
+    return total;
+  }
+  const showError = document.querySelector(".message");
+  const closeError = document.getElementById("close");
+  closeError.addEventListener("click", () => {
+    showError.classList.remove("active");
+  });
+  if (getTotal() >= 45) {
+    showError.classList.remove("active");
+    location.replace("/pay/info/cash_on_delivery");
+  } else {
+    showError.classList.add("active");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
