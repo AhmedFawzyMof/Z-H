@@ -85,7 +85,7 @@ const controller = {
   },
   getAll: async (req, res) => {
     const [rows, fields] = await promisePool.query(
-      "SELECT name,image,soon FROM `Componies` ORDER BY soon ASC;SELECT * FROM `Offer`;SELECT name FROM Categories;"
+      "SELECT * FROM `Componies` ORDER BY na DESC;SELECT * FROM `Offer`;SELECT name FROM Categories;"
     );
     const companies = rows[0];
     const categories = rows[2];
