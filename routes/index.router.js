@@ -19,6 +19,8 @@ router.get("/zh/info/about", cache(150), UserController.about);
 router.get("/zh/info/contact_us", cache(150), UserController.contactus);
 router.get("/user/info/register", UserController.getRegister);
 router.get("/pay/info/cash_on_delivery", OrderController.getCash);
+router.get("/pay/info/creditcard_on_delivery", OrderController.getCreditCard);
+router.get("/pay/info/cashback/:user", OrderController.getCashBack);
 router.get("/users/info/terms", UserController.getTerms);
 router.get("/users/info/delete", UserController.getDelUser);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);

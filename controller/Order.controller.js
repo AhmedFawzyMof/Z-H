@@ -17,6 +17,8 @@ const controller = {
       cart,
       delivered,
       paid,
+      method,
+      amount,
       discount,
     } = req.body;
     const id = uuidv4();
@@ -25,16 +27,18 @@ const controller = {
     const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
       const [rows, fields] = await promisePool.query(
-        "SELECT coupons FROM Users WHERE id = ?",
+        "SELECT coupons,id FROM Users WHERE id = ?",
         [user]
       );
-      let coupons = rows[0].coupons;
 
+      let coupons = rows[0].coupons;
+      let ID = rows[0].id;
       coupons.forEach((coupon, index) => {
         if (JSON.stringify(coupon) === discount) {
           coupons.splice(index, 1);
         }
       });
+
       const [rows2, fields2] = await promisePool.query(
         "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
@@ -54,11 +58,30 @@ const controller = {
           discount,
         ]
       );
-      const [rows3, fields3] = await promisePool.query(
-        "UPDATE `Users` SET `coupons`= ? WHERE id = ?",
-        [JSON.stringify(coupons), user]
-      );
-
+      const backCash = Math.floor(total * 0.02);
+      switch (method) {
+        case "cash":
+          console.log(coupons);
+          const [rows1, fields1] = await promisePool.query(
+            `UPDATE Users SET coupons='${JSON.stringify(
+              coupons
+            )}' WHERE id='${ID}';UPDATE Users SET cashback= cashback + ${backCash} WHERE id='${user}'`
+          );
+          break;
+        case "creditcard":
+          console.log(coupons);
+          const [rows2, fields2] = await promisePool.query(
+            `UPDATE Users SET coupons='${JSON.stringify(
+              coupons
+            )}' WHERE id='${ID}';UPDATE Users SET cashback= cashback + ${backCash} WHERE id='${user}'`
+          );
+          break;
+        default:
+          const [rows3, fields3] = await promisePool.query(
+            `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
+          );
+          break;
+      }
       res.send(`
         <script>
           localStorage.setItem("cart","[]")
@@ -138,11 +161,20 @@ const controller = {
       console.log("CPU USAGE (%): " + v);
     });
   },
-  // getCreditCard: (req, res) => {
-  //   res.render("Checkout/paypal", {
-  //     paypalClientId: process.env.PAYPAL_CLIENT_ID,
-  //   });
-  // },
+  getCreditCard: (req, res) => {
+    res.render("Checkout/credit-card");
+  },
+  getCreditCard: (req, res) => {
+    res.render("Checkout/credit-card");
+  },
+  getCashBack: async (req, res) => {
+    const user = req.params.user;
+    const [rows, fields] = await promisePool.query(
+      "SELECT cashback FROM Users WHERE id = ?",
+      [user]
+    );
+    res.render("Checkout/cashback", { cashback: rows[0].cashback });
+  },
   postPaypal: (req, res) => {
     console.log(req);
   },

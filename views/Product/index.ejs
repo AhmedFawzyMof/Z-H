@@ -60,14 +60,9 @@
       window.onload = () => {
         const offers = "<%= subcate %>";
         if (offers == "عروض التوفير") {
-          const discountTag = document.createElement("span");
           const Products = document.querySelectorAll(".Product");
           Products.forEach((Product) => {
             Product.classList.replace("Product", "Offer");
-            discountTag.classList.add("discountTag");
-            Product.appendChild(discountTag);
-
-            discountTag.innerHTML = "<p>توفير</p>";
           });
         }
         cartLen();

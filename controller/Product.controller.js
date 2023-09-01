@@ -1,6 +1,6 @@
 const db = require("../db/index");
 const promisePool = db.promise();
-// const fs = require("fs");
+const fs = require("fs");
 const os = require("os-utils");
 
 const controller = {
@@ -15,19 +15,19 @@ const controller = {
       available,
       offer,
     } = req.body;
-    // const images = "/img/product/" + name_ar + ".png";
-    // let base64Image = image.split(";base64,").pop();
-    // fs.writeFile(
-    //   `public/img/product/${name_ar}.png`,
-    //   base64Image,
-    //   { encoding: "base64" },
-    //   function (err) {
-    //     console.log("File created");
-    //   }
-    // );
+    const images = "/img/product/" + name_ar + ".png";
+    let base64Image = image.split(";base64,").pop();
+    fs.writeFile(
+      `public/img/product/${name_ar}.png`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
     const [rows, fields] = await promisePool.query(
       "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, image, available, offer]
+      [name_ar, dis_ar, category, subcategory, price, images, available, offer]
     );
 
     res.send(
@@ -106,12 +106,12 @@ const controller = {
   },
   getCode: async (req, res) => {
     const { code, id } = req.body;
-    const Id = JSON.parse(id);
     if (code !== "") {
       const [rows, fields] = await promisePool.query(
         "SELECT coupons FROM `Users` WHERE id = ?",
-        [Id]
+        [JSON.parse(id)]
       );
+      console.log(rows[0]);
       const coupons = rows[0].coupons;
       let coupon = coupons.find((coupon) => coupon.code == code);
 
@@ -120,7 +120,7 @@ const controller = {
         res.send(`
            <script>
            localStorage.setItem('disCount', '${JSON.stringify(coupon)}')
-           window.location.replace("/cart/show/items");
+           window.history.back();
            </script>
            `);
         os.cpuUsage(function (v) {
@@ -130,7 +130,7 @@ const controller = {
         res.send(`
             <script>
             localStorage.setItem('disCount', '${JSON.stringify(dis)}')
-            window.location.replace("/cart/show/items");
+            window.history.back();
             </script>
             `);
         os.cpuUsage(function (v) {
@@ -141,7 +141,7 @@ const controller = {
       res.send(`
           <script>
           localStorage.setItem('disCount', '${JSON.stringify(dis)}')
-          window.location.replace("/cart/show/items");
+          window.history.back();
           </script>
           `);
       os.cpuUsage(function (v) {

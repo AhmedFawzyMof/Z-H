@@ -39,10 +39,24 @@ function calContainer() {
     let shiping = 20;
     return shiping;
   }
-
+  function promoCode() {
+    if (location.pathname.includes("/pay/info/cashback")) {
+      return ``;
+    } else {
+      return `
+        <form action="/get/promocode" method="post" id="promocode">
+          <input type="hidden" name="id" value='${token}' />
+          <input type="text" name="code" placeholder="كود الترويجي" />
+          <button type="submit">كود الترويجي</button>
+        </form>
+      `;
+    }
+  }
   if (cart.length) {
     const countContainer = document.getElementById("countContainer");
-    countContainer.innerHTML = `<p>المجموع: ${getTotal()} ج</p> 
+    countContainer.innerHTML = `
+         ${promoCode()}
+          <p>المجموع: ${getTotal()} ج</p> 
           <p>المنتجات: ( ${getItems()} )</p>
           <p>سعر الشحن: ${ShipingPrice()} ج</p>
           `;
@@ -122,3 +136,14 @@ function getLoc() {
     console.log(false);
   }
 }
+
+window.addEventListener("pageshow", function (event) {
+  var historyTraversal =
+    event.persisted ||
+    (typeof window.performance != "undefined" &&
+      window.performance.navigation.type === 2);
+  if (historyTraversal) {
+    // Handle page restore.
+    window.location.reload();
+  }
+});

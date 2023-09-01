@@ -198,30 +198,6 @@ a {
   color: #fff;
 }
 
-#promocode {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-#promocode input {
-  width: 180px;
-  height: 30px;
-  background: #eee;
-  border: none;
-  border-radius: 5px;
-}
-
-#promocode button {
-  height: 30px;
-  background: #333;
-  border-radius: 5px;
-  color: #fff;
-  border: none;
-  margin: 0 2.5px;
-  padding: 0 2.5px;
-}
-
 #emptyCart {
   width: 300px;
 }

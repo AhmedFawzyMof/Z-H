@@ -4,49 +4,56 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Credit Card Checkout</title>
+    <title>Credit Card</title>
     <link rel="stylesheet" href="/css/order.css" />
-    <script src="https://www.paypal.com/sdk/js?client-id=<%= paypalClientId %>"></script>
-    <script src="/js/paypal.js" defer></script>
     <link
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
   </head>
-  <body>
   <body onload="cartLen(), calContainer()">
     <%- include('../components/nav') %>
     <div class="container">
       <div id="checkoutContainer">
         <div id="countContainer"></div>
       </div>
-      <div id="order">
+      <form id="order" action="/order" method="post">
         <div class="input">
-          <select name="where" required id="where">
+          <select name="where" required onchange="getLoc()" id="location">
             <option disabled selected value="">تسليم الطلب في ؟</option>
             <option value="الفرع">الفرع</option>
             <option value="المنزل">المنزل</option>
           </select>
         </div>
         <div class="input">
-          <label>العنوان</label>
-          <input type="text" required name="address" id="address" />
+          <label>شارع</label>
+          <input type="text" required name="addrSt" />
+        </div>
+        <div class="input">
+          <label>عماره</label>
+          <input type="text" required name="addrB" />
+        </div>
+        <div class="input">
+          <label>طابق</label>
+          <input type="text" required name="addrF" />
         </div>
         <div class="input">
           <label>رقم الهاتف</label>
-          <input type="tel" required name="phone" id="phone" />
+          <input type="tel" required name="phone" maxlength="11" />
         </div>
         <div class="input">
           <label>رقم هاتف احتياطي</label>
-          <input type="tel" required name="phone2" id="phone2" />
+          <input type="tel" name="phone2" maxlength="11" />
         </div>
+        <input type="hidden" name="delivered" value="0" />
+        <input type="hidden" name="paid" value="0" />
+        <input type="hidden" name="method" value="creditcard" />
         <div id="otherinput"></div>
-        <p id="ERR"></p>
+        <div class="location"></div>
         <div class="input">
-          <button onclick="values()">تحقق من وجود أخطاء</button>
+          <button type="submit">اطلب الان</button>
         </div>
-        <div id="paypal"></div>
-      </div>
+      </form>
     </div>
     <%- include('../components/footer') %>
     <script src="/js/order.js"></script>

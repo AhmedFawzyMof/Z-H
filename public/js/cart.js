@@ -39,11 +39,6 @@ function calContainer() {
   if (cart.length) {
     const countContainer = document.getElementById("countContainer");
     countContainer.innerHTML = `
-        <form action='/get/promocode' method="post" id='promocode'>
-        <input type='hidden' name="id" value='${token}' />
-        <input type='text' name='code' placeholder='كود الترويجي' />
-        <button type='submit'>كود الترويجي</button>
-        </form>
         <p>المجموع: ${getTotal()} ج</p> 
         <p>المنتجات: ( ${getItems()} )</p>
         <p>سعر الشحن: ${ShipingPrice()} ج</p>
@@ -53,7 +48,11 @@ function calContainer() {
     if (localStorage.getItem("Token") === "noToken") {
       auth.innerHTML = `<p> من فضلك سجل الدخول لمواصلة <a href='/user/info/login'>الشراء</a> </p>`;
     } else {
-      return (auth.innerHTML = `<p class='checkoutBtn'><button id='show' onclick="CheckOrder45()">الدفع عند الاستلام</button></p>`);
+      return (auth.innerHTML = `
+      <p class='checkoutBtn'><button id='show1' onclick="CheckOrder45('cash')">الدفع عند الاستلام</button></p>
+      <p class='checkoutBtn'><button id='show2' onclick="CheckOrder45('creditcard')">الدفع عند الاستلام</button></p>
+      <p class='checkoutBtn'><button id='show3' onclick="CheckOrder45('cashback')">الدفع عند الاستلام</button></p>
+      `);
     }
   } else {
     const countContainer = document.getElementById("countContainer");
@@ -126,7 +125,7 @@ function dicQuantity(productId) {
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-function CheckOrder45() {
+function CheckOrder45(method) {
   function getTotal() {
     let temp = cart.map(function (item) {
       return parseFloat(item.price * item.quantity);
@@ -151,7 +150,13 @@ function CheckOrder45() {
   });
   if (getTotal() >= 45) {
     showError.classList.remove("active");
-    location.replace("/pay/info/cash_on_delivery");
+    if (method === "cash") {
+      location.replace("/pay/info/cash_on_delivery");
+    } else if (method === "creditcard") {
+      location.replace("/pay/info/creditcard_on_delivery");
+    } else {
+      location.replace(`/pay/info/cashback/${JSON.parse(token)}`);
+    }
   } else {
     showError.classList.add("active");
   }
