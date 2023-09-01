@@ -368,5 +368,19 @@ const controller = {
       }
     });
   },
+  getCashPoint: async (req, res) => {
+    const user = req.params.user;
+    if (user !== "noToken") {
+      const [rows, fields] = await promisePool.query(
+        "SELECT * FROM Users WHERE id = ?",
+        [user]
+      );
+      res.render("User/cashbackpoints", { cashback: rows[0].cashback });
+    } else {
+      res.json({
+        success: 0,
+      });
+    }
+  },
 };
 module.exports = controller;

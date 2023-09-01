@@ -33,4 +33,8 @@ const IndexRoute = require("./routes/index.router");
 app.use("/", IndexRoute);
 //? }
 
+<<<<<<< HEAD
 app.listen(80);
+=======
+app.listen(3000);
+>>>>>>> 0d56f1f (cashback page)

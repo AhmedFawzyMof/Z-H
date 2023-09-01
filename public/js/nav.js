@@ -138,8 +138,8 @@ function logedUser() {
 </li>
 <li
 >
-  <a href="/zh/info/share" style="color: #fff; text-decoration: none"
-    >شارك واربح</a
+  <a href="/zh/info/cashback/${parsedToken}" style="color: #fff; text-decoration: none"
+    >رصيد النقاط</a
   >
 </li>
 <li

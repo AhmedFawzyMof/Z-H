@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>my coupons</title>
+    <link rel="stylesheet" href="/css/profile.css" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body onload="cartLen()">
+    <%- include('../components/nav') %>
+    <div class="container">
+      <% if (cashback >= 0) { %>
+      <div
+        class="coupons"
+        style="
+          width: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          background: #fff;
+          padding: 0 10px;
+          height: 50px;
+          border-radius: 5px;
+        "
+      >
+        <h3>ألرصيد:</h3>
+        <h3><%= cashback %> جنيه</h3>
+      </div>
+      <% } else { %>
+      <p>للأسف لا يوجد قسيمة</p>
+      <% } %>
+    </div>
+    <%- include('../components/footer') %>
+  </body>
+</html>
