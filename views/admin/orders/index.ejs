@@ -23,8 +23,7 @@
       <div id="result"></div>
     </div>
     <div id="container">
-      <% if (orders.length > 0){ %>
-      <% orders.forEach((order, index) => { %>
+      <% if (orders.length > 0){ %> <% orders.forEach((order, index) => { %>
 
       <div class="orderRec" key="<%= index %>">
         <div class="icons">
@@ -88,14 +87,16 @@
               <option value="0" selected>لا</option>
               <option value="1">نعم</option>
             </select>
+            <input type="hidden" name="total" value="<%=order.total%>" />
+            <input type="hidden" name="user" value="<%= order.user %>" />
+
             <button type="submit">تغيير</button>
           </form>
         </div>
       </div>
-      <% }) %>
-      <% } else { %>
-        <h1>no orders yet</h1>
-        <% } %>
+      <% }) %> <% } else { %>
+      <h1>no orders yet</h1>
+      <% } %>
     </div>
     <br />
     <div class="paginaiton">

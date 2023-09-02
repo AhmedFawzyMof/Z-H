@@ -139,7 +139,7 @@ const controller = {
 
     const backCash = Math.floor(total * 0.02);
     const [rows, fields] = await promisePool.query(
-      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?;UPDATE Users SET cashback=cashback+? WHERE id=?",
+      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?;UPDATE Users SET cashback=cashback+? WHERE id=?",
       [isPaid, id, backCash, user]
     );
 
