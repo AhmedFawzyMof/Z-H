@@ -41,7 +41,7 @@ const controller = {
       });
 
       const [rows2, fields2] = await promisePool.query(
-        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
           user,
@@ -58,6 +58,7 @@ const controller = {
           where,
           discount,
           city,
+          method,
         ]
       );
       switch (method) {
@@ -135,13 +136,19 @@ const controller = {
     });
   },
   editPaid: async (req, res) => {
-    const { id, isPaid, total, user } = req.body;
+    const { id, isPaid, total, user, method } = req.body;
 
     const backCash = Math.floor(total * 0.02);
     const [rows, fields] = await promisePool.query(
-      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?;UPDATE Users SET cashback=cashback+? WHERE id=?",
-      [isPaid, id, backCash, user]
+      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?",
+      [isPaid, id]
     );
+    if (method !== "cashback") {
+      const [rows, fields] = await promisePool.query(
+        "UPDATE Users SET cashback=cashback+? WHERE id=?",
+        [backCash, user]
+      );
+    }
 
     res.send(
       `
