@@ -68,9 +68,9 @@ const controller = {
           break;
         default:
           const [rows1, fields1] = await promisePool.query(
-            `UPDATE Users SET coupons=? WHERE id=?`,
-            JSON.stringify(coupons),
-            user
+            `UPDATE Users SET coupons='${JSON.stringify(
+              coupons
+            )}' WHERE id='${user}'`
           );
           break;
       }
