@@ -6,6 +6,7 @@ const os = require("os-utils");
 const controller = {
   addOne: async (req, res) => {
     const {
+      city,
       where,
       addrSt,
       addrB,
@@ -40,7 +41,7 @@ const controller = {
       });
 
       const [rows2, fields2] = await promisePool.query(
-        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
           user,
@@ -56,29 +57,20 @@ const controller = {
           JSON.stringify(JSON.parse(cart)),
           where,
           discount,
+          city,
         ]
       );
-      const backCash = Math.floor(total * 0.02);
       switch (method) {
-        case "cash":
-          console.log(coupons);
-          const [rows1, fields1] = await promisePool.query(
-            `UPDATE Users SET coupons='${JSON.stringify(
-              coupons
-            )}' WHERE id='${ID}';UPDATE Users SET cashback= cashback + ${backCash} WHERE id='${user}'`
-          );
-          break;
-        case "creditcard":
-          console.log(coupons);
-          const [rows2, fields2] = await promisePool.query(
-            `UPDATE Users SET coupons='${JSON.stringify(
-              coupons
-            )}' WHERE id='${ID}';UPDATE Users SET cashback= cashback + ${backCash} WHERE id='${user}'`
+        case "cashback":
+          const [rows3, fields3] = await promisePool.query(
+            `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
           );
           break;
         default:
-          const [rows3, fields3] = await promisePool.query(
-            `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
+          const [rows1, fields1] = await promisePool.query(
+            `UPDATE Users SET coupons=? WHERE id=?`,
+            JSON.stringify(coupons),
+            user
           );
           break;
       }
@@ -143,10 +135,12 @@ const controller = {
     });
   },
   editPaid: async (req, res) => {
-    const { id, isPaid } = req.body;
+    const { id, isPaid, total, user } = req.body;
+
+    const backCash = Math.floor(total * 0.02);
     const [rows, fields] = await promisePool.query(
-      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?",
-      [isPaid, id]
+      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?;UPDATE Users SET cashback=cashback+? WHERE id=?",
+      [isPaid, id, backCash, user]
     );
 
     res.send(

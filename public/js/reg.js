@@ -46,7 +46,20 @@ async function register(data) {
   console.log(response);
 
   if (response.success !== 0) {
-    location.replace("/user/info/login");
+    localStorage.setItem("Token", response.user);
+    localStorage.setItem("State", JSON.parse(response.StateM));
+
+    if (response.code !== 0) {
+      localStorage.setItem("coupon", response.code);
+    } else {
+      localStorage.setItem("coupon", "0");
+    }
+    if (response.Stuff) {
+      console.log(response.Stuff);
+      location.replace("/admin/panle/orders/" + response.user);
+    } else {
+      location.replace("/");
+    }
   } else {
     message.style.right = "5px";
     message.textContent = response.message;

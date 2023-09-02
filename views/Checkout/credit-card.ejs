@@ -19,6 +19,16 @@
       </div>
       <form id="order" action="/order" method="post">
         <div class="input">
+          <select name="city" required>
+            <option value="" selected disabled>المدن</option>
+            <option value="الشروق">الشروق</option>
+            <option value="بدر" disabled>بدر</option>
+            <option value="مدينتي" disabled>مدينتي</option>
+            <option value="المستقبل" disabled>المستقبل</option>
+            <option value="العبور" disabled>العبور</option>
+          </select>
+        </div>
+        <div class="input">
           <select name="where" required onchange="getLoc()" id="location">
             <option disabled selected value="">تسليم الطلب في ؟</option>
             <option value="الفرع">الفرع</option>

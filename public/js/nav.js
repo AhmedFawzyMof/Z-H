@@ -139,7 +139,7 @@ function logedUser() {
 <li
 >
   <a href="/zh/info/cashback/${parsedToken}" style="color: #fff; text-decoration: none"
-    >رصيد النقاط</a
+    >رصيد كاش باك</a
   >
 </li>
 <li

@@ -39,9 +39,26 @@ const controller = {
             "INSERT INTO `Users` (`id`, `username`, `email`, `password`, `coupons`) VALUES (?, ?, ?, ?, ?)",
             [id, name, email, pass, JSON.stringify(coupons)]
           );
+          const [login, fi] = await promisePool.query(
+            "SELECT id,Admin,Stuff,coupons FROM `Users` WHERE (`email`, `password`) = (?, ?)",
+            [email, pass]
+          );
+          const Coupons = login[0].coupons;
+          const Admin = login[0].Admin;
+          const Stuff = login[0].Stuff;
+          const ID = login[0].id;
+          let stuff = false;
+          if (Stuff !== 0) {
+            stuff = true;
+          }
           res.json({
             success: 1,
+            Stuff: stuff,
+            user: ID,
+            StateM: Admin,
+            code: Coupons.length,
           });
+
           os.cpuUsage(function (v) {
             console.log("CPU USAGE (%): " + v);
           });
@@ -55,7 +72,7 @@ const controller = {
     }
   },
   Login: async (req, res) => {
-    const { email, password, code } = req.body;
+    const { email, password } = req.body;
     const pass = crypto.createHmac("sha256", password).digest("hex");
 
     const [r1, _] = await promisePool.query(
@@ -72,108 +89,16 @@ const controller = {
       if (Stuff !== 0) {
         stuff = true;
       }
-
-      if (code.length > 0) {
-        const [r2, _] = await promisePool.query(
-          "SELECT * FROM `Referral_Link` WHERE code=?",
-          [code]
-        );
-
-        if (r2.length > 0) {
-          let users = r2[0].users;
-          const user = r2[0].user;
-          const [r3, _] = await promisePool.query(
-            "SELECT coupons FROM `Users` WHERE id = ?",
-            [user]
-          );
-          if (user === ID) {
-            res.json({
-              success: 0,
-              message: "لا يمكن تسجيل الدخول بالمعلومات المقدمة",
-            });
-            os.cpuUsage(function (v) {
-              console.log("CPU USAGE (%): " + v);
-            });
-          }
-          if (users == null) {
-            const offerCode = { code: r2[0].code, value: r2[0].value };
-            Coupons.push(offerCode);
-            r3[0].coupons.push(offerCode);
-            users = [];
-            users.push(ID);
-            const [rows, fields] = await promisePool.query(
-              "UPDATE Users SET coupons = CASE id WHEN ? THEN ? WHEN ? THEN ? else coupons END WHERE id IN (?,?);UPDATE Referral_Link SET users = ? WHERE code = ?",
-              [
-                ID,
-                JSON.stringify(Coupons),
-                user,
-                JSON.stringify(r3[0].coupons),
-                ID,
-                user,
-                JSON.stringify(users),
-                code,
-              ]
-            );
-            res.json({
-              success: 1,
-              Stuff: stuff,
-              user: ID,
-              StateM: Admin,
-              code: Coupons.length,
-            });
-            os.cpuUsage(function (v) {
-              console.log("CPU USAGE (%): " + v);
-            });
-          } else if (users.length > 0) {
-            if (users.includes(ID)) {
-              res.json({
-                success: 1,
-                Stuff: stuff,
-                user: ID,
-                StateM: Admin,
-                code: Coupons.length,
-              });
-            } else {
-              const [rows, fields] = await promisePool.query(
-                "UPDATE Users SET coupons = ? WHERE id = ?",
-                [ID]
-              );
-              res.json({
-                success: 1,
-                Stuff: stuff,
-                user: ID,
-                StateM: Admin,
-                code: Coupons.length,
-              });
-              os.cpuUsage(function (v) {
-                console.log("CPU USAGE (%): " + v);
-              });
-            }
-          }
-        } else {
-          res.json({
-            success: 1,
-            Stuff: stuff,
-            user: ID,
-            StateM: Admin,
-            code: Coupons.length,
-          });
-          os.cpuUsage(function (v) {
-            console.log("CPU USAGE (%): " + v);
-          });
-        }
-      } else {
-        res.json({
-          success: 1,
-          Stuff: stuff,
-          user: ID,
-          StateM: Admin,
-          code: Coupons.length,
-        });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
-      }
+      res.json({
+        success: 1,
+        Stuff: stuff,
+        user: ID,
+        StateM: Admin,
+        code: Coupons.length,
+      });
+      os.cpuUsage(function (v) {
+        console.log("CPU USAGE (%): " + v);
+      });
     } else {
       res.json({
         success: 0,

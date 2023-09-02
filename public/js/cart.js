@@ -50,8 +50,8 @@ function calContainer() {
     } else {
       return (auth.innerHTML = `
       <p class='checkoutBtn'><button id='show1' onclick="CheckOrder45('cash')">الدفع عند الاستلام</button></p>
-      <p class='checkoutBtn'><button id='show2' onclick="CheckOrder45('creditcard')">الدفع عند الاستلام</button></p>
-      <p class='checkoutBtn'><button id='show3' onclick="CheckOrder45('cashback')">الدفع عند الاستلام</button></p>
+      <p class='checkoutBtn'><button id='show2' onclick="CheckOrder45('creditcard')">بالكارت عند الاستلام</button></p>
+      <p class='checkoutBtn'><button id='show3' onclick="CheckOrder45('cashback')">من رصيد كاش باك</button></p>
       `);
     }
   } else {
