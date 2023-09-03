@@ -72,7 +72,7 @@
       if (!localStorage.getItem("amount")) {
         localStorage.setItem("amount", "0");
       }
-      const noDis = { code: "", value: 0 };
+      const noDis = { code: "cashback", value: parseInt("<%=cashback%>") };
       const Dis = localStorage.getItem("disCount");
       if (JSON.stringify(noDis) !== Dis) {
         localStorage.setItem("disCount", JSON.stringify(noDis));
@@ -83,12 +83,6 @@
         location.reload();
       }
       const amount = document.getElementById("amount");
-
-      if (parseInt("<%= cashback %>") >= 20) {
-        amount.value = 20;
-      } else {
-        amount.value = parseInt("<%= cashback %>");
-      }
     </script>
   </body>
 </html>

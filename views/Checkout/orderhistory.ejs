@@ -20,7 +20,9 @@
           <p>رقم الطلب: # <%= order.id.substr(24,25) %></p>
           <div class="orderdate">
             تاريخ الطلب:
-            <h4 dir="ltr"><%= order.date.toISOString().slice(0, 10)%></h4>
+            <h4 dir="ltr">
+              <%= order.date.toLocaleString("en-US", { timeZone: "Egypt", }) %>
+            </h4>
           </div>
         </div>
         <div class="orderInfo">

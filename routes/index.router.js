@@ -27,11 +27,7 @@ router.get("/users/info/delete", UserController.getDelUser);
 router.get("/pay/info/success", OrderController.getSuccess);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);
 router.get("/admin/panle/contact/:admin", AdminController.getContactUs);
-router.get(
-  "/user/info/o_h/:userId",
-  cache(150),
-  OrderController.getOrderHistory
-);
+router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);
 router.get("/user/info/profile/:userId", cache(150), UserController.getProfile);
 router.get("/admin/panle/users/:admin", AdminController.getUser);
 router.get("/admin/panle/offer/:admin", AdminController.getOffer);

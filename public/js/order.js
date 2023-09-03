@@ -16,11 +16,20 @@ function calContainer() {
     let sum = temp.reduce(function (prev, next) {
       return prev + next;
     }, 0);
-
-    let total = sum - disCount.value;
-    if (total < 0) {
-      total = sum;
-    } else if (total == NaN) {
+    let total;
+    if (disCount.code === "cashback") {
+      if (disCount.value > sum) {
+        const left = disCount.value - sum;
+        total = 0;
+        amount.value = disCount.value - left;
+      } else {
+        total = sum - disCount.value;
+        amount.value = disCount.value;
+      }
+    } else {
+      total = sum - disCount.value;
+    }
+    if (total == NaN) {
       total = sum;
     }
     return total;

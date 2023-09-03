@@ -23,17 +23,19 @@ const controller = {
       discount,
     } = req.body;
     const id = uuidv4();
-    const date = new Date();
+    const localTime = new Date().toLocaleString("en-US", {
+      timeZone: "Egypt",
+    });
+    const date = new Date(localTime);
     const ph = phone.toString();
     const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
       const [rows, fields] = await promisePool.query(
-        "SELECT coupons,id FROM Users WHERE id = ?",
+        "SELECT coupons FROM Users WHERE id = ?",
         [user]
       );
 
       let coupons = rows[0].coupons;
-      let ID = rows[0].id;
       coupons.forEach((coupon, index) => {
         if (JSON.stringify(coupon) === discount) {
           coupons.splice(index, 1);

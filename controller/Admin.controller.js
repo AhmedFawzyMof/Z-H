@@ -68,82 +68,110 @@ const controller = {
 
     if (rows[0].Admin === 1) {
       const [rows, fields] = await promisePool.query("SELECT * FROM TheOrders");
-      const numOfResults = rows.length;
-      const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-      let page = req.query.page ? Number(req.query.page) : 1;
-      if (page > numberOfPages) {
-        res.redirect(
-          "/admin/panle/orders/" +
-            userId +
-            "/?page=" +
-            encodeURIComponent(numberOfPages)
+      if (rows.length > 0) {
+        const numOfResults = rows.length;
+        const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+        let page = req.query.page ? Number(req.query.page) : 1;
+        if (page > numberOfPages) {
+          res.redirect(
+            "/admin/panle/orders/" +
+              userId +
+              "/?page=" +
+              encodeURIComponent(numberOfPages)
+          );
+        } else if (page < 1) {
+          res.redirect(
+            "/admin/panle/orders/" +
+              userId +
+              "/?page=" +
+              encodeURIComponent("1")
+          );
+        }
+        const startingLimit = (page - 1) * resultsPerPage;
+        const [sql, fields1] = await promisePool.query(
+          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
+          [startingLimit, resultsPerPage]
         );
-      } else if (page < 1) {
-        res.redirect(
-          "/admin/panle/orders/" + userId + "/?page=" + encodeURIComponent("1")
-        );
-      }
-      const startingLimit = (page - 1) * resultsPerPage;
-      const [sql, fields1] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
-        [startingLimit, resultsPerPage]
-      );
-      let iterator = page - 5 < 1 ? 1 : page - 5;
-      let endingLink =
-        iterator + 9 < numberOfPages
-          ? iterator + 9
-          : page + (numberOfPages - page);
+        let iterator = page - 5 < 1 ? 1 : page - 5;
+        let endingLink =
+          iterator + 9 < numberOfPages
+            ? iterator + 9
+            : page + (numberOfPages - page);
 
-      if (endingLink < page + 4) {
-        iterator -= page + 4 - numberOfPages;
+        if (endingLink < page + 4) {
+          iterator -= page + 4 - numberOfPages;
+        }
+        res.render("admin/orders", {
+          orders: sql,
+          page,
+          iterator,
+          endingLink,
+          numberOfPages,
+          userId,
+        });
+      } else {
+        res.render("admin/orders", {
+          orders: rows,
+          page: 1,
+          iterator: 1,
+          endingLink: 1,
+          numberOfPages: 1,
+          userId,
+        });
       }
-      res.render("admin/orders", {
-        orders: sql,
-        page,
-        iterator,
-        endingLink,
-        numberOfPages,
-        userId,
-      });
     } else if (rows[0].Stuff === 1) {
       const [rows, fields] = await promisePool.query("SELECT * FROM TheOrders");
-      const numOfResults = rows.length;
-      const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-      let page = req.query.page ? Number(req.query.page) : 1;
-      if (page > numberOfPages) {
-        res.redirect(
-          "/admin/panle/orders/" +
-            userId +
-            "/?page=" +
-            encodeURIComponent(numberOfPages)
+      if (rows.length > 0) {
+        const numOfResults = rows.length;
+        const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+        let page = req.query.page ? Number(req.query.page) : 1;
+        if (page > numberOfPages) {
+          res.redirect(
+            "/admin/panle/orders/" +
+              userId +
+              "/?page=" +
+              encodeURIComponent(numberOfPages)
+          );
+        } else if (page < 1) {
+          res.redirect(
+            "/admin/panle/orders/" +
+              userId +
+              "/?page=" +
+              encodeURIComponent("1")
+          );
+        }
+        const startingLimit = (page - 1) * resultsPerPage;
+        const [sql, fields1] = await promisePool.query(
+          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
+          [startingLimit, resultsPerPage]
         );
-      } else if (page < 1) {
-        res.redirect(
-          "/admin/panle/orders/" + userId + "/?page=" + encodeURIComponent("1")
-        );
-      }
-      const startingLimit = (page - 1) * resultsPerPage;
-      const [sql, fields1] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
-        [startingLimit, resultsPerPage]
-      );
-      let iterator = page - 5 < 1 ? 1 : page - 5;
-      let endingLink =
-        iterator + 9 < numberOfPages
-          ? iterator + 9
-          : page + (numberOfPages - page);
+        let iterator = page - 5 < 1 ? 1 : page - 5;
+        let endingLink =
+          iterator + 9 < numberOfPages
+            ? iterator + 9
+            : page + (numberOfPages - page);
 
-      if (endingLink < page + 4) {
-        iterator -= page + 4 - numberOfPages;
+        if (endingLink < page + 4) {
+          iterator -= page + 4 - numberOfPages;
+        }
+        res.render("admin/orders", {
+          orders: sql,
+          page,
+          iterator,
+          endingLink,
+          numberOfPages,
+          userId,
+        });
+      } else {
+        res.render("admin/orders", {
+          orders: rows,
+          page: 1,
+          iterator: 1,
+          endingLink: 1,
+          numberOfPages: 1,
+          userId,
+        });
       }
-      res.render("admin/orders", {
-        orders: sql,
-        page,
-        iterator,
-        endingLink,
-        numberOfPages,
-        userId,
-      });
     } else {
       res.redirect("/");
     }
@@ -305,13 +333,13 @@ const controller = {
     );
     if (user[0].Admin === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.username FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });
     } else if (user[0].Stuff === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT `TheOrders`.id, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.username FROM `TheOrders` INNER JOIN Users ON `TheOrders`.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });

@@ -179,26 +179,29 @@
           >
             تاريخ الطلب
           </p>
-          <p id="date"><%=order.date %></p>
+          <p id="date">
+            <%=order.date.toLocaleString("en-US", { timeZone: "Egypt", }) %>
+          </p>
         </div>
         <h3 class="title"></h3>
         <table>
           <tr
             style="
               display: grid;
-              grid-template-columns: repeat(3, 1fr);
+              grid-template-columns: repeat(4, 1fr);
               place-items: center;
             "
           >
-            <th style="border: 1px solid #333; width: 100%">اسم المنتج</th>
+            <th style="border: 1px solid #333; width: 100%">المنتج</th>
             <th style="border: 1px solid #333; width: 100%">الكمية</th>
             <th style="border: 1px solid #333; width: 100%">السعر</th>
+            <th style="border: 1px solid #333; width: 100%">إجمالي</th>
           </tr>
           <% order.cart.forEach(item => { %>
           <tr
             style="
               display: grid;
-              grid-template-columns: repeat(3, 1fr);
+              grid-template-columns: repeat(4, 1fr);
               place-items: center;
             "
           >
@@ -234,6 +237,17 @@
               "
             >
               <%= item.price %>
+            </td>
+            <td
+              style="
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-items: center;
+                border: 1px solid #333;
+              "
+            >
+              <%= item.price * item.quantity %>
             </td>
           </tr>
           <% }) %>
@@ -300,16 +314,140 @@
             <%= order.total %> ج
           </p>
         </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 1/2;
+            "
+          >
+            طريقة الدفع
+          </p>
+          <p
+            style="
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 2/4;
+            "
+          >
+            <%= order.method %>
+          </p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 1/2;
+            "
+          >
+            مدينة
+          </p>
+          <p
+            style="
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 2/4;
+            "
+          >
+            <%= order.city %>
+          </p>
+        </div>
+        <% if (order.method == 'cashback') { %>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 1/2;
+            "
+          >
+            تخفيض
+          </p>
+          <p
+            style="
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 2/4;
+            "
+          >
+            <%= JSON.parse(order.discount).value %>
+          </p>
+        </div>
+        <% } else { %>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            border: 1px solid #333;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+              grid-column: 1/2;
+            "
+          >
+            تخفيض
+          </p>
+          <div
+            style="
+              width: 100%;
+              grid-column: 2/4;
+              display: flex;
+              align-items: center;
+              justify-content: space-evenly;
+            "
+          >
+            <p>الكود: <%= JSON.parse(order.discount).code %></p>
+            <p>القيمة: <%= JSON.parse(order.discount).value %></p>
+          </div>
+        </div>
+        <% } %>
       </div>
     </div>
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         print();
-        const date = document.getElementById("date");
-        date.outerHTML = date.outerHTML.replace(
-          "GMT+0200 (Eastern European Standard Time)",
-          ""
-        );
       });
     </script>
     <script src="/js/admin/order.js"></script>
