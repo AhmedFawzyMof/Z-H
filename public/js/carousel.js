@@ -94,23 +94,6 @@ const leftBtn = document.getElementById("left");
 const rightBtn = document.getElementById("right");
 let counter = 1;
 
-// const scrolltoLeft = setInterval(() => {
-//   rightBtn.click();
-//   if (rightBtn.classList.contains("hide")) {
-//     console.log("hide");
-//     clearInterval(scrolltoLeft);
-//   }
-// }, 1000);
-
-// const scrolltoRight = setInterval(() => {
-//   leftBtn.click();
-//   if (leftBtn.classList.contains("hide")) {
-//     console.log("hide");
-//     clearInterval(scrolltoRight);
-//     scrolltoLeft;
-//   }
-// }, 1000);
-
 document.addEventListener("DOMContentLoaded", () => {
   var x = function () {
     var counter = 1;

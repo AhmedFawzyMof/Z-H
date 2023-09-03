@@ -197,4 +197,42 @@ document.addEventListener("DOMContentLoaded", () => {
   logedUser(), favLength();
 });
 
-console.log(cart.length);
+const menu = document.getElementById("menuBar");
+let isDragStartMenu = false,
+  prevPageXMenu,
+  prevScrollLeftMenu,
+  positionDiffMenu;
+
+let scrollWidthMenu = menu.scrollWidth - menu.clientWidth;
+
+const dragStartMenu = (e) => {
+  isDragStartMenu = true;
+  prevPageXMenu = e.pageX || e.touches[0].pageX;
+  prevScrollLeftMenu = menu.scrollLeft;
+};
+
+const draggingMenu = (e) => {
+  if (!isDragStartMenu) return;
+  e.preventDefault();
+  menu.classList.add("dragging");
+  positionDiffMenu = (e.pageX || e.touches[0].pageX) - prevPageXMenu;
+  menu.scrollLeft = prevScrollLeftMenu - positionDiffMenu;
+  let positionLeft = JSON.stringify(positionDiffMenu) + "px";
+  console.log((menu.style.transform = `translateX(${positionLeft})`));
+  if (positionDiffMenu >= 175) {
+    menu.style.transform = `translateX(105%)`;
+    menu.classList.remove("active");
+  } else if (positionDiffMenu <= 0) {
+    menu.style.transform = "translateX(-5px)";
+    dragStopMenu();
+  }
+};
+
+const dragStopMenu = () => {
+  isDragStartMenu = false;
+  menu.classList.remove("dragging");
+};
+
+menu.addEventListener("touchstart", dragStartMenu);
+menu.addEventListener("touchmove", draggingMenu);
+menu.addEventListener("touchend", dragStopMenu);
