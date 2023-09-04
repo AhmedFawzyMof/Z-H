@@ -178,9 +178,6 @@ const controller = {
     );
     res.render("Checkout/cashback", { cashback: rows[0].cashback });
   },
-  postPaypal: (req, res) => {
-    console.log(req);
-  },
 };
 
 module.exports = controller;

@@ -3,6 +3,7 @@ const { v4: uuidv4 } = require("uuid");
 const crypto = require("crypto");
 const promisePool = db.promise();
 const os = require("os-utils");
+const nodeMailer = require("nodemailer");
 
 const controller = {
   Register: async (req, res) => {
@@ -236,40 +237,6 @@ const controller = {
       console.log("CPU USAGE (%): " + v);
     });
   },
-  makeRef: (req, res) => {
-    const user = req.body.user;
-    const userId = user.slice(0, 8);
-    const random = Math.floor(Math.random() * 1000000);
-    const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    const discountCode = userId + "_" + random;
-    const year = new Date().getUTCFullYear();
-    const month = new Date().getUTCMonth();
-    const day = new Date().getUTCDate();
-    const date = new Date(`${year}-${months[month]}-${day}`);
-    db.query(
-      "SELECT user FROM `Referral_Link` WHERE user=?",
-      [user],
-      (err, result) => {
-        if (err) throw err;
-        if (result.length > 0) {
-          res.json({
-            refCode: "",
-          });
-        } else {
-          db.query(
-            "INSERT INTO `Referral_Link`(`user`, `created_at`, `code`, `value`) VALUES (?,?,?,?)",
-            [user, date, discountCode, 10],
-            (err, result) => {
-              if (err) throw err;
-              res.json({
-                refCode: discountCode,
-              });
-            }
-          );
-        }
-      }
-    );
-  },
   getTerms: (req, res) => {
     res.render("termandcondtions");
   },
@@ -307,5 +274,9 @@ const controller = {
       });
     }
   },
+  getforgetEmail: (req, res) => {
+    res.render("User/forget");
+  },
 };
+
 module.exports = controller;
