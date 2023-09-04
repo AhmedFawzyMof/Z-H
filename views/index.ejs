@@ -14,7 +14,20 @@
   </head>
   <body onload="CartFunction(),cartLen(), logedUser()">
     <%- include('components/nav') %> <% if (offers.length > 0) { %>
-    <div class="wrapper">
+    <div style="position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: red;
+    z-index: 999;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: #fff;
+    display: flex;
+    align-items: center;" class="message">
+      <h3>سوف يتم بدأ العمل في يوم الاربعاء  6/9</h3>
+    </div>
+      <div class="wrapper">
       <i id="left" class="bx bx-chevron-left"></i>
       <div class="carousel">
         <% offers.forEach(offer => { %>
