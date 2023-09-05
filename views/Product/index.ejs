@@ -32,6 +32,11 @@
         >
           <i class="bx bxs-cart-add"></i>
         </button>
+        <% } else { %>
+        <div class="notAvailable">
+          <h1>غير متاح</h1>
+        </div>
+        <% } %>
         <form id="favourite">
           <input type="hidden" value="<%=products[i].id%>" id="productinp" />
           <button type="submit"><i class="bx bx-heart"></i></button>
@@ -47,7 +52,6 @@
             <p class="name"><%= products[i].name %></p>
           </div>
         </a>
-        <% } %>
       </div>
       <% } %>
     </div>
