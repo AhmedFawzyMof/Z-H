@@ -17,6 +17,7 @@
     <div id="message"></div>
     <div id="errmsg"></div>
     <div id="Product">
+      <% if (product.available) { %>
       <div class="img">
         <form id="favourite">
           <input type="hidden" value="<%=product.id%>" id="productinp" />
@@ -29,7 +30,6 @@
         <p><%= product.description %></p>
         <p>سعر: <%= product.price %> ج</p>
         <div class="addOrFav">
-          <% if (product.available) { %>
           <input type="hidden" id="id" value="<%=product.id%>" />
           <input type="hidden" id="name" value="<%=product.name%>" />
           <input type="hidden" id="price" value="<%=product.price%>" />
@@ -43,13 +43,9 @@
             <i class="bx bxs-cart-add"></i>
             أضف إلى السلة
           </button>
-          <% } else { %>
-          <div class="notAvailable">
-            <h1>غير متاح</h1>
-          </div>
-          <% } %>
         </div>
       </div>
+      <% } %>
     </div>
     <%- include('../components/footer') %>
 
