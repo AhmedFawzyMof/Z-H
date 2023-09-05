@@ -29,12 +29,28 @@ const MenuBtn = document.getElementById("menu");
 const MenuBar = document.getElementById("menuBar");
 const CartLength = document.getElementById("cartLength");
 
+function preventScroll(e) {
+  e.preventDefault();
+  e.stopPropagation();
+
+  return false;
+}
+
 MenuBtn.addEventListener("click", function () {
   MenuBar.classList.toggle("active");
   if (MenuBar.classList.contains("active")) {
     MenuBar.style.transform = "translateX(-5px)";
+    // To get the scroll position of current webpage
+    const TopScroll = window.pageYOffset || document.documentElement.scrollTop;
+    const LeftScroll =
+      window.pageXOffset || document.documentElement.scrollLeft;
+    // if scroll happens, set it to the previous value
+    window.onscroll = function () {
+      window.scrollTo(LeftScroll, TopScroll);
+    };
   } else {
     MenuBar.style.transform = "translateX(105%)";
+    window.onscroll = function () {};
   }
 });
 let token = JSON.stringify(localStorage.getItem("Token"));
@@ -222,6 +238,7 @@ const draggingMenu = (e) => {
   if (positionDiffMenu >= 175) {
     menu.style.transform = `translateX(105%)`;
     menu.classList.remove("active");
+    window.onscroll = function () {};
   } else if (positionDiffMenu <= 0) {
     menu.style.transform = "translateX(-5px)";
     dragStopMenu();
