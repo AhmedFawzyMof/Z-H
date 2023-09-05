@@ -83,7 +83,15 @@ const controller = {
       const minute = d.getUTCMinutes();
 
       console.log(hour, minute);
-      if (hour > 2 && minute > 1) {
+      if (hour >= 2 && minute >= 1) {
+        res.send(`
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/successam");
+          </script>`);
+      } else if (hour >= 9 && minute >= 1) {
         res.send(`
           <script>
             localStorage.setItem("cart","[]")
@@ -91,14 +99,14 @@ const controller = {
             localStorage.removeItem("disCount")
             location.replace("/pay/info/success");
           </script>`);
-      } else if (hour > 9 && minute > 1) {
+      } else {
         res.send(`
-          <script>
-            localStorage.setItem("cart","[]")
-            localStorage.removeItem("coupon")
-            localStorage.removeItem("disCount")
-            location.replace("/pay/info/success");
-          </script>`);
+        <script>
+          localStorage.setItem("cart","[]")
+          localStorage.removeItem("coupon")
+          localStorage.removeItem("disCount")
+          location.replace("/pay/info/success");
+        </script>`);
       }
     } else {
       res.redirect("/");

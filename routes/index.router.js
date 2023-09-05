@@ -12,7 +12,7 @@ router.get("/", cache(150), CategoryController.getAll);
 router.get("/:subcategory", cache(150), CategoryController.getProducts);
 router.get("/product/show/:id", cache(150), ProductController.getOne);
 router.get("/cart/show/items", ProductController.getCart);
-router.get("/fav/show/:user", cache(150), ProductController.getfav);
+router.get("/fav/show/:user", ProductController.getfav);
 router.get("/user/info/login", UserController.getLogin);
 router.get("/zh/info/cashback/:user", UserController.getCashPoint);
 router.get("/zh/info/about", cache(150), UserController.about);

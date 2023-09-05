@@ -314,7 +314,7 @@ const controller = {
   getfav: async (req, res) => {
     const userId = req.params.user;
     const [rows, fields] = await promisePool.query(
-      "SELECT favourite.product, favourite.user, Products.name, Products.image, Products.price, Products.id FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
+      "SELECT favourite.product, favourite.user, Products.name, Products.image, Products.price, Products.available, Products.id FROM favourite INNER JOIN Products ON favourite.product=Products.id WHERE user = ?;",
       [userId]
     );
     res.render("User/favourite.ejs", {
