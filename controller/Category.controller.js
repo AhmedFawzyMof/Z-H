@@ -23,7 +23,7 @@ const controller = {
   getProducts: async (req, res) => {
     const compony = req.params.subcategory;
     const [rows, fields] = await promisePool.query(
-      "SELECT * FROM `Products` WHERE compony = ?;",
+      "SELECT * FROM `Products` WHERE compony = ? ORDER BY available DESC",
       [compony]
     );
     switch (rows.length) {
@@ -50,7 +50,7 @@ const controller = {
   getProductsByCate: async (req, res) => {
     const { compony, category } = req.body;
     const [rows, fields] = await promisePool.query(
-      "SELECT * FROM `Products` WHERE (compony, category) = (?, ?); SELECT * FROM `Categories`",
+      "SELECT * FROM `Products` WHERE (compony, category) = (?, ?) ORDER BY available DESC; SELECT * FROM `Categories`",
       [compony, category]
     );
     let products = [];
@@ -115,7 +115,7 @@ const controller = {
   getCategory: async (req, res) => {
     const category = req.body.category;
     const [rows, fields] = await promisePool.query(
-      "SELECT * FROM `Products` WHERE category = ?;SELECT * FROM `Offer`;SELECT name FROM Categories;",
+      "SELECT * FROM `Products` WHERE category = ? ORDER BY available DESC;SELECT * FROM `Offer`;SELECT name FROM Categories;",
       [category]
     );
     const products = rows[0];

@@ -77,16 +77,29 @@ const controller = {
           );
           break;
       }
-      res.send(`
-        <script>
-          localStorage.setItem("cart","[]")
-          localStorage.removeItem("coupon")
-          localStorage.removeItem("disCount")
-          location.replace("/pay/info/success");
-        </script>`);
-      os.cpuUsage(function (v) {
-        console.log("CPU USAGE (%): " + v);
-      });
+
+      const d = new Date();
+      const hour = d.getHours();
+      const minute = d.getUTCMinutes();
+
+      console.log(hour, minute);
+      if (hour > 2 && minute > 1) {
+        res.send(`
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/success");
+          </script>`);
+      } else if (hour > 9 && minute > 1) {
+        res.send(`
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/success");
+          </script>`);
+      }
     } else {
       res.redirect("/");
     }
@@ -177,6 +190,9 @@ const controller = {
       [user]
     );
     res.render("Checkout/cashback", { cashback: rows[0].cashback });
+  },
+  getSuccessAf: (req, res) => {
+    res.render("Checkout/successA2am");
   },
 };
 

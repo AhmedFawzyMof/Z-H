@@ -25,6 +25,7 @@ router.get("/users/info/terms", UserController.getTerms);
 router.get("/users/info/delete", UserController.getDelUser);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);
 router.get("/pay/info/success", OrderController.getSuccess);
+router.get("/pay/info/successam", OrderController.getSuccessAf);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);
 router.get("/admin/panle/contact/:admin", AdminController.getContactUs);
 router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);

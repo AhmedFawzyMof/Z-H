@@ -609,6 +609,13 @@ const controller = {
     let Product = ``;
 
     products.forEach((product) => {
+      function ifAvi() {
+        if (product.available) {
+          return "نعم";
+        } else {
+          return "لا";
+        }
+      }
       Product += ` <div class="product">
         <form action="/delete/product" method="post" id="delete">
           <input type="hidden" name="productid" value="${product.id}" />
@@ -649,7 +656,7 @@ const controller = {
             <button class="delete" type="submit">تأكيد</button>
           </form>
           <p>
-            متاح : 
+            متاح : ${ifAvi()}
           </p>
           <form action="/edit/product" method="post" id="edit">
             <input type="hidden" name="productid" value="${product.id}" />
