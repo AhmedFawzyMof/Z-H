@@ -333,13 +333,13 @@ const controller = {
     );
     if (user[0].Admin === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.username FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });
     } else if (user[0].Stuff === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.discount,Users.username FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });
