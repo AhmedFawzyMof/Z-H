@@ -13,7 +13,6 @@
   <body onload="cartLen()">
     <%- include('../components/nav') %>
     <div class="container">
-      <% if (cashback > 0) { %>
       <div
         class="coupons"
         style="
@@ -30,9 +29,6 @@
         <h3>ألرصيد:</h3>
         <h3><%= cashback %> جنيه</h3>
       </div>
-      <% } else { %>
-      <p>للأسف لا يوجد رصيد</p>
-      <% } %>
     </div>
     <%- include('../components/footer') %>
   </body>
