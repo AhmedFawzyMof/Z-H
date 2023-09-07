@@ -180,7 +180,9 @@
             تاريخ الطلب
           </p>
           <p id="date">
-            <%=order.date.toLocaleString("ar-EG", { timeZone: "Egypt" }) %>
+            <%= order.date.getFullYear()%>-<%= order.date.getMonth()+1%>-<%=
+            order.date.getDate() %> <%= order.date.getHours() %>:<%=
+            order.date.getMinutes() %>:<%= order.date.getSeconds() %>
           </p>
         </div>
         <h3 class="title"></h3>

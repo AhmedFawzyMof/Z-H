@@ -48,7 +48,11 @@
           </a>
         </div>
         <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
-        <p>تاريخ الطلب: <%=order.date%></p>
+        <p>
+          تاريخ الطلب: <%=order.date.getFullYear()%>-<%= order.date.getMonth()
+          +1%>-<%= order.date.getDate() %> <%= order.date.getHours() %>:<%=
+          order.date.getMinutes() %>:<%= order.date.getSeconds() %>
+        </p>
         <p>شارع: <%=order.addrSt%></p>
         <p>عماره: <%=order.addrB%></p>
         <p>طابق: <%=order.addrF%></p>

@@ -21,7 +21,9 @@
           <div class="orderdate">
             تاريخ الطلب:
             <h4 dir="ltr">
-              <%= order.date.toLocaleString("en-US", { timeZone: "Egypt", }) %>
+              <%=order.date.getFullYear()%>-<%= order.date.getMonth() +1%>-<%=
+              order.date.getDate() %> <%= order.date.getHours() %>:<%=
+              order.date.getMinutes() %>:<%= order.date.getSeconds() %>
             </h4>
           </div>
         </div>
