@@ -160,8 +160,8 @@ const controller = {
   },
   editPaid: async (req, res) => {
     const { id, isPaid, total, user, method } = req.body;
-
-    const backCash = Math.floor(total * 0.02);
+    const withoutShiping = total - 20;
+    const backCash = Math.floor(withoutShiping * 0.02);
     const [rows, fields] = await promisePool.query(
       "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?",
       [isPaid, id]

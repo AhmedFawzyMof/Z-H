@@ -80,6 +80,27 @@
           localStorage.setItem("favlist", "0");
         }
       }
+      if(!localStorage.getItem('noPOP')){
+      const Div = document.createElement('div');
+      const a = document.createElement('a');
+      const image = document.createElement('img');
+      const button = document.createElement('button');
+      button.innerHTML = "<i class='bx bxs-x-circle'></i>"
+      const body = document.body;
+      a.href = '/تشيزا';
+      image.src = '/img/popup/1.png';
+      a.appendChild(image)
+      Div.appendChild(a);
+      Div.appendChild(button);
+      body.appendChild(Div);
+      Div.setAttribute('id','popup');
+      button.setAttribute('id','closepop')
+
+        button.addEventListener('click',(e)=>{
+          Div.style.display = 'none'
+          localStorage.setItem('noPOP','true')
+        })
+      }
     </script>
   </body>
 </html>

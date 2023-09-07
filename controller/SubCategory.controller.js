@@ -1,24 +1,24 @@
 const db = require("../db/index");
-// const fs = require("fs");
+const fs = require("fs");
 const promisePool = db.promise();
 
 const controller = {
   addOne: async (req, res) => {
     const { name_ar, image } = req.body;
-    // const images = "/img/compony/" + name_ar + ".png";
-    // let base64Image = image.split(";base64,").pop();
-    // fs.writeFile(
-    //   `public/img/compony/${name_ar}.png`,
-    //   base64Image,
-    //   { encoding: "base64" },
-    //   function (err) {
-    //     console.log("File created");
-    //   }
-    // );
+    const images = "/img/compony/" + name_ar + ".png";
+    let base64Image = image.split(";base64,").pop();
+    fs.writeFile(
+      `public/img/compony/${name_ar}.png`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
 
     const [rows, fields] = await promisePool.query(
       "INSERT INTO `Componies` (`name`, `image`) VALUES (?, ?)",
-      [name_ar, image]
+      [name_ar, images]
     );
 
     res.send(`
