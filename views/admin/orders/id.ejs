@@ -179,7 +179,7 @@
           >
             تاريخ الطلب
           </p>
-          <p id="date">
+          <p id="date" dir="ltr">
             <%= order.date.getFullYear()%>-<%= order.date.getMonth()+1%>-<%=
             order.date.getDate() %> <%= order.date.getHours() %>:<%=
             order.date.getMinutes() %>:<%= order.date.getSeconds() %>
@@ -282,7 +282,7 @@
               grid-column: 2/4;
             "
           >
-            20 ج
+            <% if (order.where == 'الفرع') { %> 0 ج <% } else { %> 20 ج <% } %>
           </p>
         </div>
         <div

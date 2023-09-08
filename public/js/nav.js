@@ -253,3 +253,11 @@ const dragStopMenu = () => {
 menu.addEventListener("touchstart", dragStartMenu);
 menu.addEventListener("touchmove", draggingMenu);
 menu.addEventListener("touchend", dragStopMenu);
+
+if (localStorage.getItem("POPUP")) {
+  const POP = parseInt(localStorage.getItem("POPUP"));
+  const hour = new Date().getHours();
+  if (POP !== hour) {
+    localStorage.removeItem("POPUP");
+  }
+}

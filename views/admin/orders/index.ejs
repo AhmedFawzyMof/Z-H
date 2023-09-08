@@ -48,14 +48,18 @@
           </a>
         </div>
         <p>معرف الطلب: <%=order.id.substr(24, 25)%></p>
-        <p>
-          تاريخ الطلب: <%=order.date.getFullYear()%>-<%= order.date.getMonth()
-          +1%>-<%= order.date.getDate() %> <%= order.date.getHours() %>:<%=
-          order.date.getMinutes() %>:<%= order.date.getSeconds() %>
-        </p>
+        <div style="display: flex; align-items: center">
+          تاريخ الطلب:
+          <h4 dir="ltr" style="color: #b3b2b2">
+            <%=order.date.getFullYear()%>-<%= order.date.getMonth() +1%>-<%=
+            order.date.getDate() %> <%= order.date.getHours() %>:<%=
+            order.date.getMinutes() %>:<%= order.date.getSeconds() %>
+          </h4>
+        </div>
         <p>شارع: <%=order.addrSt%></p>
         <p>عماره: <%=order.addrB%></p>
         <p>طابق: <%=order.addrF%></p>
+        <p>تسيلم في: <%= order.where %></p>
         <p>المستخدم: <%=order.email%></p>
         <p>رقم الهاتف: <%="0"+order.phone%></p>
         <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>

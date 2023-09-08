@@ -103,7 +103,20 @@ function getTotal() {
     return prev + next;
   }, 0);
 
-  let total = sum - disCount.value;
+  let total;
+
+  if (disCount.code === "cashback") {
+    if (disCount.value > sum) {
+      const left = disCount.value - sum;
+      total = 0;
+      amount.value = disCount.value - left;
+    } else {
+      total = sum - disCount.value;
+      amount.value = disCount.value;
+    }
+  } else {
+    total = sum - disCount.value;
+  }
   if (total < 0) {
     total = sum;
   } else if (total == NaN) {
@@ -137,12 +150,37 @@ OrderForm.append(disCountInp);
 
 function getLoc() {
   const Thelocation = document.getElementById("location");
+  const loc = document.querySelector(".location");
+  const st = document.getElementById("st");
+  const bu = document.getElementById("bu");
+  const fo = document.getElementById("fo");
+  const ph = document.getElementById("ph");
+  const ph2 = document.getElementById("ph2");
   if (Thelocation.value === "الفرع") {
-    const loc = document.querySelector(".location");
     loc.outerHTML =
       '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
+    st.value = "100م";
+    bu.value = "138م";
+    fo.value = "طابق 0";
+    ph.value = "0";
+    ph2.value = "0";
+    st.setAttribute("readonly", true);
+    bu.setAttribute("readonly", true);
+    fo.setAttribute("readonly", true);
+    ph.setAttribute("readonly", true);
+    ph2.setAttribute("readonly", true);
   } else {
-    console.log(false);
+    loc.outerHTML = "<div class='location'></div>";
+    st.value = "";
+    bu.value = "";
+    fo.value = "";
+    ph.value = "";
+    ph2.value = "";
+    st.removeAttribute("readonly");
+    bu.removeAttribute("readonly");
+    fo.removeAttribute("readonly");
+    ph.removeAttribute("readonly");
+    ph2.removeAttribute("readonly");
   }
 }
 

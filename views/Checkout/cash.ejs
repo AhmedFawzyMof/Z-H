@@ -37,27 +37,27 @@
         </div>
         <div class="input">
           <label>شارع</label>
-          <input type="text" required name="addrSt" />
+          <input type="text" required name="addrSt" id="st" />
         </div>
         <div class="input">
           <label>عماره</label>
-          <input type="text" required name="addrB" />
+          <input type="text" required name="addrB" id="bu" />
         </div>
         <div class="input">
           <label>طابق</label>
-          <input type="text" required name="addrF" />
+          <input type="text" required name="addrF" id="fo" />
         </div>
         <div class="input">
           <label>رقم الهاتف</label>
-          <input type="tel" required name="phone" maxlength="11" />
+          <input type="tel" required name="phone" maxlength="11" id="ph" />
         </div>
         <div class="input">
           <label>رقم هاتف احتياطي</label>
-          <input type="tel" name="phone2" maxlength="11" />
+          <input type="tel" name="phone2" maxlength="11" id="ph2" />
         </div>
-        <input type="hidden" name="delivered" value="0" />
-        <input type="hidden" name="paid" value="0" />
-        <input type="hidden" name="method" value="cash" />
+        <input type="hidden" readonly name="delivered" value="0" />
+        <input type="hidden" readonly name="paid" value="0" />
+        <input type="hidden" readonly name="method" value="cash" />
         <div id="otherinput"></div>
         <div class="location"></div>
         <div class="input">

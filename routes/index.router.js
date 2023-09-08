@@ -8,7 +8,7 @@ const OrderController = require("../controller/Order.controller");
 const AdminController = require("../controller/Admin.controller");
 const SubcategoryController = require("../controller/SubCategory.controller");
 //? GET {
-router.get("/", cache(150), CategoryController.getAll);
+router.get("/", CategoryController.getAll);
 router.get("/:subcategory", cache(150), CategoryController.getProducts);
 router.get("/product/show/:id", cache(150), ProductController.getOne);
 router.get("/cart/show/items", ProductController.getCart);
@@ -25,7 +25,6 @@ router.get("/users/info/terms", UserController.getTerms);
 router.get("/users/info/delete", UserController.getDelUser);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);
 router.get("/pay/info/success", OrderController.getSuccess);
-router.get("/pay/info/successam", OrderController.getSuccessAf);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);
 router.get("/admin/panle/contact/:admin", AdminController.getContactUs);
 router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);
