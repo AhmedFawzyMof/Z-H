@@ -47,7 +47,10 @@
             <%if(products[i].offer == 0){%>
             <p class="price"><%= products[i].price %> ج</p>
             <%}else {%>
-            <p class="price"><%= products[i].offer %> ج</p>
+            <div class="price">
+              <p style="font-weight: 400">توفير</p>
+              <p><%= products[i].offer %> ج</p>
+            </div>
             <%}%>
             <p class="name"><%= products[i].name %></p>
           </div>
