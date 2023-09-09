@@ -12,9 +12,22 @@
     />
     <script src="/js/carousel.js" defer></script>
   </head>
-  <body onload="CartFunction(),cartLen(), logedUser()">
+  <body onload="workingHour(),CartFunction(),cartLen(), logedUser()">
     <%- include('components/nav') %> <% if (offers.length > 0) { %>
-   
+      <div class="message" style=" 
+        display: block;   
+        padding: 0 7px;
+        background: red;
+        display: flex;
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+    ">
+        <p>مواعيد العمل من 9 صباحا حتى 2 صباحا في حالة طلب أي شيء سوف نقوم بالتواصل معك خلال ساعات العمل</p>
+      </div>
       <div class="wrapper">
       <i id="left" class="bx bx-chevron-left"></i>
       <div class="carousel">
@@ -64,7 +77,6 @@
     </div>
     <%- include('components/footer') %>
     <script>
-     
       function CartFunction() {
         if (!localStorage.getItem("cart")) {
           localStorage.setItem("cart", "[]");
@@ -104,6 +116,18 @@
           localStorage.removeItem('noPOP')
         })
       }
+
+      function workingHour(){
+        const hour = new Date().getHours()
+
+          if(hour >= 2 && hour <= 8){
+            const message = document.querySelector('.message')
+            message.style.display = 'flex'
+          }else{
+            const message = document.querySelector('.message')
+            message.style.display = 'none'
+          }
+          }
     </script>
   </body>
 </html>
