@@ -69,11 +69,16 @@
     </div>
     <%- include('../components/footer') %>
     <script>
+      "use strict";
+
       if (!localStorage.getItem("amount")) {
         localStorage.setItem("amount", "0");
       }
-      const noDis = { code: "cashback", value: parseInt("<%=cashback%>") };
-      const Dis = localStorage.getItem("disCount");
+      var noDis = {
+        code: "cashback",
+        value: parseInt("<%=cashback%>"),
+      };
+      var Dis = localStorage.getItem("disCount");
       if (JSON.stringify(noDis) !== Dis) {
         localStorage.setItem("disCount", JSON.stringify(noDis));
         location.reload();
@@ -82,7 +87,7 @@
         localStorage.setItem("disCount", JSON.stringify(noDis));
         location.reload();
       }
-      const amount = document.getElementById("amount");
+      var amount = document.getElementById("amount");
     </script>
   </body>
 </html>

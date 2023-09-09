@@ -28,6 +28,8 @@
     </div>
     <%- include('../components/footer') %>
     <script>
+      "use strict";
+
       if (localStorage.getItem("Token") === "noToken") {
         location.replace("/");
       }
@@ -37,10 +39,14 @@
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ user: parsedToken }),
+          body: JSON.stringify({
+            user: parsedToken,
+          }),
         })
-          .then((res) => res.json())
-          .then((res) => {
+          .then(function (res) {
+            return res.json();
+          })
+          .then(function (res) {
             if (res.success !== 0) {
               localStorage.setItem("coupon", res.success);
             } else {

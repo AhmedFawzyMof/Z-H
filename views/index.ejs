@@ -77,57 +77,55 @@
     </div>
     <%- include('components/footer') %>
     <script>
-      function CartFunction() {
-        if (!localStorage.getItem("cart")) {
-          localStorage.setItem("cart", "[]");
-        }
-        if (!localStorage.getItem("Token")) {
-          location.reload();
-          localStorage.setItem("Token", "noToken");
-        }
-        if (!localStorage.getItem("State")) {
-          localStorage.setItem("State", "noState");
-        }
+      "use strict";
 
-        if (!localStorage.getItem("favlist")) {
-          localStorage.setItem("favlist", "0");
-        }
-      }
-      if(!localStorage.getItem('POPUP')){
-      const Div = document.createElement('div');
-      const a = document.createElement('a');
-      const image = document.createElement('img');
-      const button = document.createElement('button');
-      button.innerHTML = "<i class='bx bxs-x-circle'></i>"
-      const body = document.body;
-      a.href = '/تشيزا';
-      image.src = '/img/popup/1.png';
-      a.appendChild(image)
-      Div.appendChild(a);
-      Div.appendChild(button);
-      body.appendChild(Div);
-      Div.setAttribute('id','popup');
-      button.setAttribute('id','closepop')
-
-        button.addEventListener('click',(e)=>{
-          Div.style.display = 'none'
-          const hour = new Date().getHours();
-          localStorage.setItem('POPUP', hour)
-          localStorage.removeItem('noPOP')
-        })
-      }
-
-      function workingHour(){
-        const hour = new Date().getHours()
-
-          if(hour >= 2 && hour <= 8){
-            const message = document.querySelector('.message')
-            message.style.display = 'flex'
-          }else{
-            const message = document.querySelector('.message')
-            message.style.display = 'none'
-          }
-          }
+function CartFunction() {
+  if (!localStorage.getItem("cart")) {
+    localStorage.setItem("cart", "[]");
+  }
+  if (!localStorage.getItem("Token")) {
+    location.reload();
+    localStorage.setItem("Token", "noToken");
+  }
+  if (!localStorage.getItem("State")) {
+    localStorage.setItem("State", "noState");
+  }
+  if (!localStorage.getItem("favlist")) {
+    localStorage.setItem("favlist", "0");
+  }
+}
+if (!localStorage.getItem("POPUP")) {
+  var Div = document.createElement("div");
+  var a = document.createElement("a");
+  var image = document.createElement("img");
+  var button = document.createElement("button");
+  button.innerHTML = "<i class='bx bxs-x-circle'></i>";
+  var body = document.body;
+  a.href = "/تشيزا";
+  image.src = "/img/popup/1.png";
+  a.appendChild(image);
+  Div.appendChild(a);
+  Div.appendChild(button);
+  body.appendChild(Div);
+  Div.setAttribute("id", "popup");
+  button.setAttribute("id", "closepop");
+  button.addEventListener("click", function (e) {
+    Div.style.display = "none";
+    var hour = new Date().getHours();
+    localStorage.setItem("POPUP", hour);
+    localStorage.removeItem("noPOP");
+  });
+}
+function workingHour() {
+  var hour = new Date().getHours();
+  if (hour >= 2 && hour <= 8) {
+    var message = document.querySelector(".message");
+    message.style.display = "flex";
+  } else {
+    var _message = document.querySelector(".message");
+    _message.style.display = "none";
+  }
+}
     </script>
   </body>
 </html>

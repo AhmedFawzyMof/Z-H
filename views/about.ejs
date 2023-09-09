@@ -85,13 +85,15 @@
     </div>
     <%- include('components/footer') %>
     <script>
-      const Q = document.querySelectorAll(".Qut");
-      Q.forEach((q) => {
-        q.addEventListener("click", (e) => {
+      "use strict";
+
+      var Q = document.querySelectorAll(".Qut");
+      Q.forEach(function (q) {
+        q.addEventListener("click", function (e) {
           if (e.target.classList.contains("Qut")) {
-            const about = e.target.parentElement;
-            const Icon = e.target.getElementsByTagName("i")[0];
-            const A = about.getElementsByTagName("p")[0];
+            var about = e.target.parentElement;
+            var Icon = e.target.getElementsByTagName("i")[0];
+            var A = about.getElementsByTagName("p")[0];
             Icon.classList.toggle("open");
             if (Icon.classList.contains("open")) {
               A.style.display = "flex";
@@ -103,19 +105,19 @@
               Icon.style.transform = "rotate(0deg)";
             }
           } else {
-            const about = e.target.parentElement.parentElement;
-            const Icon = e.target.parentElement.getElementsByTagName("i")[0];
-            const A = about.getElementsByTagName("p")[0];
-            console.log(Icon);
-            Icon.classList.toggle("open");
-            if (Icon.classList.contains("open")) {
-              A.style.display = "flex";
-              about.style.height = "150px";
-              Icon.style.transform = "rotate(180deg)";
+            var _about = e.target.parentElement.parentElement;
+            var _Icon = e.target.parentElement.getElementsByTagName("i")[0];
+            var _A = _about.getElementsByTagName("p")[0];
+            console.log(_Icon);
+            _Icon.classList.toggle("open");
+            if (_Icon.classList.contains("open")) {
+              _A.style.display = "flex";
+              _about.style.height = "150px";
+              _Icon.style.transform = "rotate(180deg)";
             } else {
-              A.style.display = "none";
-              about.style.height = "50px";
-              Icon.style.transform = "rotate(0deg)";
+              _A.style.display = "none";
+              _about.style.height = "50px";
+              _Icon.style.transform = "rotate(0deg)";
             }
           }
         });

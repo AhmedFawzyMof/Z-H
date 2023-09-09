@@ -1,16 +1,15 @@
-const carousel = document.querySelector(".carousel"),
-  firstImg = carousel.querySelectorAll("img")[0];
-arrowIcons = document.querySelectorAll(".wrapper i");
+"use strict";
 
-let isDragStart = false,
+var carousel = document.querySelector(".carousel"),
+  firstImg = carousel.querySelectorAll("img")[0],
+  arrowIcons = document.querySelectorAll(".wrapper i");
+var isDragStart = false,
   prevPageX,
   prevScrollLeft,
   positionDiff;
-
-let firstImgWidth = firstImg.clientWidth + 14;
-let scrollWidth = carousel.scrollWidth - carousel.clientWidth;
-
-const showHideIcons = () => {
+var firstImgWidth = firstImg.clientWidth + 14;
+var scrollWidth = carousel.scrollWidth - carousel.clientWidth;
+var showHideIcons = function showHideIcons() {
   if (carousel.scrollLeft == 0) {
     arrowIcons[0].style.display = "none";
     arrowIcons[0].classList.add("hide");
@@ -38,19 +37,20 @@ const showHideIcons = () => {
     }
   }
 };
-arrowIcons.forEach((icon) => {
-  icon.addEventListener("click", () => {
+arrowIcons.forEach(function (icon) {
+  icon.addEventListener("click", function () {
     carousel.scrollLeft += icon.id == "left" ? -firstImgWidth : firstImgWidth;
-    setTimeout(() => showHideIcons(), 60);
+    setTimeout(function () {
+      return showHideIcons();
+    }, 60);
   });
 });
-
-const autoSlide = () => {
+var autoSlide = function autoSlide() {
   if (carousel.scrollLeft == carousel.scrollWidth - carousel.clientWidth)
     return;
   positionDiff = Math.abs(positionDiff);
-  let firstImgWidth = firstImg.clientWidth + 14;
-  let valDiffernce = firstImgWidth - positionDiff;
+  var firstImgWidth = firstImg.clientWidth + 14;
+  var valDiffernce = firstImgWidth - positionDiff;
   if (carousel.scrollLeft > prevScrollLeft) {
     return (carousel.scrollLeft +=
       positionDiff > firstImgWidth / 3 ? valDiffernce : -positionDiff);
@@ -58,14 +58,12 @@ const autoSlide = () => {
   carousel.scrollLeft -=
     positionDiff > firstImgWidth / 3 ? valDiffernce : -positionDiff;
 };
-
-const dragStart = (e) => {
+var dragStart = function dragStart(e) {
   isDragStart = true;
   prevPageX = e.pageX || e.touches[0].pageX;
   prevScrollLeft = carousel.scrollLeft;
 };
-
-const dragging = (e) => {
+var dragging = function dragging(e) {
   if (!isDragStart) return;
   e.preventDefault();
   carousel.classList.add("dragging");
@@ -73,31 +71,24 @@ const dragging = (e) => {
   carousel.scrollLeft = prevScrollLeft - positionDiff;
   showHideIcons();
 };
-
-const dragStop = () => {
+var dragStop = function dragStop() {
   isDragStart = false;
   carousel.classList.remove("dragging");
   autoSlide();
 };
-
 carousel.addEventListener("mousedown", dragStart);
 carousel.addEventListener("touchstart", dragStart);
-
 carousel.addEventListener("mousemove", dragging);
 carousel.addEventListener("touchmove", dragging);
-
 carousel.addEventListener("mouseup", dragStop);
 carousel.addEventListener("mouseleave", dragStop);
 carousel.addEventListener("touchend", dragStop);
-
-const leftBtn = document.getElementById("left");
-const rightBtn = document.getElementById("right");
-let counter = 1;
-
-document.addEventListener("DOMContentLoaded", () => {
-  var x = function () {
+var leftBtn = document.getElementById("left");
+var rightBtn = document.getElementById("right");
+var counter = 1;
+document.addEventListener("DOMContentLoaded", function () {
+  var x = function x() {
     var counter = 1;
-
     (function Right() {
       rightBtn.click();
       if (counter < 6) {
@@ -109,9 +100,8 @@ document.addEventListener("DOMContentLoaded", () => {
     })();
   };
   x();
-  var y = function () {
+  var y = function y() {
     var counter = 1;
-
     (function Left() {
       leftBtn.click();
       if (counter < 6) {

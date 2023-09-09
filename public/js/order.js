@@ -1,25 +1,29 @@
+"use strict";
+
 if (localStorage.getItem("Token") === "noToken") {
   location.replace("/");
 }
-let disCount;
+var disCount;
 if (localStorage.getItem("disCount")) {
   disCount = JSON.parse(localStorage.getItem("disCount"));
 } else {
-  disCount = { code: "", value: 0 };
+  disCount = {
+    code: "",
+    value: 0
+  };
 }
 function calContainer() {
   function getTotal() {
-    let temp = cart.map(function (item) {
+    var temp = cart.map(function (item) {
       return parseFloat(item.price * item.quantity);
     });
-
-    let sum = temp.reduce(function (prev, next) {
+    var sum = temp.reduce(function (prev, next) {
       return prev + next;
     }, 0);
-    let total;
+    var total;
     if (disCount.code === "cashback") {
       if (disCount.value > sum) {
-        const left = disCount.value - sum;
+        var left = disCount.value - sum;
         total = 0;
         amount.value = disCount.value - left;
       } else {
@@ -34,80 +38,47 @@ function calContainer() {
     }
     return total;
   }
-
   function getItems() {
-    let temp = cart
-      .map(function (item) {
-        return item.name + "  ";
-      })
-      .join("");
-
+    var temp = cart.map(function (item) {
+      return item.name + "  ";
+    }).join("");
     return temp;
   }
   function ShipingPrice() {
-    let shiping = 20;
+    var shiping = 20;
     return shiping;
   }
   function promoCode() {
     if (location.pathname.includes("/pay/info/cashback")) {
-      return ``;
+      return "";
     } else {
-      return `
-        <form action="/get/promocode" method="post" id="promocode">
-          <input type="hidden" name="id" value='${token}' />
-          <input type="text" name="code" placeholder="كود الترويجي" />
-          <button type="submit">كود الترويجي</button>
-        </form>
-      `;
+      return "\n        <form action=\"/get/promocode\" method=\"post\" id=\"promocode\">\n          <input type=\"hidden\" name=\"id\" value='".concat(token, "' />\n          <input type=\"text\" name=\"code\" placeholder=\"\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A\" />\n          <button type=\"submit\">\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A</button>\n        </form>\n      ");
     }
   }
   if (cart.length) {
-    const countContainer = document.getElementById("countContainer");
-    countContainer.innerHTML = `
-         ${promoCode()}
-          <p>المجموع: ${getTotal()} ج</p> 
-          <p>المنتجات: ( ${getItems()} )</p>
-          <p>سعر الشحن: ${ShipingPrice()} ج</p>
-          `;
+    var countContainer = document.getElementById("countContainer");
+    countContainer.innerHTML = "\n         ".concat(promoCode(), "\n          <p>\u0627\u0644\u0645\u062C\u0645\u0648\u0639: ").concat(getTotal(), " \u062C</p> \n          <p>\u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A: ( ").concat(getItems(), " )</p>\n          <p>\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646: ").concat(ShipingPrice(), " \u062C</p>\n          ");
   } else {
-    const countContainer = document.getElementById("countContainer");
-    countContainer.innerHTML = `<p style="
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        background: #fff;
-        padding: 5px;
-        width: 95%;
-        display:flex;
-        align-items: center;
-        justify-content: center;
-        text-transform: capitalize;
-        border-radius: 5px;
-        ">عربة التسوق فارغة <a href='/' style='margin-left: 5px;
-    text-decoration: none;
-    color: #2660ff;'> اذهب للتسوق</a> </p>`;
+    var _countContainer = document.getElementById("countContainer");
+    _countContainer.innerHTML = "<p style=\"\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%,-50%);\n        background: #fff;\n        padding: 5px;\n        width: 95%;\n        display:flex;\n        align-items: center;\n        justify-content: center;\n        text-transform: capitalize;\n        border-radius: 5px;\n        \">\u0639\u0631\u0628\u0629 \u0627\u0644\u062A\u0633\u0648\u0642 \u0641\u0627\u0631\u063A\u0629 <a href='/' style='margin-left: 5px;\n    text-decoration: none;\n    color: #2660ff;'> \u0627\u0630\u0647\u0628 \u0644\u0644\u062A\u0633\u0648\u0642</a> </p>";
   }
 }
-const myForm = document.getElementById("order");
+var myForm = document.getElementById("order");
 function ShipingPrice() {
-  let shiping = 20;
+  var shiping = 20;
   return shiping;
 }
 function getTotal() {
-  let temp = cart.map(function (item) {
+  var temp = cart.map(function (item) {
     return parseFloat(item.price * item.quantity);
   });
-
-  let sum = temp.reduce(function (prev, next) {
+  var sum = temp.reduce(function (prev, next) {
     return prev + next;
   }, 0);
-
-  let total;
-
+  var total;
   if (disCount.code === "cashback") {
     if (disCount.value > sum) {
-      const left = disCount.value - sum;
+      var left = disCount.value - sum;
       total = 0;
       amount.value = disCount.value - left;
     } else {
@@ -124,22 +95,20 @@ function getTotal() {
   }
   return total;
 }
-
-const OrderForm = document.getElementById("order");
-
-const tokenInp = document.createElement("input");
+var OrderForm = document.getElementById("order");
+var tokenInp = document.createElement("input");
 tokenInp.type = "hidden";
 tokenInp.name = "user";
 tokenInp.value = JSON.parse(token);
-const totalInp = document.createElement("input");
+var totalInp = document.createElement("input");
 totalInp.type = "hidden";
 totalInp.name = "total";
 totalInp.value = JSON.parse(getTotal() + ShipingPrice());
-const cartInp = document.createElement("input");
+var cartInp = document.createElement("input");
 cartInp.type = "hidden";
 cartInp.name = "cart";
 cartInp.value = JSON.stringify(cart);
-const disCountInp = document.createElement("input");
+var disCountInp = document.createElement("input");
 disCountInp.type = "hidden";
 disCountInp.name = "discount";
 disCountInp.value = JSON.stringify(disCount);
@@ -147,18 +116,16 @@ OrderForm.append(tokenInp);
 OrderForm.append(totalInp);
 OrderForm.append(cartInp);
 OrderForm.append(disCountInp);
-
 function getLoc() {
-  const Thelocation = document.getElementById("location");
-  const loc = document.querySelector(".location");
-  const st = document.getElementById("st");
-  const bu = document.getElementById("bu");
-  const fo = document.getElementById("fo");
-  const ph = document.getElementById("ph");
-  const ph2 = document.getElementById("ph2");
+  var Thelocation = document.getElementById("location");
+  var loc = document.querySelector(".location");
+  var st = document.getElementById("st");
+  var bu = document.getElementById("bu");
+  var fo = document.getElementById("fo");
+  var ph = document.getElementById("ph");
+  var ph2 = document.getElementById("ph2");
   if (Thelocation.value === "الفرع") {
-    loc.outerHTML =
-      '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
+    loc.outerHTML = '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
     st.value = "100م";
     bu.value = "138م";
     fo.value = "طابق 0";
@@ -183,12 +150,8 @@ function getLoc() {
     ph2.removeAttribute("readonly");
   }
 }
-
 window.addEventListener("pageshow", function (event) {
-  var historyTraversal =
-    event.persisted ||
-    (typeof window.performance != "undefined" &&
-      window.performance.navigation.type === 2);
+  var historyTraversal = event.persisted || typeof window.performance != "undefined" && window.performance.navigation.type === 2;
   if (historyTraversal) {
     // Handle page restore.
     window.location.reload();

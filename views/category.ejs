@@ -85,7 +85,7 @@
     <p id="Err">لا توجد منتجات متاحة</p>
     <%- include('components/footer') %>
     <script>
-      const footer = document.getElementById("footer");
+      var footer = document.getElementById("footer");
       footer.style.position = "absolute";
       footer.style.bottom = "0";
     </script>
@@ -98,7 +98,6 @@
 
       // Get the offset position of the navbar
       var sticky = header.offsetTop;
-
       function myFunction() {
         if (window.pageYOffset > sticky) {
           header.classList.add("sticky");

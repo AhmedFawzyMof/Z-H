@@ -1,4 +1,5 @@
 node_modules
 .env
-package-lock.jsond
+package-lock.json
 payment.md
+gulpfile.js

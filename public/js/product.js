@@ -1,10 +1,20 @@
-const Quantity = document.createElement("div");
+"use strict";
+
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+var _addFav;
+function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+var Quantity = document.createElement("div");
 Quantity.setAttribute("class", "quantity");
-const QuantityIncBtn = document.createElement("button");
-const QuantityDicBtn = document.createElement("button");
-const QuantityI = document.createElement("i");
-const QuantityI2 = document.createElement("i");
-const QuantityP = document.createElement("p");
+var QuantityIncBtn = document.createElement("button");
+var QuantityDicBtn = document.createElement("button");
+var QuantityI = document.createElement("i");
+var QuantityI2 = document.createElement("i");
+var QuantityP = document.createElement("p");
 QuantityP.setAttribute("id", "quantityNum");
 Quantity.appendChild(QuantityIncBtn);
 QuantityI.setAttribute("class", "bx bx-plus");
@@ -15,47 +25,42 @@ Quantity.appendChild(QuantityDicBtn);
 QuantityI2.setAttribute("class", "bx bx-minus");
 QuantityDicBtn.appendChild(QuantityI2);
 QuantityDicBtn.setAttribute("id", "Dic");
-
-const Products = document.querySelectorAll(".Product");
-
-Products.forEach((product) => {
-  let res = cart.find((element) => element.id == product.id);
+var Products = document.querySelectorAll(".Product");
+Products.forEach(function (product) {
+  var res = cart.find(function (element) {
+    return element.id == product.id;
+  });
   if (res !== undefined) {
-    const div = document.getElementById(res.id);
+    var div = document.getElementById(res.id);
     console.log(div);
-    let button = div.querySelector("#outside");
-
-    QuantityIncBtn.setAttribute(
-      "onclick",
-      `incQuantity(${res.id}, ${res.quantity + 1})`
-    );
-
-    QuantityDicBtn.setAttribute("onclick", `dicQuantity(${res.id})`);
-
+    var button = div.querySelector("#outside");
+    QuantityIncBtn.setAttribute("onclick", "incQuantity(".concat(res.id, ", ").concat(res.quantity + 1, ")"));
+    QuantityDicBtn.setAttribute("onclick", "dicQuantity(".concat(res.id, ")"));
     QuantityP.innerText = res.quantity;
     button.outerHTML = Quantity.outerHTML;
   }
 });
-
 function addItemToCart(productId) {
-  const Product = document.getElementById(productId);
-  const id = Product.querySelector("#id").value;
-  const name = Product.querySelector("#name").value;
-  const price = Product.querySelector("#price").value;
-  const image = Product.querySelector("#image").value;
-  const quantity = 1;
-  const product = {
+  var Product = document.getElementById(productId);
+  var id = Product.querySelector("#id").value;
+  var name = Product.querySelector("#name").value;
+  var price = Product.querySelector("#price").value;
+  var image = Product.querySelector("#image").value;
+  var quantity = 1;
+  var product = {
     id: id,
     name: name,
     price: price,
     image: image,
-    quantity: quantity,
+    quantity: quantity
   };
   productId = product.id;
   if (cart.length == 0) {
     cart.push(product);
   } else {
-    let res = cart.find((element) => element.id == product.id);
+    var res = cart.find(function (element) {
+      return element.id == product.id;
+    });
     if (res === undefined) {
       cart.push(product);
     }
@@ -65,102 +70,130 @@ function addItemToCart(productId) {
   location.reload();
 }
 function incQuantity(productId, quantity) {
-  for (let product of cart) {
-    if (product.id == productId) {
-      if (20 == product.quantity) {
-        product.quantity != quantity;
-      } else {
-        product.quantity = quantity;
+  var _iterator = _createForOfIteratorHelper(cart),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var product = _step.value;
+      if (product.id == productId) {
+        if (20 == product.quantity) {
+          product.quantity != quantity;
+        } else {
+          product.quantity = quantity;
+        }
       }
     }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
   }
   localStorage.setItem("cart", JSON.stringify(cart));
-  let res = cart.find((element) => element.id == productId);
-  let update = document.getElementById(res.id);
-  const qaun = update.querySelector(".quantity");
-  const plusOne = qaun.querySelector("#Inc");
-  const length = qaun.querySelector("#quantityNum");
+  var res = cart.find(function (element) {
+    return element.id == productId;
+  });
+  var update = document.getElementById(res.id);
+  var qaun = update.querySelector(".quantity");
+  var plusOne = qaun.querySelector("#Inc");
+  var length = qaun.querySelector("#quantityNum");
   length.textContent = quantity;
-  plusOne.outerHTML = `<button id="Inc" onclick="incQuantity(${res.id}, ${
-    res.quantity + 1
-  })"><i class="bx bx-plus"></i></button>`;
+  plusOne.outerHTML = "<button id=\"Inc\" onclick=\"incQuantity(".concat(res.id, ", ").concat(res.quantity + 1, ")\"><i class=\"bx bx-plus\"></i></button>");
 }
 function dicQuantity(productId) {
-  for (let product of cart) {
-    if (product.id == productId) {
-      if (product.quantity !== 1) {
-        product.quantity -= 1;
+  var _iterator2 = _createForOfIteratorHelper(cart),
+    _step2;
+  try {
+    for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+      var product = _step2.value;
+      if (product.id == productId) {
+        if (product.quantity !== 1) {
+          product.quantity -= 1;
+        }
       }
     }
+  } catch (err) {
+    _iterator2.e(err);
+  } finally {
+    _iterator2.f();
   }
   localStorage.setItem("cart", JSON.stringify(cart));
-  let res = cart.find((element) => element.id == productId);
-  let update = document.getElementById(res.id);
+  var res = cart.find(function (element) {
+    return element.id == productId;
+  });
+  var update = document.getElementById(res.id);
   update.appendChild(Quantity);
-  QuantityIncBtn.setAttribute(
-    "onclick",
-    `incQuantity(${res.id}, ${res.quantity + 1})`
-  );
-  QuantityDicBtn.setAttribute("onclick", `dicQuantity(${res.id})`);
+  QuantityIncBtn.setAttribute("onclick", "incQuantity(".concat(res.id, ", ").concat(res.quantity + 1, ")"));
+  QuantityDicBtn.setAttribute("onclick", "dicQuantity(".concat(res.id, ")"));
   QuantityP.innerText = res.quantity;
 }
-
-const favourites = document.querySelectorAll("#favourite");
-favourites.forEach((favourite) => {
-  favourite.addEventListener("submit", (e) => {
+var favourites = document.querySelectorAll("#favourite");
+favourites.forEach(function (favourite) {
+  favourite.addEventListener("submit", function (e) {
     e.preventDefault();
-    const product = favourite.querySelector("#productinp").value;
-    const userinp = JSON.parse(token);
-    const searchParams = new URLSearchParams();
+    var product = favourite.querySelector("#productinp").value;
+    var userinp = JSON.parse(token);
+    var searchParams = new URLSearchParams();
     searchParams.append("user", userinp);
     searchParams.append("product", product);
-
     addFav(searchParams);
   });
 });
-
-const delFav = document.querySelectorAll("#delfavourite");
-delFav.forEach((fav) => {
-  const user = document.createElement("input");
+var delFav = document.querySelectorAll("#delfavourite");
+delFav.forEach(function (fav) {
+  var user = document.createElement("input");
   user.name = "user";
   user.value = JSON.parse(token);
   user.type = "hidden";
-  const length = document.createElement("input");
+  var length = document.createElement("input");
   length.name = "length";
   length.value = localStorage.getItem("favlist");
   length.type = "hidden";
   fav.appendChild(user);
   fav.appendChild(length);
 });
-
-const message = document.getElementById("message");
-const errmsg = document.getElementById("errmsg");
-async function addFav(data) {
-  const log = await fetch("/favourite", {
-    method: "post",
-    body: data,
-  });
-
-  const response = await log.json();
-
-  if (response.success == 1) {
-    message.style.right = "5px";
-    message.textContent = response.msg;
-    setTimeout(() => {
-      message.style.right = "-255px";
-    }, 3000);
-    if (response.length === 1) {
-      console.log(response);
-      localStorage.setItem("favlist", "1");
-    } else {
-      localStorage.setItem("favlist", `${response.length}`);
-    }
-    favLength();
-  } else {
-    errmsg.style.right = "5px";
-    errmsg.textContent = response.msg;
-    setTimeout(() => {
-      errmsg.style.right = "-255px";
-    }, 3000);
-  }
+var message = document.getElementById("message");
+var errmsg = document.getElementById("errmsg");
+function addFav(_x) {
+  return (_addFav = _addFav || _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(data) {
+    var log, response;
+    return _regeneratorRuntime().wrap(function _callee$(_context) {
+      while (1) switch (_context.prev = _context.next) {
+        case 0:
+          _context.next = 2;
+          return fetch("/favourite", {
+            method: "post",
+            body: data
+          });
+        case 2:
+          log = _context.sent;
+          _context.next = 5;
+          return log.json();
+        case 5:
+          response = _context.sent;
+          if (response.success == 1) {
+            message.style.right = "5px";
+            message.textContent = response.msg;
+            setTimeout(function () {
+              message.style.right = "-255px";
+            }, 3000);
+            if (response.length === 1) {
+              console.log(response);
+              localStorage.setItem("favlist", "1");
+            } else {
+              localStorage.setItem("favlist", "".concat(response.length));
+            }
+            favLength();
+          } else {
+            errmsg.style.right = "5px";
+            errmsg.textContent = response.msg;
+            setTimeout(function () {
+              errmsg.style.right = "-255px";
+            }, 3000);
+          }
+        case 7:
+        case "end":
+          return _context.stop();
+      }
+    }, _callee);
+  }))).apply(this, arguments);
 }

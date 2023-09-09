@@ -60,11 +60,13 @@
     </div>
     <script src="/js/product.js"></script>
     <script>
-      window.onload = () => {
-        const offers = "<%= subcate %>";
+      "use strict";
+
+      window.onload = function () {
+        var offers = "<%= subcate %>";
         if (offers == "عروض التوفير") {
-          const Products = document.querySelectorAll(".Product");
-          Products.forEach((Product) => {
+          var Products = document.querySelectorAll(".Product");
+          Products.forEach(function (Product) {
             Product.classList.replace("Product", "Offer");
           });
         }
@@ -75,7 +77,9 @@
     <p id="Err">لا توجد منتجات متاحة</p>
     <%- include('../components/footer') %>
     <script>
-      const footer = document.getElementById("footer");
+      "use strict";
+
+      var footer = document.getElementById("footer");
       footer.style.position = "absolute";
       footer.style.bottom = "0";
     </script>

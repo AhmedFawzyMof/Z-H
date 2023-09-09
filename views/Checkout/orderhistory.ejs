@@ -78,6 +78,8 @@
     </div>
     <%- include('../components/footer') %>
     <script>
+      "use strict";
+
       if (localStorage.getItem("Token") === "noToken") {
         location.replace("/");
       }

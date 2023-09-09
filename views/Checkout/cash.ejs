@@ -68,12 +68,15 @@
     <%- include('../components/footer') %>
     <script src="/js/order.js"></script>
     <script>
+      "use strict";
+      var json = {
+        code: "",
+        value: 0,
+      };
       if (disCount.code === "cashback") {
-        const json = { code: "", value: 0 };
         localStorage.setItem("disCount", JSON.stringify(json));
       }
       if (!localStorage.getItem("disCount")) {
-        const json = { code: "", value: 0 };
         localStorage.setItem("disCount", JSON.stringify(json));
       }
     </script>
