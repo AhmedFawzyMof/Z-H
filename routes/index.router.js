@@ -31,6 +31,7 @@ router.get("/user/info/o_h/:userId", OrderController.getOrderHistory);
 router.get("/user/info/profile/:userId", cache(150), UserController.getProfile);
 router.get("/admin/panle/users/:admin", AdminController.getUser);
 router.get("/admin/panle/offer/:admin", AdminController.getOffer);
+router.get("/admin/panle/totalSales/:admin", AdminController.getTotalSales);
 router.get("/admin/panle/products/:admin", AdminController.getProducut);
 router.get("/admin/panle/categorys/:admin", AdminController.getCategory);
 router.get("/admin/panle/subcategorys/:admin", AdminController.getSubCategory);

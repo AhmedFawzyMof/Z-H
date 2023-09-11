@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Cairo, Roboto;
+}
+
+body {
+  background: #eee;
+  overflow-x: hidden;
+  direction: rtl;
+}
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  flex-wrap: wrap;
+  min-height: 100vh;
+  gap: 20px;
+}
+
+.totalorders,
+.totalSales {
+  background: #fff;
+  width: 300px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}

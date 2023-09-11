@@ -347,6 +347,31 @@ const controller = {
       res.redirect("/");
     }
   },
+  getTotalSales: async (req, res) => {
+    const token = req.params.admin;
+
+    const [rows, fields] = await promisePool.query(
+      "SELECT Admin,Stuff,id FROM Users WHERE id=?;",
+      [token]
+    );
+    const [orders, _] = await promisePool.query(
+      "SELECT total FROM `TheOrders` WHERE delivered = 1"
+    );
+
+    const sum = orders.reduce((p, c) => {
+      return p + c.total;
+    }, 0);
+    if (rows[0].Admin == 1) {
+      res.render("admin/totalSales/index.ejs", {
+        orderslen: orders.length,
+        total: sum,
+      });
+    } else if (rows[0].Stuff == 1) {
+      res.redirect("/admin/panle/orders/" + row1.id);
+    } else {
+      res.redirect("/");
+    }
+  },
   //! }
   //! SEARCH {
   searchUsers: async (req, res) => {
