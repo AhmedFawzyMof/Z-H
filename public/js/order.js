@@ -9,7 +9,7 @@ if (localStorage.getItem("disCount")) {
 } else {
   disCount = {
     code: "",
-    value: 0
+    value: 0,
   };
 }
 function calContainer() {
@@ -39,9 +39,11 @@ function calContainer() {
     return total;
   }
   function getItems() {
-    var temp = cart.map(function (item) {
-      return item.name + "  ";
-    }).join("");
+    var temp = cart
+      .map(function (item) {
+        return item.name + "  ";
+      })
+      .join("");
     return temp;
   }
   function ShipingPrice() {
@@ -52,15 +54,32 @@ function calContainer() {
     if (location.pathname.includes("/pay/info/cashback")) {
       return "";
     } else {
-      return "\n        <form action=\"/get/promocode\" method=\"post\" id=\"promocode\">\n          <input type=\"hidden\" name=\"id\" value='".concat(token, "' />\n          <input type=\"text\" name=\"code\" placeholder=\"\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A\" />\n          <button type=\"submit\">\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A</button>\n        </form>\n      ");
+      return '\n        <form action="/get/promocode" method="post" id="promocode">\n          <input type="hidden" name="id" value=\''.concat(
+        token,
+        '\' />\n          <input type="text" name="code" placeholder="\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A" />\n          <button type="submit">\u0643\u0648\u062F \u0627\u0644\u062A\u0631\u0648\u064A\u062C\u064A</button>\n        </form>\n      '
+      );
     }
   }
   if (cart.length) {
     var countContainer = document.getElementById("countContainer");
-    countContainer.innerHTML = "\n         ".concat(promoCode(), "\n          <p>\u0627\u0644\u0645\u062C\u0645\u0648\u0639: ").concat(getTotal(), " \u062C</p> \n          <p>\u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A: ( ").concat(getItems(), " )</p>\n          <p>\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646: ").concat(ShipingPrice(), " \u062C</p>\n          ");
+    countContainer.innerHTML = "\n         "
+      .concat(
+        promoCode(),
+        "\n          <p>\u0627\u0644\u0645\u062C\u0645\u0648\u0639: "
+      )
+      .concat(
+        getTotal(),
+        " \u062C</p> \n          <p>\u0627\u0644\u0645\u0646\u062A\u062C\u0627\u062A: ( "
+      )
+      .concat(
+        getItems(),
+        " )</p>\n          <p>\u0633\u0639\u0631 \u0627\u0644\u0634\u062D\u0646: "
+      )
+      .concat(ShipingPrice(), " \u062C</p>\n          ");
   } else {
     var _countContainer = document.getElementById("countContainer");
-    _countContainer.innerHTML = "<p style=\"\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%,-50%);\n        background: #fff;\n        padding: 5px;\n        width: 95%;\n        display:flex;\n        align-items: center;\n        justify-content: center;\n        text-transform: capitalize;\n        border-radius: 5px;\n        \">\u0639\u0631\u0628\u0629 \u0627\u0644\u062A\u0633\u0648\u0642 \u0641\u0627\u0631\u063A\u0629 <a href='/' style='margin-left: 5px;\n    text-decoration: none;\n    color: #2660ff;'> \u0627\u0630\u0647\u0628 \u0644\u0644\u062A\u0633\u0648\u0642</a> </p>";
+    _countContainer.innerHTML =
+      "<p style=\"\n        position: absolute;\n        top: 50%;\n        left: 50%;\n        transform: translate(-50%,-50%);\n        background: #fff;\n        padding: 5px;\n        width: 95%;\n        display:flex;\n        align-items: center;\n        justify-content: center;\n        text-transform: capitalize;\n        border-radius: 5px;\n        \">\u0639\u0631\u0628\u0629 \u0627\u0644\u062A\u0633\u0648\u0642 \u0641\u0627\u0631\u063A\u0629 <a href='/' style='margin-left: 5px;\n    text-decoration: none;\n    color: #2660ff;'> \u0627\u0630\u0647\u0628 \u0644\u0644\u062A\u0633\u0648\u0642</a> </p>";
   }
 }
 var myForm = document.getElementById("order");
@@ -122,36 +141,30 @@ function getLoc() {
   var st = document.getElementById("st");
   var bu = document.getElementById("bu");
   var fo = document.getElementById("fo");
-  var ph = document.getElementById("ph");
-  var ph2 = document.getElementById("ph2");
   if (Thelocation.value === "الفرع") {
-    loc.outerHTML = '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
+    loc.outerHTML =
+      '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
     st.value = "100م";
     bu.value = "138م";
     fo.value = "طابق 0";
-    ph.value = "0";
-    ph2.value = "0";
     st.setAttribute("readonly", true);
     bu.setAttribute("readonly", true);
     fo.setAttribute("readonly", true);
-    ph.setAttribute("readonly", true);
-    ph2.setAttribute("readonly", true);
   } else {
     loc.outerHTML = "<div class='location'></div>";
     st.value = "";
     bu.value = "";
     fo.value = "";
-    ph.value = "";
-    ph2.value = "";
     st.removeAttribute("readonly");
     bu.removeAttribute("readonly");
     fo.removeAttribute("readonly");
-    ph.removeAttribute("readonly");
-    ph2.removeAttribute("readonly");
   }
 }
 window.addEventListener("pageshow", function (event) {
-  var historyTraversal = event.persisted || typeof window.performance != "undefined" && window.performance.navigation.type === 2;
+  var historyTraversal =
+    event.persisted ||
+    (typeof window.performance != "undefined" &&
+      window.performance.navigation.type === 2);
   if (historyTraversal) {
     // Handle page restore.
     window.location.reload();
