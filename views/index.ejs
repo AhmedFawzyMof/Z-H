@@ -118,13 +118,14 @@ if (!localStorage.getItem("POPUP")) {
 }
 function workingHour() {
   var hour = new Date().getHours();
-  if (hour >= 2 && hour <= 8) {
-    var message = document.querySelector(".message");
-    message.style.display = "flex";
-  } else {
+  if(hour < 2 && hour > 9) {
     var _message = document.querySelector(".message");
     _message.style.display = "none";
   }
+  if (hour >= 2 && hour <= 8) {
+    var message = document.querySelector(".message");
+    message.style.display = "flex";
+  } 
 }
     </script>
   </body>

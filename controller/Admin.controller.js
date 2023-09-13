@@ -355,11 +355,18 @@ const controller = {
       [token]
     );
     const [orders, _] = await promisePool.query(
-      "SELECT total FROM `TheOrders` WHERE delivered = 1"
+      "SELECT `where`,`total` FROM `TheOrders` WHERE delivered = 1"
     );
 
     const sum = orders.reduce((p, c) => {
-      return p + c.total;
+      const Far3 = () => {
+        if (c.where === "الفرع") {
+          return p + c.total;
+        } else {
+          return p + c.total - 20;
+        }
+      };
+      return Far3();
     }, 0);
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
