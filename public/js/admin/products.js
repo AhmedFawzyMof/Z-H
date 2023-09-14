@@ -79,25 +79,9 @@ function ordersL(data) {
 
 const FilterForms = document.querySelectorAll(".selectCom");
 FilterForms.forEach((FilterForm) => {
-  FilterForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-
-    const formData = new FormData(this);
-    const searchParams = new URLSearchParams();
-
-    for (const pair of formData) {
-      searchParams.append(pair[0], pair[1]);
-    }
-
-    fetch("/filter/product", {
-      method: "post",
-      body: searchParams,
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        Filtered(res.products);
-      });
-  });
+  const link = FilterForm.querySelector("a");
+  link.href =
+    "/filter/product/" + localStorage.getItem("Token") + "/" + link.id;
 });
 function Filtered(data) {
   const productsContainer = document.querySelector(".products");

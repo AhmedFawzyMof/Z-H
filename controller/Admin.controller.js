@@ -612,100 +612,63 @@ const controller = {
     }
   },
   filterProduct: async (req, res) => {
-    const compony = req.body.compony;
-    const [componies, fields1] = await promisePool.query(
-      "SELECT name FROM Componies"
+    const token = req.params.token;
+    const compony = req.params.compony;
+    const [rows, fields] = await promisePool.query(
+      "SELECT Admin,id FROM Users WHERE id=?",
+      [token]
     );
-
-    const [categories, fields2] = await promisePool.query(
-      "SELECT * FROM Categories"
-    );
-
-    const [products, fields3] = await promisePool.query(
-      "SELECT * FROM `Products` WHERE compony = ?",
-      [compony]
-    );
-
-    let componiesOpt = ``;
-
-    componies.forEach((compony) => {
-      componiesOpt += `<option value="${compony.name}">${compony.name}</option>`;
-    });
-
-    let categoriesOpt = ``;
-
-    categories.forEach((category) => {
-      categoriesOpt += `<option value="${category.name}">${category.name}</option>`;
-    });
-
-    let Product = ``;
-
-    products.forEach((product) => {
-      function ifAvi() {
-        if (product.available) {
-          return "نعم";
-        } else {
-          return "لا";
-        }
+    const userId = rows[0].id;
+    if (rows[0].Admin === 1) {
+      const [rows, fields] = await promisePool.query(
+        "SELECT * FROM Products WHERE compony=?",
+        [compony]
+      );
+      const numOfResults = rows.length;
+      const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
+      let page = req.query.page ? Number(req.query.page) : 1;
+      if (page > numberOfPages) {
+        res.redirect(
+          "/admin/panle/products/" +
+            userId +
+            "/?page=" +
+            encodeURIComponent(numberOfPages)
+        );
+      } else if (page < 1) {
+        res.redirect(
+          "/admin/panle/products/" +
+            userId +
+            "/?page=" +
+            encodeURIComponent("1")
+        );
       }
-      Product += ` <div class="product">
-        <form action="/delete/product" method="post" id="delete">
-          <input type="hidden" name="productid" value="${product.id}" />
-          <button class="delete" type="submit">
-            <i class="bx bx-trash"></i>
-          </button>
-        </form>
-        <p>${product.id}</p>
-        <p>اسم :${product.name}</p>
-        <p>الوصف :${product.description}</p>
-        <p>السعر :${product.price}</p>
-        <form action="/edit/product" method="post" id="edit">
-          <input type="hidden" name="productid" value="${product.id}" />
-          <input type="number" name="price" required placeholder="السعر" />
-          <button class="delete" type="submit">تأكيد</button>
-        </form>
-        <div>
-          <p>شركة :${product.compony}</p>
-          <form action="/edit/product" method="post" id="edit">
-            <input type="hidden" name="productid" value="${product.id}" />
-            <select name="compony" required>
-              <option value="${product.compony}" selected disabled>
-                ${product.compony}
-              </option>
-              ${componiesOpt}            
-            </select>
-            <button class="delete" type="submit">تأكيد</button>
-          </form>
-          <p>فئة :${product.category}</p>
-          <form action="/edit/product" method="post" id="edit">
-            <input type="hidden" name="productid" value="${product.id}" />
-            <select name="cate" required>
-              <option value="${product.category}" selected disabled>
-                ${product.category}
-              </option>
-              ${categoriesOpt}
-            </select>
-            <button class="delete" type="submit">تأكيد</button>
-          </form>
-          <p>
-            متاح : ${ifAvi()}
-          </p>
-          <form action="/edit/product" method="post" id="edit">
-            <input type="hidden" name="productid" value="${product.id}" />
-            <select name="available" required>
-              <option value="1">نعم</option>
-              <option value="0">لا</option>
-            </select>
-            <button class="delete" type="submit">تأكيد</button>
-          </form>
-        </div>
-        <img src="${product.image}" />
-      </div>`;
-    });
+      const startingLimit = (page - 1) * resultsPerPage;
+      const [sql, fields1] = await promisePool.query(
+        "SELECT * FROM Products WHERE compony=? LIMIT ?,?;SELECT name FROM Categories;SELECT name FROM Componies;",
+        [compony, startingLimit, resultsPerPage]
+      );
+      let iterator = page - 5 < 1 ? 1 : page - 5;
+      let endingLink =
+        iterator + 9 < numberOfPages
+          ? iterator + 9
+          : page + (numberOfPages - page);
 
-    res.json({
-      products: Product,
-    });
+      if (endingLink < page + 4) {
+        iterator -= page + 4 - numberOfPages;
+      }
+      res.render("admin/products", {
+        products: sql[0],
+        categories: sql[1],
+        componies: sql[2],
+        page,
+        iterator,
+        endingLink,
+        numberOfPages,
+        userId,
+      });
+    } else {
+      res.redirect("/");
+    }
   },
   //!}
   //! DELETE {

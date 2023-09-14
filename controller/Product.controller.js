@@ -222,6 +222,21 @@ const controller = {
         location.reload();
       </script>`);
     }
+    if (body.stock !== undefined) {
+      const stock = req.body.stock;
+      const [rows, fields] = await promisePool.query(
+        "UPDATE `Products` SET `inStock` = ? WHERE `Products`.`id` = ?",
+        [stock, id]
+      );
+      res.send(
+        `
+          <script>
+            window.history.back();
+            location.reload();
+          </script>
+        `
+      );
+    }
   },
   editOffer: async (req, res) => {
     const { id, product } = req.body;

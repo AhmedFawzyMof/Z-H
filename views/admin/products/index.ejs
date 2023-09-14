@@ -14,10 +14,9 @@
   <body>
     <div class="category">
       <% for(let i =0; i < componies.length; i++) {%>
-      <form class="selectCom">
-        <input type="hidden" name="compony" value="<%= componies[i].name %>" />
-        <button><%= componies[i].name %></button>
-      </form>
+      <div class="selectCom">
+        <a id="<%= componies[i].name %>"><%= componies[i].name %></a>
+      </div>
       <% } %>
     </div>
     <div class="searchForUser">
@@ -88,6 +87,12 @@
                 <option value="1">نعم</option>
                 <option value="0">لا</option>
               </select>
+              <button class="delete" type="submit">تأكيد</button>
+            </form>
+            <p>في المخزن: <%= product.inStock %></p>
+            <form action="/edit/product" method="post" id="edit">
+              <input type="hidden" name="productid" value="<%= product.id %>" />
+              <input type="number" name="stock" placeholder="في المخزن" />
               <button class="delete" type="submit">تأكيد</button>
             </form>
           </div>

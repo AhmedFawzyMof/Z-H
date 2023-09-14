@@ -197,17 +197,20 @@ button {
   margin: 10px 0;
 }
 
-.category form {
+.category .selectCom {
   margin: 0 5px;
 }
 
-.category form button {
+.category .selectCom a {
   padding: 5px;
   border-radius: 5px;
   border: none;
   background: #fff;
   color: #ff971f;
-  width: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 125px;
 }
 
 .products {

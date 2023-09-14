@@ -24,6 +24,7 @@
         <input type="hidden" id="name" value="<%=products[i].name%>" />
         <input type="hidden" id="price" value="<%=products[i].price%>" />
         <input type="hidden" id="image" value="<%=products[i].image%>" />
+        <input type="hidden" id="inStock" value="<%=products[i].inStock%>" />
         <button
           onclick="addItemToCart(parseInt('<%=products[i].id%>'))"
           class="addToCart"

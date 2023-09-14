@@ -30,66 +30,87 @@ const controller = {
     const ph = phone.toString();
     const sph = phone2.toString();
     if (JSON.parse(cart).length > 0) {
-      const [rows, fields] = await promisePool.query(
-        "SELECT coupons FROM Users WHERE id = ?",
-        [user]
-      );
-      let totalCost;
-      if (where == "الفرع") {
-        totalCost = total - 20;
-      } else {
-        totalCost = total;
-      }
-      let coupons = rows[0].coupons;
-      coupons.forEach((coupon, index) => {
-        if (JSON.stringify(coupon) === discount) {
-          coupons.splice(index, 1);
-        }
+      JSON.parse(cart).forEach(async (product) => {
+        const [stock, _] = await promisePool.query(
+          `UPDATE Products SET inStock = inStock-${product.quantity} WHERE id = ${product.id};SELECT inStock FROM Products WHERE id=${product.id}`
+        );
+        Y(stock[1][0].inStock, product);
       });
 
-      const [rows2, fields2] = await promisePool.query(
-        "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          id,
-          user,
-          addrSt,
-          addrB,
-          addrF,
-          ph,
-          sph,
-          delivered,
-          paid,
-          totalCost,
-          date,
-          JSON.stringify(JSON.parse(cart)),
-          where,
-          discount,
-          city,
-          method,
-        ]
-      );
-      switch (method) {
-        case "cashback":
-          const [rows3, fields3] = await promisePool.query(
-            `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
-          );
-          break;
-        default:
-          const [rows1, fields1] = await promisePool.query(
-            `UPDATE Users SET coupons='${JSON.stringify(
-              coupons
-            )}' WHERE id='${user}'`
-          );
-          break;
-      }
+      const Y = async (stock, pp) => {
+        let isOutOfStock = false;
 
-      res.send(`
-          <script>
-            localStorage.setItem("cart","[]")
-            localStorage.removeItem("coupon")
-            localStorage.removeItem("disCount")
-            location.replace("/pay/info/success");
-          </script>`);
+        if (stock <= 0) {
+          isOutOfStock = true;
+        }
+
+        if (!isOutOfStock) {
+          const [rows, fields] = await promisePool.query(
+            "SELECT coupons FROM Users WHERE id = ?",
+            [user]
+          );
+          let totalCost;
+          if (where == "الفرع") {
+            totalCost = total - 20;
+          } else {
+            totalCost = total;
+          }
+          let coupons = rows[0].coupons;
+          coupons.forEach((coupon, index) => {
+            if (JSON.stringify(coupon) === discount) {
+              coupons.splice(index, 1);
+            }
+          });
+          const [rows2, fields2] = await promisePool.query(
+            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            [
+              id,
+              user,
+              addrSt,
+              addrB,
+              addrF,
+              ph,
+              sph,
+              delivered,
+              paid,
+              totalCost,
+              date,
+              JSON.stringify(JSON.parse(cart)),
+              where,
+              discount,
+              city,
+              method,
+            ]
+          );
+          switch (method) {
+            case "cashback":
+              const [rows3, fields3] = await promisePool.query(
+                `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
+              );
+              break;
+            default:
+              const [rows1, fields1] = await promisePool.query(
+                `UPDATE Users SET coupons='${JSON.stringify(
+                  coupons
+                )}' WHERE id='${user}'`
+              );
+              break;
+          }
+          res.send(`
+        <script>
+          localStorage.setItem("cart","[]")
+          localStorage.removeItem("coupon")
+          localStorage.removeItem("disCount")
+          location.replace("/pay/info/success");
+        </script>`);
+        } else {
+          console.log(pp);
+          const [stock, _] = await promisePool.query(
+            `UPDATE Products SET inStock = inStock+${pp.quantity} WHERE id = ${pp.id};`
+          );
+          res.redirect("/cart/show/items");
+        }
+      };
     } else {
       res.redirect("/");
     }

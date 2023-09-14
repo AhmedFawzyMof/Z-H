@@ -13,7 +13,6 @@
   </head>
   <body onload="cartLen()">
     <%- include('../components/nav') %>
-
     <div id="message"></div>
     <div id="errmsg"></div>
     <div id="Product">
@@ -34,6 +33,7 @@
           <input type="hidden" id="name" value="<%=product.name%>" />
           <input type="hidden" id="price" value="<%=product.price%>" />
           <input type="hidden" id="image" value="<%=product.image%>" />
+          <input type="hidden" id="inStock" value="<%=products[i].inStock%>" />
           <button
             onclick="addItemToCart(parseInt('<%=product.id%>'))"
             class="addToCart"
