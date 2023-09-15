@@ -612,8 +612,10 @@ function incQuantity(productId, quantity) {
       if (product.id == productId) {
         if (product.inStock == product.quantity) {
           product.quantity != quantity;
-        } else {
+        } else if (product.inStock != quantity) {
           product.quantity = quantity;
+        } else {
+          product.quantity != quantity;
         }
       }
     }

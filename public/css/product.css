@@ -422,3 +422,18 @@ nav ul li a {
   border-radius: 10px 10px 0 0;
   color: #fff;
 }
+
+.onlylilleft {
+  position: absolute;
+  background: #ff971f;
+  top: 45px;
+  right: 10px;
+  border-radius: 5px;
+  padding: 0 10px;
+  color: #fff;
+}
+
+.onlylilleft p {
+  font-size: 20px;
+  font-weight: 800;
+}
