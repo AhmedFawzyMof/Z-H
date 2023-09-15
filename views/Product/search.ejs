@@ -32,15 +32,24 @@
         >
           <i class="bx bxs-cart-add"></i>
         </button>
+        <% } else if(products[i].inStock == 0) { %>
+        <div class="notAvailable">
+          <h1>غير متاح</h1>
+        </div>
         <% } else { %>
         <div class="notAvailable">
           <h1>غير متاح</h1>
         </div>
         <% } %>
         <form id="favourite">
-          <input type="hidden" value="<%=products.id%>" id="productinp" />
+          <input type="hidden" value="<%=products[i].id%>" id="productinp" />
           <button type="submit"><i class="bx bx-heart"></i></button>
         </form>
+        <% if(products[i].inStock <= 10) { %>
+        <div class="onlylilleft">
+          <p>بقي <%= products[i].inStock %> فقط</p>
+        </div>
+        <% } %>
         <a href="/product/show/<%= products.id %>">
           <img src="<%= products.image %>" alt="<%= products.name %>" />
           <div class="body">
