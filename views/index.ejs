@@ -26,7 +26,7 @@
         justify-content: center;
         width: 100%;
     ">
-        <p>مواعيد العمل من 9 صباحا حتى 2 صباحا في حالة طلب أي شيء سوف نقوم بالتواصل معك خلال ساعات العمل</p>
+        <p>للأسف هناك مشكلة فنية ونعمل على حلها ويمكنك الطلب بشكل طبيعي وسنتواصل معك غداً</p>
       </div>
       <div class="wrapper">
       <i id="left" class="bx bx-chevron-left"></i>
@@ -119,12 +119,16 @@ if (!localStorage.getItem("POPUP")) {
 function workingHour() {
   var hour = new Date().getHours();
   
-  if (hour >= 2 && hour <= 8) {
-    var message = document.querySelector(".message");
-    message.style.display = "flex";
-  } else {
-    var _message = document.querySelector(".message");
-    _message.style.display = "none";
+  // if (hour >= 2 && hour <= 8) {
+  //   var message = document.querySelector(".message");
+  //   message.style.display = "flex";
+  // } else {
+  //   var _message = document.querySelector(".message");
+  //   _message.style.display = "none";
+  // }
+  if(hour >= 20 ){
+    var message7 = document.querySelector(".message");
+    message7.style.display = "flex";
   }
 }
     </script>
