@@ -97,14 +97,20 @@ function CartFunction() {
 if (!localStorage.getItem("POPUP")) {
   var Div = document.createElement("div");
   var a = document.createElement("a");
+  var a2 = document.createElement("a");
   var image = document.createElement("img");
+  var image2 = document.createElement("img");
   var button = document.createElement("button");
   button.innerHTML = "<i class='bx bxs-x-circle'></i>";
   var body = document.body;
-  a.href = "/اوريانتل";
+  a.href = "/اورينتال";
   image.src = "/img/popup/1.jpeg";
   a.appendChild(image);
   Div.appendChild(a);
+  a2.href='/عروض التوفير';
+  image2.src="/img/popup/2.jpeg"
+  a2.appendChild(image2);
+  Div.appendChild(a2);
   Div.appendChild(button);
   body.appendChild(Div);
   Div.setAttribute("id", "popup");
