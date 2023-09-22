@@ -44,20 +44,20 @@ const controller = {
   },
   addOffer: async (req, res) => {
     const body = req.body;
-    // const images = "/img/offer/" + product + ".png";
-    // let base64Image = image.split(";base64,").pop();
-    // fs.writeFile(
-    //   `public/${images}`,
-    //   base64Image,
-    //   { encoding: "base64" },
-    //   function (err) {
-    //     console.log("File created");
-    //   }
-    // );
+    const images = "/img/offer/" + body.product + ".png";
+    let base64Image = body.image.split(";base64,").pop();
+    fs.writeFile(
+      `public/${images}`,
+      base64Image,
+      { encoding: "base64" },
+      function (err) {
+        console.log("File created");
+      }
+    );
     if (body.product !== "") {
       const [rows, fields] = await promisePool.query(
         "INSERT INTO `Offer` ( `product`,  `image` ) VALUES (?,?)",
-        [body.product, body.image]
+        [body.product, images]
       );
       res.send(
         `
