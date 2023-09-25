@@ -20,6 +20,16 @@
         <p>إجمالي المبيعات:</p>
         <p>ج<%= total %></p>
       </div>
+      <div class="products">
+        <% product.forEach(p => { %>
+        <div class="product">
+          <p>الاسم: <%=p.name%></p>
+          <p>السعر: <%=p.price%></p>
+          <p>الكمية: <%=p.quantity%></p>
+          <p>المجموع: <%= p.price * p.quantity %></p>
+        </div>
+        <% }); %>
+      </div>
     </div>
   </body>
 </html>

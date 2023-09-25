@@ -355,7 +355,11 @@ const controller = {
       [token]
     );
     const [orders, _] = await promisePool.query(
-      "SELECT `where`,`total` FROM `TheOrders` WHERE delivered = 1"
+      "SELECT `where`,`total`,`cart` FROM `TheOrders` WHERE delivered = 1"
+    );
+
+    let [product, __] = await promisePool.query(
+      "SELECT `id`,`name`,`price` FROM `Products`"
     );
 
     const sum = orders.reduce((p, c) => {
@@ -368,10 +372,34 @@ const controller = {
       };
       return Far3();
     }, 0);
+    const productSales = [];
+    orders.forEach((order) => {
+      order.cart.forEach((pro) => {
+        product.forEach((p) => {
+          if (pro.id == p.id) {
+            Object.assign(p, { quantity: pro.quantity });
+            productSales.push(p);
+          }
+        });
+      });
+    });
+
+    const unique = [];
+    for (const item of productSales) {
+      const isDuplicate = unique.find((obj) => obj.name === item.name);
+      if (!isDuplicate) {
+        unique.push(item);
+      } else {
+        item.quantity += item.quantity;
+      }
+    }
+
+    console.log(unique);
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
         orderslen: orders.length,
         total: sum,
+        product: unique,
       });
     } else if (rows[0].Stuff == 1) {
       res.redirect("/admin/panle/orders/" + row1.id);

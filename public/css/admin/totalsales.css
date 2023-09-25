@@ -37,3 +37,19 @@ input:focus {
   align-items: center;
   justify-content: space-evenly;
 }
+
+.product {
+  background: #fff;
+  border-radius: 5px;
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5px 10px;
+}
+
+.products {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
