@@ -377,7 +377,7 @@ const controller = {
       order.cart.forEach((pro) => {
         product.forEach((p) => {
           if (pro.id == p.id) {
-            Object.assign(p, { quantity: pro.quantity });
+            Object.assign(p, { quantity: [pro.quantity] });
             productSales.push(p);
           }
         });
@@ -386,15 +386,15 @@ const controller = {
 
     const unique = [];
     for (const item of productSales) {
-      const isDuplicate = unique.find((obj) => obj.name === item.name);
+      const isDuplicate = unique.find((obj) => obj.id === item.id);
       if (!isDuplicate) {
         unique.push(item);
       } else {
-        item.quantity += item.quantity;
+        item.quantity.push(isDuplicate.quantity[0]);
       }
     }
 
-    console.log(unique);
+    // console.log(unique);
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
         orderslen: orders.length,

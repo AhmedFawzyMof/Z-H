@@ -25,8 +25,14 @@
         <div class="product">
           <p>الاسم: <%=p.name%></p>
           <p>السعر: <%=p.price%></p>
-          <p>الكمية: <%=p.quantity%></p>
-          <p>المجموع: <%= p.price * p.quantity %></p>
+          <p>
+            الكمية: <%=p.quantity.reduce((acc, curr) => { return acc + curr; },
+            0);%>
+          </p>
+          <p>
+            المجموع: <%= p.price * p.quantity.reduce((acc, curr) => { return acc
+            + curr; }, 0); %>
+          </p>
         </div>
         <% }); %>
       </div>
