@@ -46,10 +46,13 @@ input:focus {
   justify-content: center;
   flex-direction: column;
   padding: 5px 10px;
+  flex-wrap: wrap;
+  width: calc(90% / 2);
 }
-
 .products {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 20px;
 }
