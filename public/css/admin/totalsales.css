@@ -38,21 +38,41 @@ input:focus {
   justify-content: space-evenly;
 }
 
-.product {
-  background: #fff;
-  border-radius: 5px;
-  display: flex;
-  align-items: start;
-  justify-content: center;
-  flex-direction: column;
-  padding: 5px 10px;
-  flex-wrap: wrap;
-  width: calc(90% / 2);
-}
 .products {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 20px;
+  width: 90%;
+}
+
+.TH {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  place-content: center;
+}
+
+.TH h3 {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.TB {
+  width: 100%;
+}
+
+.product {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+}
+
+.product p {
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-bottom: 2px solid;
 }

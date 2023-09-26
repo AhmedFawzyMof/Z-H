@@ -21,20 +21,29 @@
         <p>ج<%= total %></p>
       </div>
       <div class="products">
-        <% product.forEach(p => { %>
-        <div class="product">
-          <p>الاسم: <%=p.name%></p>
-          <p>السعر: <%=p.price%></p>
-          <p>
-            الكمية: <%=p.quantity.reduce((acc, curr) => { return acc + curr; },
-            0);%>
-          </p>
-          <p>
-            المجموع: <%= p.price * p.quantity.reduce((acc, curr) => { return acc
-            + curr; }, 0); %>
-          </p>
+        <div class="TH">
+          <h3>اسم الشركة</h3>
+          <h3>الاسم</h3>
+          <h3>السعر</h3>
+          <h3>الكمية</h3>
+          <h3>المجموع</h3>
         </div>
-        <% }); %>
+        <div class="TB">
+          <% product.forEach(p => { %>
+          <div class="product">
+            <p><%= p.compony %></p>
+            <p><%=p.name%></p>
+            <p><%=p.price%></p>
+            <p>
+              <%=p.quantity.reduce((acc, curr) => { return acc + curr; }, 0);%>
+            </p>
+            <p>
+              <%= p.price * p.quantity.reduce((acc, curr) => { return acc +
+              curr; }, 0); %>
+            </p>
+          </div>
+          <% }); %>
+        </div>
       </div>
     </div>
   </body>
