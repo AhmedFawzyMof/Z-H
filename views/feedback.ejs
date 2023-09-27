@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact Us</title>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/other.css" />
+  </head>
+  <body onload="cartLen()">
+    <%- include('components/nav') %>
+    <div class="container">
+      <div
+        class="tContainer"
+        style="
+          display: flex;
+          align-items: start;
+          justify-content: center;
+          flex-direction: column;
+          background: #fff;
+          border-radius: 5px;
+          padding: 0 10px;
+        "
+      >
+        <h2>سياسة التوصيل والاسترجاع</h2>
+        <p>
+          1. اكتب رسالتك من خلال البرنامج (تواصل معنا) عند وجود اي خطأ في الطلب
+          او شكوه
+        </p>
+        <p>2. احضار اصل فاتورة الشراء</p>
+        <p>3. توافر المنتج موضوع الشكوي</p>
+        <p>4. ان يكون طلب الاسترجاع خلال 24 ساعه من تاريخ الطلب</p>
+        <p>
+          5. اني يكون تم حفظ المنتج بالطريقة الصحيحة لأن الشركة تخلي مسؤوليتها
+          عن سوء التخزين
+        </p>
+        <h2>نشكركم على حسن تعاونكم معنا</h2>
+      </div>
+    </div>
+    <%- include('components/footer') %>
+  </body>
+</html>

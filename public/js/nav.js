@@ -79,7 +79,7 @@ function logedUser() {
   if (localStorage.getItem("Token") === "noToken") {
     fav.style.display = "none";
     MenuBar.innerHTML =
-      '    <li\n \n>\n  <a href="/" style="color: #fff; text-decoration: none">\u0627\u0644\u0635\u0641\u062D\u0629 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629</a>\n</li>\n<li\n>\n  <a href="/zh/info/contact_us" style="color: #fff; text-decoration: none"\n    >\u0627\u062A\u0635\u0644 \u0628\u0646\u0627</a\n  >\n</li>\n<li\n>\n  <a href="/zh/info/about" style="color: #fff; text-decoration: none"\n    >\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0639\u0646\u0627</a\n  >\n</li>\n<li\n>\n  <a href="/user/info/login" style="color: #fff; text-decoration: none"\n    >\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644</a\n  >\n</li>';
+      '    <li\n \n>\n  <a href="/" style="color: #fff; text-decoration: none">\u0627\u0644\u0635\u0641\u062D\u0629 \u0627\u0644\u0631\u0626\u064A\u0633\u064A\u0629</a>\n</li>\n<li\n>\n  <a href="/zh/info/contact_us" style="color: #fff; text-decoration: none"\n    >\u0627\u062A\u0635\u0644 \u0628\u0646\u0627</a\n  >\n</li>\n<li\n>\n  <a href="/zh/info/about" style="color: #fff; text-decoration: none"\n    >\u0645\u0639\u0644\u0648\u0645\u0627\u062A \u0639\u0646\u0627</a\n  >\n</li>\n<li\n>\n  <a href="/user/info/login" style="color: #fff; text-decoration: none"\n    >\u062A\u0633\u062C\u064A\u0644 \u0627\u0644\u062F\u062E\u0648\u0644</a\n  >\n</li><li><a href="/zh/feed/back" style="color: #fff; text-decoration: none">الشكوى</a></li>';
   } else {
     MenuBar.innerHTML = '\n    <li \n><a href="/user/info/profile/'
       .concat(
@@ -96,7 +96,7 @@ function logedUser() {
       )
       .concat(
         parsedToken,
-        '" style="color: #fff; text-decoration: none"\n    >\u0631\u0635\u064A\u062F \u0643\u0627\u0634 \u0628\u0627\u0643</a\n  >\n</li>\n<li\n>\n<button onclick=\'logout()\' style="color: #fff;   background: none;\ncursor: pointer;  border: none; font-size:15px;"\n  >\u062A\u0633\u062C\u064A\u0644 \u062E\u0631\u0648\u062C</button\n>\n</li>\n\n<li\nid="adPage"\n\n>\n</li>'
+        '" style="color: #fff; text-decoration: none"\n    >\u0631\u0635\u064A\u062F \u0643\u0627\u0634 \u0628\u0627\u0643</a\n  >\n</li>\n<li\n>\n<button onclick=\'logout()\' style="color: #fff;   background: none;\ncursor: pointer;  border: none; font-size:15px;"\n  >\u062A\u0633\u062C\u064A\u0644 \u062E\u0631\u0648\u062C</button\n>\n</li>\n\n<li\nid="adPage"\n\n>\n</li><li><a href="/zh/feed/back" style="color: #fff; text-decoration: none">الشكوى</a></li>'
       );
     var TheCoupon = localStorage.getItem("coupon");
     if (TheCoupon !== "0") {

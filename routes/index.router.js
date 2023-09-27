@@ -11,6 +11,7 @@ const SubcategoryController = require("../controller/SubCategory.controller");
 router.get("/", cache(150), CategoryController.getAll);
 router.get("/:subcategory", cache(150), CategoryController.getProducts);
 router.get("/product/show/:id", cache(150), ProductController.getOne);
+router.get("/zh/feed/back", cache(150), SubcategoryController.getfeedback);
 router.get("/cart/show/items", ProductController.getCart);
 router.get("/fav/show/:user", ProductController.getfav);
 router.get("/user/info/login", UserController.getLogin);

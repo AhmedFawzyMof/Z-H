@@ -43,6 +43,9 @@ const controller = {
   share: (req, res) => {
     res.render("share");
   },
+  getfeedback: (req, res) => {
+    res.render("feedback");
+  },
 };
 
 module.exports = controller;
