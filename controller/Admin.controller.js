@@ -394,6 +394,14 @@ const controller = {
       }
     }
 
+    const obj = {
+      id: 0,
+      name: "2 جلاش السلام 500جم + سمبوسك موكي 500جم بسعر 45 بدلا من 55",
+      price: 45,
+      compony: "عروض التوفير",
+      quantity: [1, 1],
+    };
+    unique.push(obj);
     unique.sort(function (a, b) {
       return a.compony.localeCompare(b.compony, ["ar"]);
     });

@@ -14,6 +14,7 @@ const controller = {
       image,
       available,
       offer,
+      buingprice,
     } = req.body;
     const images = "/img/product/" + name_ar + ".png";
     let base64Image = image.split(";base64,").pop();
@@ -26,8 +27,18 @@ const controller = {
       }
     );
     const [rows, fields] = await promisePool.query(
-      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [name_ar, dis_ar, category, subcategory, price, images, available, offer]
+      "INSERT INTO `Products`(`name`, `description`, `category`, `compony`, `price`, `image`, `available`,`offer`,`buingprice`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        name_ar,
+        dis_ar,
+        category,
+        subcategory,
+        price,
+        images,
+        available,
+        offer,
+        buingprice,
+      ]
     );
 
     res.send(
@@ -227,6 +238,21 @@ const controller = {
       const [rows, fields] = await promisePool.query(
         "UPDATE `Products` SET `inStock` = ? WHERE `Products`.`id` = ?",
         [stock, id]
+      );
+      res.send(
+        `
+          <script>
+            window.history.back();
+            location.reload();
+          </script>
+        `
+      );
+    }
+    if (body.buingPrice !== undefined) {
+      const buingPrice = req.body.buingPrice;
+      const [rows, fields] = await promisePool.query(
+        "UPDATE `Products` SET `buingPrice` = ? WHERE `Products`.`id` = ?",
+        [buingPrice, id]
       );
       res.send(
         `

@@ -95,6 +95,17 @@
               <input type="number" name="stock" placeholder="في المخزن" />
               <button class="delete" type="submit">تأكيد</button>
             </form>
+            <p>سعر الشراء: <%= product.buingPrice %></p>
+            <form action="/edit/product" method="post" id="edit">
+              <input type="hidden" name="productid" value="<%= product.id %>" />
+              <input
+                type="number"
+                name="buingPrice"
+                step="0.000001"
+                placeholder="سعر الشراء"
+              />
+              <button class="delete" type="submit">تأكيد</button>
+            </form>
           </div>
           <img src="<%= product.image  %>" />
         </div>
@@ -115,6 +126,12 @@
         <input type="text" name="dis_ar" placeholder="الوصف" />
         <input type="number" name="price" placeholder="السعر" />
         <input type="number" name="offer" placeholder="العرض" />
+        <input
+          type="number"
+          step="0.000001"
+          name="buingprice"
+          placeholder="سعر الشراء"
+        />
         <input type="hidden" name="available" value="1" />
         <input type="file" id="image" onchange="imageUploaded()" />
       </form>
