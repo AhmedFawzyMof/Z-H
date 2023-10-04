@@ -359,7 +359,7 @@ const controller = {
     );
 
     let [product, __] = await promisePool.query(
-      "SELECT `id`,`name`,`price`,`compony` FROM `Products`"
+      "SELECT `id`,`name`,`price`,`compony`,`buingPrice` FROM `Products`"
     );
 
     const sum = orders.reduce((p, c) => {
@@ -400,12 +400,31 @@ const controller = {
       price: 45,
       compony: "عروض التوفير",
       quantity: [1, 1],
+      buingPrice: 37.38,
     };
     unique.push(obj);
     unique.sort(function (a, b) {
       return a.compony.localeCompare(b.compony, ["ar"]);
     });
+    unique.forEach((p) => {
+      const quantity = p.quantity.reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
 
+      let safy = 0;
+      if (p.buingPrice !== null) {
+        safy = p.price - p.buingPrice;
+      }
+
+      Object.assign(p, { total: safy * quantity });
+    });
+
+    let profit = 0;
+
+    unique.forEach((p) => {
+      profit += p.total;
+    });
+    console.log(profit);
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
         orderslen: orders.length,
