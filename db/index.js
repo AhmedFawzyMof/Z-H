@@ -2,7 +2,7 @@ const mysql = require("mysql2");
 
 const connection = mysql.createPool({
   host: process.env.HOSTDB,
-  user: "ahmedfawzi",
+  user: process.env.USERNAME,
   password: process.env.PASSDB,
   database: process.env.THEDB,
   insecureAuth: true,

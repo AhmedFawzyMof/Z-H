@@ -8,7 +8,7 @@ const OrderController = require("../controller/Order.controller");
 const AdminController = require("../controller/Admin.controller");
 const SubcategoryController = require("../controller/SubCategory.controller");
 //? GET {
-router.get("/", CategoryController.getAll);
+router.get("/", cache(150), CategoryController.getAll);
 router.get("/:subcategory", cache(150), CategoryController.getProducts);
 router.get("/product/show/:id", cache(150), ProductController.getOne);
 router.get("/zh/feed/back", cache(150), SubcategoryController.getfeedback);
