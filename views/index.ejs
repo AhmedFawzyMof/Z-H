@@ -68,10 +68,10 @@
           <% } else { %>
             <div class="categories">
             <% } %>
-            <% if(category[i].New) {%>
-              <img src="/img/new.png" class="new">
-              <% } %>
         <a href="/<%=category[i].name%>">
+          <% if(category[i].New) {%>
+            <img src="/img/new.png" class="new">
+            <% } %>
           <img src="<%=category[i].image%>" alt="<%=category[i].name%>" />
           <p><%= category[i].name %></p>
         </a>
