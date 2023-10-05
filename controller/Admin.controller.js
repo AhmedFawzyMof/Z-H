@@ -391,7 +391,7 @@ const controller = {
       [token]
     );
     const [orders, _] = await promisePool.query(
-      "SELECT `where`,`total`,`cart`,`city` FROM `TheOrders` WHERE delivered = 1"
+      "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `TheOrders` WHERE delivered = 1"
     );
 
     let [product, __] = await promisePool.query(
@@ -411,8 +411,13 @@ const controller = {
       };
       return Far3();
     }, 0);
+    let discounts = 0;
     const productSales = [];
     orders.forEach((order) => {
+      if (JSON.parse(order.discount).code !== "") {
+        const code = JSON.parse(order.discount);
+        discounts += code.value;
+      }
       order.cart.forEach((pro) => {
         product.forEach((p) => {
           if (pro.id == p.id) {
@@ -461,6 +466,7 @@ const controller = {
         orderslen: orders.length,
         total: sum,
         totalS: profit,
+        discounts: discounts,
         product: unique,
       });
     } else if (rows[0].Stuff == 1) {
