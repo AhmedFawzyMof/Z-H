@@ -47,7 +47,13 @@ function calContainer() {
     return temp;
   }
   function ShipingPrice() {
-    var shiping = 20;
+    var TheCity = document.getElementById("theCity").value;
+    var shiping = 0;
+    if (TheCity === "الشروق") {
+      shiping = 20;
+    } else {
+      shiping = 40;
+    }
     return shiping;
   }
   function promoCode() {
@@ -84,7 +90,13 @@ function calContainer() {
 }
 var myForm = document.getElementById("order");
 function ShipingPrice() {
-  var shiping = 20;
+  var TheCity = document.getElementById("theCity").value;
+  var shiping = 0;
+  if (TheCity === "الشروق") {
+    shiping = 20;
+  } else {
+    shiping = 40;
+  }
   return shiping;
 }
 function getTotal() {
@@ -114,34 +126,45 @@ function getTotal() {
   }
   return total;
 }
-var OrderForm = document.getElementById("order");
-var tokenInp = document.createElement("input");
-tokenInp.type = "hidden";
-tokenInp.name = "user";
-tokenInp.value = JSON.parse(token);
-var totalInp = document.createElement("input");
-totalInp.type = "hidden";
-totalInp.name = "total";
-totalInp.value = JSON.parse(getTotal() + ShipingPrice());
-var cartInp = document.createElement("input");
-cartInp.type = "hidden";
-cartInp.name = "cart";
-cartInp.value = JSON.stringify(cart);
-var disCountInp = document.createElement("input");
-disCountInp.type = "hidden";
-disCountInp.name = "discount";
-disCountInp.value = JSON.stringify(disCount);
-OrderForm.append(tokenInp);
-OrderForm.append(totalInp);
-OrderForm.append(cartInp);
-OrderForm.append(disCountInp);
+
+function notShrouk() {
+  calContainer();
+  ShipingPrice();
+}
+function addToOrder() {
+  var OrderForm = document.getElementById("order");
+  var tokenInp = document.createElement("input");
+  tokenInp.type = "hidden";
+  tokenInp.name = "user";
+  tokenInp.value = JSON.parse(token);
+  var cartInp = document.createElement("input");
+  cartInp.type = "hidden";
+  cartInp.name = "cart";
+  cartInp.value = JSON.stringify(cart);
+  var disCountInp = document.createElement("input");
+  disCountInp.type = "hidden";
+  disCountInp.name = "discount";
+  disCountInp.value = JSON.stringify(disCount);
+  var totalInp = document.createElement("input");
+  totalInp.type = "hidden";
+  totalInp.name = "total";
+  totalInp.value = JSON.parse(getTotal() + ShipingPrice());
+  OrderForm.append(totalInp);
+  console.log(totalInp.value);
+  OrderForm.append(tokenInp);
+  OrderForm.append(cartInp);
+  OrderForm.append(disCountInp);
+}
 function getLoc() {
   var Thelocation = document.getElementById("location");
   var loc = document.querySelector(".location");
   var st = document.getElementById("st");
   var bu = document.getElementById("bu");
   var fo = document.getElementById("fo");
+
   if (Thelocation.value === "الفرع") {
+    var TheCity = document.getElementById("theCity");
+    TheCity.value = "الشروق";
     loc.outerHTML =
       '<div class="location"><i class="bx bx-current-location"></i> <a href="https://maps.google.com/maps?q=30.168442000000002%2C31.647655600000007&z=17&hl=ar" target="_blank">مكان الفرع</a></div>';
     st.value = "100م";
@@ -150,7 +173,9 @@ function getLoc() {
     st.setAttribute("readonly", true);
     bu.setAttribute("readonly", true);
     fo.setAttribute("readonly", true);
+    notShrouk();
   } else {
+    notShrouk();
     loc.outerHTML = "<div class='location'></div>";
     st.value = "";
     bu.value = "";

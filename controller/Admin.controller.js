@@ -391,7 +391,7 @@ const controller = {
       [token]
     );
     const [orders, _] = await promisePool.query(
-      "SELECT `where`,`total`,`cart` FROM `TheOrders` WHERE delivered = 1"
+      "SELECT `where`,`total`,`cart`,`city` FROM `TheOrders` WHERE delivered = 1"
     );
 
     let [product, __] = await promisePool.query(
@@ -402,6 +402,9 @@ const controller = {
       const Far3 = () => {
         if (c.where === "الفرع") {
           return p + c.total;
+        }
+        if (c.city !== "الشروق") {
+          return p + c.total - 40;
         } else {
           return p + c.total - 20;
         }
@@ -453,11 +456,11 @@ const controller = {
     unique.forEach((p) => {
       profit += p.total;
     });
-    console.log(profit);
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
         orderslen: orders.length,
         total: sum,
+        totalS: profit,
         product: unique,
       });
     } else if (rows[0].Stuff == 1) {

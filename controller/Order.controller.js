@@ -29,6 +29,7 @@ const controller = {
     const date = new Date(localTime);
     const ph = phone.toString();
     const sph = phone2.toString();
+
     if (JSON.parse(cart).length > 0) {
       JSON.parse(cart).forEach(async (product) => {
         const [stock, _] = await promisePool.query(
@@ -97,12 +98,12 @@ const controller = {
               break;
           }
           res.send(`
-        <script>
-          localStorage.setItem("cart","[]")
-          localStorage.removeItem("coupon")
-          localStorage.removeItem("disCount")
-          location.replace("/pay/info/success");
-        </script>`);
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/success");
+          </script>`);
         } else {
           console.log(pp);
           const [stock, _] = await promisePool.query(

@@ -19,12 +19,13 @@
       </div>
       <form id="order" action="/order" method="post">
         <div class="input">
-          <select name="city" required>
+          <select name="city" id="theCity" required onchange="notShrouk()">
             <option value="" selected disabled>المدن</option>
             <option value="الشروق">الشروق</option>
-            <option value="بدر" disabled>بدر</option>
-            <option value="مدينتي" disabled>مدينتي</option>
-            <option value="المستقبل" disabled>المستقبل</option>
+            <option value="بدر">بدر</option>
+            <option value="مدينتي">مدينتي</option>
+            <option value="المستقبل">المستقبل</option>
+            <option value="كمبوند البروج">كمبوند البروج</option>
             <option value="العبور" disabled>العبور</option>
           </select>
         </div>
@@ -61,7 +62,7 @@
         <div id="otherinput"></div>
         <div class="location"></div>
         <div class="input">
-          <button type="submit">اطلب الان</button>
+          <button onclick="addToOrder()" type="submit">اطلب الان</button>
         </div>
       </form>
     </div>
