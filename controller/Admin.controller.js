@@ -2,41 +2,6 @@ const db = require("../db/index");
 const resultsPerPage = 25;
 const promisePool = db.promise();
 
-const productsdeleted = [
-  {
-    id: 10000,
-    name: "2 جلاش السلام 500جم + سمبوسك موكي 500جم بسعر 45 بدلا من 55",
-    price: 45,
-    compony: "عروض التوفير",
-    quantity: [1, 1],
-    buingPrice: 37.38,
-  },
-  {
-    id: 10001,
-    name: "فرانكس برجر دجاج بسعر 120 بدلا من 135",
-    price: 120,
-    compony: "عروض التوفير",
-    quantity: [1, 1],
-    buingPrice: 105.84,
-  },
-  {
-    id: 10002,
-    name: "جاست فروزن كباب مشكل بسعر 170 بدلا من 185",
-    price: 170,
-    compony: "عروض التوفير",
-    quantity: [1, 1],
-    buingPrice: 173.25,
-  },
-  {
-    id: 10003,
-    name: "فورك سجق 1ك بسعر 140 بدلا من 170",
-    price: 140,
-    compony: "عروض التوفير",
-    quantity: [1, 1, 1],
-    buingPrice: 128.1,
-  },
-];
-
 const controller = {
   //! GET {
   getProducut: async (req, res) => {
@@ -391,7 +356,7 @@ const controller = {
       [token]
     );
     const [orders, _] = await promisePool.query(
-      "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `TheOrders` WHERE delivered = 1"
+      "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `TheOrders` WHERE date > '2023-10-6' AND delivered = 1"
     );
 
     let [product, __] = await promisePool.query(
@@ -437,9 +402,6 @@ const controller = {
       }
     }
 
-    productsdeleted.forEach((p) => {
-      unique.push(p);
-    });
     unique.sort(function (a, b) {
       return a.compony.localeCompare(b.compony, ["ar"]);
     });
