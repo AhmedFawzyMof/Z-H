@@ -47,12 +47,18 @@ function calContainer() {
     return temp;
   }
   function ShipingPrice() {
+    var Thelocation = document.getElementById("location");
     var TheCity = document.getElementById("theCity").value;
     var shiping = 0;
-    if (TheCity === "الشروق") {
-      shiping = 20;
+
+    if (Thelocation.value !== "الفرع") {
+      if (TheCity === "الشروق") {
+        shiping = 20;
+      } else {
+        shiping = 40;
+      }
     } else {
-      shiping = 40;
+      shiping = 0;
     }
     return shiping;
   }
