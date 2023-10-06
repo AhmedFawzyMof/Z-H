@@ -90,7 +90,7 @@ const controller = {
         }
         const startingLimit = (page - 1) * resultsPerPage;
         const [sql, fields1] = await promisePool.query(
-          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where,TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
+          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where,TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id  WHERE date > '2023-10-6' ORDER BY delivered ASC LIMIT ?,?",
           [startingLimit, resultsPerPage]
         );
         let iterator = page - 5 < 1 ? 1 : page - 5;

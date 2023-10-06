@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var counter = 1;
     (function Right() {
       rightBtn.click();
-      if (counter < 6) {
+      if (counter < 7) {
         counter++;
         setTimeout(Right, 2000);
       } else {
@@ -104,7 +104,7 @@ document.addEventListener("DOMContentLoaded", function () {
     var counter = 1;
     (function Left() {
       leftBtn.click();
-      if (counter < 6) {
+      if (counter < 7) {
         counter++;
         setTimeout(Left, 2000);
       } else {
