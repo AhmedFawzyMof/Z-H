@@ -423,11 +423,20 @@ const controller = {
     unique.forEach((p) => {
       profit += p.total;
     });
+    let totalSales = 0;
+    unique.forEach((product) => {
+      const quantity = product.quantity.reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
+
+      totalSales += product.price * quantity;
+    });
     if (rows[0].Admin == 1) {
       res.render("admin/totalSales/index.ejs", {
         orderslen: orders.length,
         total: sum,
         totalS: profit,
+        totalSales: totalSales,
         discounts: discounts,
         product: unique,
       });

@@ -16,6 +16,7 @@
         display: grid;
         place-items: center;
         margin: 5px 0;
+        border: 1px solid #33333354;
       }
       .table {
         display: grid;
@@ -40,7 +41,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -61,7 +61,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -82,7 +81,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -103,7 +101,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -124,7 +121,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -145,7 +141,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -166,7 +161,6 @@
             display: grid;
             grid-template-columns: 30% 70%;
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -190,20 +184,20 @@
           <tr
             style="
               display: grid;
-              grid-template-columns: repeat(4, 1fr);
+              grid-template-columns: 1fr 50px 50px 50px;
               place-items: center;
             "
           >
-            <th style="border: 1px solid #333; width: 100%">المنتج</th>
-            <th style="border: 1px solid #333; width: 100%">الكمية</th>
-            <th style="border: 1px solid #333; width: 100%">السعر</th>
-            <th style="border: 1px solid #333; width: 100%">إجمالي</th>
+            <th style="width: 100%">المنتج</th>
+            <th style="width: 100%">الكمية</th>
+            <th style="width: 100%">السعر</th>
+            <th style="width: 100%">إجمالي</th>
           </tr>
           <% order.cart.forEach(item => { %>
           <tr
             style="
               display: grid;
-              grid-template-columns: repeat(4, 1fr);
+              grid-template-columns: 1fr 40px 40px 40px;
               place-items: center;
             "
           >
@@ -213,7 +207,7 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
-                border: 1px solid #333;
+                font-size: 12.5px;
               "
             >
               <%= item.name %>
@@ -224,7 +218,6 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
-                border: 1px solid #333;
               "
             >
               <%= item.quantity %>
@@ -235,7 +228,6 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
-                border: 1px solid #333;
               "
             >
               <%= item.price %>
@@ -246,7 +238,6 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
-                border: 1px solid #333;
               "
             >
               <%= item.price * item.quantity %>
@@ -254,13 +245,13 @@
           </tr>
           <% }) %>
         </table>
+        <h3 class="title"></h3>
         <div
           class="p"
           style="
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -292,7 +283,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -323,7 +313,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -354,7 +343,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -386,7 +374,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p
@@ -418,7 +405,6 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
-            border: 1px solid #333;
           "
         >
           <p

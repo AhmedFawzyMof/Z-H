@@ -62,17 +62,31 @@ input:focus {
 
 .TB {
   width: 100%;
-}
-
-.product {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.product p {
+.TB p {
+  font-size: 12.5px;
   width: 100%;
   align-items: center;
   justify-content: center;
   display: flex;
   border-bottom: 2px solid;
+  border: 2px solid #333;
+}
+
+.other {
+  display: grid;
+  place-items: center;
+  grid-template-columns: repeat(7, 1fr);
+  width: 100%;
+}
+
+.other p {
+  width: 100%;
+  border: 2px solid #333;
+  display: grid;
+  place-items: center;
+  height: 100%;
 }

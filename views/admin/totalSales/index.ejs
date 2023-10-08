@@ -17,7 +17,7 @@
         <p><%= orderslen %></p>
       </div>
       <div class="totalSales">
-        <p>إجمالي المبيعات:</p>
+        <p>إجمالي الإيرادات:</p>
         <p>ج<%= total %></p>
       </div>
       <div class="totalSales">
@@ -35,26 +35,33 @@
           <h3>السعر</h3>
           <h3>سعر الشراء</h3>
           <h3>الكمية</h3>
-          <h3>المجموع</h3>
+          <h3>مجموع المبيعات</h3>
           <h3>ربح خالص من المنتج</h3>
         </div>
         <div class="TB">
           <% product.forEach(p => { %>
-          <div class="product">
-            <p><%= p.compony %></p>
-            <p><%=p.name%></p>
-            <p><%=p.price%></p>
-            <p><%= p.buingPrice %></p>
-            <p>
-              <%=p.quantity.reduce((acc, curr) => { return acc + curr; }, 0);%>
-            </p>
-            <p>
-              <%= p.price * p.quantity.reduce((acc, curr) => { return acc +
-              curr; }, 0); %>
-            </p>
-            <p><%= p.total %></p>
-          </div>
+          <p><%= p.compony %></p>
+          <p><%=p.name%></p>
+          <p><%=p.price%></p>
+          <p><%= p.buingPrice %></p>
+          <p>
+            <%=p.quantity.reduce((acc, curr) => { return acc + curr; }, 0);%>
+          </p>
+          <p>
+            <%= p.price * p.quantity.reduce((acc, curr) => { return acc + curr;
+            }, 0); %>
+          </p>
+          <p><%= p.total %></p>
           <% }); %>
+        </div>
+        <div class="other">
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p></p>
+          <p><%= totalSales %></p>
+          <p></p>
         </div>
       </div>
     </div>
