@@ -10,6 +10,9 @@
       rel="stylesheet"
     />
     <style>
+      body {
+        font-size: 12.5px;
+      }
       .title {
         width: 100%;
         color: #33333346;
@@ -198,16 +201,16 @@
               gap: 0.5px;
             "
           >
-            <th style="width: 100%; font-size: 15px; font-weight: 600">
+            <th style="width: 100%; font-size: 12.5px; font-weight: 600">
               المنتج
             </th>
-            <th style="width: 100%; font-size: 15px; font-weight: 600">
+            <th style="width: 100%; font-size: 12.5px; font-weight: 600">
               الكمية
             </th>
-            <th style="width: 100%; font-size: 15px; font-weight: 600">
+            <th style="width: 100%; font-size: 12.5px; font-weight: 600">
               السعر
             </th>
-            <th style="width: 100%; font-size: 15px; font-weight: 600">
+            <th style="width: 100%; font-size: 12.5px; font-weight: 600">
               إجمالي
             </th>
           </tr>
@@ -215,7 +218,7 @@
           <tr
             style="
               display: grid;
-              grid-template-columns: 1fr 40px 40px 40px;
+              grid-template-columns: 1fr 50px 50px 50px;
               place-items: center;
             "
           >
@@ -236,6 +239,7 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
+                font-size: 12.5px;
               "
             >
               <%= item.quantity %>
@@ -246,6 +250,7 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
+                font-size: 12.5px;
               "
             >
               <%= item.price %>
@@ -256,6 +261,7 @@
                 height: 100%;
                 display: grid;
                 place-items: center;
+                font-size: 12.5px;
               "
             >
               <%= item.price * item.quantity %>
@@ -270,6 +276,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -279,6 +286,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             سعر التوصيل
@@ -289,6 +297,7 @@
               display: grid;
               place-items: center;
               grid-column: 2/4;
+              font-size: 12.5px;
             "
           >
             <% if (order.where == 'الفرع') { %> 0 ج <% } %> <% if (order.city
@@ -301,6 +310,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -310,6 +320,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             الإجمالي
@@ -320,6 +331,7 @@
               display: grid;
               place-items: center;
               grid-column: 2/4;
+              font-size: 12.5px;
             "
           >
             <%= order.total %> ج
@@ -331,6 +343,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -340,6 +353,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             طريقة الدفع
@@ -350,6 +364,7 @@
               display: grid;
               place-items: center;
               grid-column: 2/4;
+              font-size: 12.5px;
             "
           >
             <%= order.method %>
@@ -361,6 +376,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -370,6 +386,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             مدينة
@@ -380,6 +397,7 @@
               display: grid;
               place-items: center;
               grid-column: 2/4;
+              font-size: 12.5px;
             "
           >
             <%= order.city %>
@@ -392,6 +410,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -401,6 +420,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             تخفيض
@@ -411,6 +431,7 @@
               display: grid;
               place-items: center;
               grid-column: 2/4;
+              font-size: 12.5px;
             "
           >
             <%= JSON.parse(order.discount).value %>
@@ -423,6 +444,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             place-items: center;
+            font-size: 12.5px;
           "
         >
           <p
@@ -432,6 +454,7 @@
               display: grid;
               place-items: center;
               grid-column: 1/2;
+              font-size: 12.5px;
             "
           >
             تخفيض
@@ -443,6 +466,7 @@
               display: flex;
               align-items: center;
               justify-content: space-evenly;
+              font-size: 12.5px;
             "
           >
             <p>الكود: <%= JSON.parse(order.discount).code %></p>
