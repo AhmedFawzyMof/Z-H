@@ -24,6 +24,13 @@
         place-items: center;
         border: 1px solid #333;
       }
+      table {
+        width: 100%;
+      }
+
+      tbody {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
@@ -183,15 +190,26 @@
         <table>
           <tr
             style="
+              width: 100%;
               display: grid;
               grid-template-columns: 1fr 50px 50px 50px;
               place-items: center;
+              border: 2px solid #333;
+              gap: 0.5px;
             "
           >
-            <th style="width: 100%">المنتج</th>
-            <th style="width: 100%">الكمية</th>
-            <th style="width: 100%">السعر</th>
-            <th style="width: 100%">إجمالي</th>
+            <th style="width: 100%; font-size: 15px; font-weight: 600">
+              المنتج
+            </th>
+            <th style="width: 100%; font-size: 15px; font-weight: 600">
+              الكمية
+            </th>
+            <th style="width: 100%; font-size: 15px; font-weight: 600">
+              السعر
+            </th>
+            <th style="width: 100%; font-size: 15px; font-weight: 600">
+              إجمالي
+            </th>
           </tr>
           <% order.cart.forEach(item => { %>
           <tr
