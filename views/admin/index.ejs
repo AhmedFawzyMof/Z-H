@@ -61,13 +61,15 @@
           setInterval(async () => {
             const response = await fetch("/get/newOrders");
             const orders = await response.json();
+            const count = document.getElementById("count");
 
             if (orders.new) {
               new Notification("طلب جديد");
-              const count = document.getElementById("count");
+              count.innerHTML = orders.len;
+            } else {
               count.innerHTML = orders.len;
             }
-          }, 60000 * 3);
+          }, 60000 * 2.5);
         }
       });
     </script>
