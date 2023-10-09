@@ -446,6 +446,19 @@ const controller = {
       res.redirect("/");
     }
   },
+  getNew: async (req, res) => {
+    const [orders, _] = await promisePool.query(
+      "SELECT * FROM TheOrders WHERE delivered = 0"
+    );
+    let New = false;
+    if (orders.length > 0) {
+      New = true;
+    }
+    res.json({
+      new: New,
+      len: orders.length,
+    });
+  },
   //! }
   //! SEARCH {
   searchUsers: async (req, res) => {

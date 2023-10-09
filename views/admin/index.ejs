@@ -19,47 +19,57 @@
         let parsedToken = JSON.parse(token);
         const container = document.getElementById("container");
         container.innerHTML = `
-        <a class="users" href="/admin/panle/users/${parsedToken}">
-        <p>المستخدمين</p>
-        <i class="bx bx-user"></i>
-      </a>
-      <a class="orders" href="/admin/panle/orders/${parsedToken}">
-        <p>الطلبات</p>
-        <i class="bx bxs-package"></i>
-        <p class="count"><%=orderslen%></p>
-      </a>
-      <a class="products" href="/admin/panle/products/${parsedToken}">
-        <p>المنتجات</p>
-        <i class="bx bxs-baguette"></i>
-      </a>
-      <a class="categorys" href="/admin/panle/categorys/${parsedToken}">
-        <p>الاقسام</p>
-        <i class="bx bxs-category"></i>
-      </a>
-      <a class="subcategorys" href="/admin/panle/subcategorys/${parsedToken}">
-        <p>الشركات</p>
-        <i class="bx bxs-food-menu"></i>
-      </a>
-      <a class="subcategorys" href="/admin/panle/offer/${parsedToken}">
-        <p>المجله</p>
-        <i class="bx bxs-food-menu"></i>
-      </a>
-      <a class="contact" href="/admin/panle/contact/${parsedToken}">
-        <p>الرسائل</p>
-        <i class="bx bxs-food-menu"></i>
-        <p class="count"><%=contactlen%></p>
-      </a>
-      <a class="contact" href="/admin/panle/totalSales/${parsedToken}">
-          <p>إجمالي المبيعات</p>
-          <i class='bx bx-line-chart'></i>
-      </a>
-`;
+              <a class="users" href="/admin/panle/users/${parsedToken}">
+              <p>المستخدمين</p>
+              <i class="bx bx-user"></i>
+            </a>
+            <a class="orders" href="/admin/panle/orders/${parsedToken}">
+              <p>الطلبات</p>
+              <i class="bx bxs-package"></i>
+              <p class="count" id='count'><%=orderslen%></p>
+            </a>
+            <a class="products" href="/admin/panle/products/${parsedToken}">
+              <p>المنتجات</p>
+              <i class="bx bxs-baguette"></i>
+            </a>
+            <a class="categorys" href="/admin/panle/categorys/${parsedToken}">
+              <p>الاقسام</p>
+              <i class="bx bxs-category"></i>
+            </a>
+            <a class="subcategorys" href="/admin/panle/subcategorys/${parsedToken}">
+              <p>الشركات</p>
+              <i class="bx bxs-food-menu"></i>
+            </a>
+            <a class="subcategorys" href="/admin/panle/offer/${parsedToken}">
+              <p>المجله</p>
+              <i class="bx bxs-food-menu"></i>
+            </a>
+            <a class="contact" href="/admin/panle/contact/${parsedToken}">
+              <p>الرسائل</p>
+              <i class="bx bxs-food-menu"></i>
+              <p class="count"><%=contactlen%></p>
+            </a>
+            <a class="contact" href="/admin/panle/totalSales/${parsedToken}">
+                <p>إجمالي المبيعات</p>
+                <i class='bx bx-line-chart'></i>
+            </a>
+      `;
       }
       panle();
-      let i = 0;
-      setInterval(() => {
-        location.reload();
-      }, 300000);
+      Notification.requestPermission().then((permission) => {
+        if (permission === "granted") {
+          setInterval(async () => {
+            const response = await fetch("/get/newOrders");
+            const orders = await response.json();
+
+            if (orders.new) {
+              new Notification("طلب جديد");
+              const count = document.getElementById("count");
+              count.innerHTML = orders.len;
+            }
+          }, 60000 * 3);
+        }
+      });
     </script>
   </body>
 </html>
