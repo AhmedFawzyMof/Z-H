@@ -142,10 +142,11 @@ const controller = {
   },
   contact: async (req, res) => {
     const { name, email, phone, message } = req.body;
-
+    const date = new Date();
+    console.log(date);
     const [rows, fields] = await promisePool.query(
-      "INSERT INTO `Contact` (`name`, `email`, `phone`, `message`) VALUES (?, ?, ?, ?)",
-      [name, email, phone, message]
+      "INSERT INTO `Contact` (`name`, `email`, `phone`, `message`, `date`) VALUES (?, ?, ?, ?, ?)",
+      [name, email, phone, message, date]
     );
 
     res.send(`

@@ -49,6 +49,11 @@
           <p>البريد: <%= user.email %></p>
           <p>الهاتف: <%= user.phone %></p>
           <p>الرسالة: <%= user.message %></p>
+          <p>  تاريخ الرسالة:
+            <h4 dir="ltr" style="color: #b3b2b2">
+              <%=user.date.toLocaleString("en-US", { timeZone: "Egypt",}) %>
+            </h4>
+          </p>
         </div>
         <% }) %>
       </div>
