@@ -117,36 +117,75 @@ const controller = {
   },
   getCode: async (req, res) => {
     const { code, id } = req.body;
-    if (code !== "") {
-      const [rows, fields] = await promisePool.query(
-        "SELECT coupons FROM `Users` WHERE id = ?",
-        [JSON.parse(id)]
-      );
-      console.log(rows[0]);
-      const coupons = rows[0].coupons;
-      let coupon = coupons.find((coupon) => coupon.code == code);
 
-      const dis = { code: "", value: 0 };
-      if (coupon !== undefined) {
-        res.send(`
+    if (code !== "") {
+      const [Thecoupon, _] = await promisePool.query(
+        "SELECT * FROM Coupons WHERE code = ?",
+        [code]
+      );
+
+      if (Thecoupon.length == 0) {
+        const [rows, fields] = await promisePool.query(
+          "SELECT coupons FROM `Users` WHERE id = ?",
+          [JSON.parse(id)]
+        );
+
+        const coupons = rows[0].coupons;
+        let coupon = coupons.find((coupon) => coupon.code == code);
+
+        const dis = { code: "", value: 0 };
+        if (coupon !== undefined) {
+          res.send(`
            <script>
            localStorage.setItem('disCount', '${JSON.stringify(coupon)}')
            window.history.back();
            </script>
            `);
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
-      } else {
-        res.send(`
+          os.cpuUsage(function (v) {
+            console.log("CPU USAGE (%): " + v);
+          });
+        } else {
+          res.send(`
             <script>
             localStorage.setItem('disCount', '${JSON.stringify(dis)}')
             window.history.back();
             </script>
             `);
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
+          os.cpuUsage(function (v) {
+            console.log("CPU USAGE (%): " + v);
+          });
+        }
+      } else {
+        let used = false;
+        if (Thecoupon[0].usersUsed.length > 0) {
+          Thecoupon[0].usersUsed.forEach((user) => {
+            if (user === JSON.parse(id)) {
+              used = true;
+            }
+          });
+        } else {
+          Thecoupon[0].usersUsed.push(JSON.parse(id));
+        }
+        const coupon = { code: Thecoupon[0].code, value: Thecoupon[0].value };
+        const [update, f] = await promisePool.query(
+          "UPDATE Coupons SET usersUsed=? WHERE id=?",
+          [JSON.stringify(Thecoupon[0].usersUsed), Thecoupon[0].id]
+        );
+        if (!used) {
+          res.send(`
+        <script>
+        localStorage.setItem('disCount', '${JSON.stringify(coupon)}')
+        window.history.back();
+        </script>
+        `);
+        } else {
+          res.send(`
+        <script>
+        localStorage.removeItem('disCount', '${JSON.stringify(coupon)}')
+        window.history.back();
+        </script>
+        `);
+        }
       }
     } else {
       res.send(`
