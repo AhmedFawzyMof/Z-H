@@ -9,6 +9,7 @@ if (localStorage.getItem("Token") === "noToken") {
   const nameInp = document.createElement("input");
   nameInp.type = "text";
   nameInp.required = true;
+  nameInp.name = "name";
   inpDev.append(inplabel, nameInp);
 }
 var disCount;

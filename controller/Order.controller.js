@@ -31,9 +31,13 @@ async function checkUser(userdata) {
     return user[0].id;
   } else {
     const id = uuidv4();
-    const coupons = [];
+    const coupons = [
+      { code: "13102019", value: 10 },
+      { code: "80402002", value: 15 },
+      { code: "29072002", value: 20 },
+    ];
     const [insert, _] = await promisePool.query(
-      "INSERT INTO `Users` (`id`, `name`, `phone`, `Admin`, `Stuff`, `coupons`, `spare_phone`, `street`, `building`, `floor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      "INSERT INTO `Users` (`id`, `name`, `phone`, `Admin`, `Stuff`, `coupons`, `spare_phone`, `street`, `building`, `floor`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
       [
         id,
         userdata.name,
@@ -132,6 +136,7 @@ const controller = {
       cart,
       discount,
     } = req.body;
+    console.log(req.body);
     let token;
     if (user === "noToken") {
       const users = {
