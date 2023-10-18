@@ -54,6 +54,7 @@ const controller = {
         "SELECT * FROM Users WHERE id = ?",
         [user]
       );
+      console.log(rows[0]);
       if (rows[0].coupons.length > 0) {
         res.json({
           success: rows[0].coupons.length,

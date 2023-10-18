@@ -63,7 +63,7 @@
           >
             المستخدم
           </p>
-          <p><%=order.username%></p>
+          <p><%=order.name%></p>
         </div>
         <div
           class="p"
@@ -123,7 +123,7 @@
           >
             شارع
           </p>
-          <p><%=order.addrSt%></p>
+          <p><%=order.street%></p>
         </div>
         <div
           class="p"
@@ -143,7 +143,7 @@
           >
             عماره
           </p>
-          <p><%=order.addrB%></p>
+          <p><%=order.building%></p>
         </div>
         <div
           class="p"
@@ -163,7 +163,7 @@
           >
             طابق
           </p>
-          <p><%=order.addrF%></p>
+          <p><%=order.floor%></p>
         </div>
         <div
           class="p"
@@ -334,7 +334,11 @@
               font-size: 12.5px;
             "
           >
-            <%= order.total %> ج
+            <% if( JSON.parse(order.discount).value > 0) { %>
+            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+            cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
+            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+            cur.quantity},0)%> <% } %> ج
           </p>
         </div>
         <div

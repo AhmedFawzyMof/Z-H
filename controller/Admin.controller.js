@@ -114,7 +114,6 @@ const controller = {
             }
           });
         });
-        console.log(sql);
         let iterator = page - 5 < 1 ? 1 : page - 5;
         let endingLink =
           iterator + 9 < numberOfPages
@@ -356,15 +355,55 @@ const controller = {
     );
     if (user[0].Admin === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
+        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
         [order]
       );
+      const OrdersIds = [];
+
+      orders.forEach((orderId) => {
+        OrdersIds.push(orderId.id);
+      });
+
+      const [products, _] = await promisePool.query(
+        "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+        [OrdersIds]
+      );
+      orders.forEach((order) => {
+        Object.assign(order, { cart: [] });
+
+        products.forEach((ord) => {
+          if (ord.order === order.id) {
+            order.cart.push(ord);
+            return order;
+          }
+        });
+      });
       res.render("admin/orders/id", { order: orders[0] });
     } else if (user[0].Stuff === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
+        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
         [order]
       );
+      const OrdersIds = [];
+
+      orders.forEach((orderId) => {
+        OrdersIds.push(orderId.id);
+      });
+
+      const [products, _] = await promisePool.query(
+        "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+        [OrdersIds]
+      );
+      orders.forEach((order) => {
+        Object.assign(order, { cart: [] });
+
+        products.forEach((ord) => {
+          if (ord.order === order.id) {
+            order.cart.push(ord);
+            return order;
+          }
+        });
+      });
       res.render("admin/orders/id", { order: orders[0] });
     } else {
       res.redirect("/");

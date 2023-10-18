@@ -136,7 +136,6 @@ const controller = {
       cart,
       discount,
     } = req.body;
-    console.log(req.body);
     let token;
     if (user === "noToken") {
       const users = {
@@ -225,7 +224,7 @@ const controller = {
   editDelivered: async (req, res) => {
     const { id, isDelivered } = req.body;
     const [rows, fields] = await promisePool.query(
-      "UPDATE TheOrders SET `delivered` = ? WHERE TheOrders.`id` = ?",
+      "UPDATE `Orders` SET `delivered` = ? WHERE `Orders`.`id` = ?",
       [isDelivered, id]
     );
 
@@ -246,7 +245,7 @@ const controller = {
     const withoutShiping = total - 20;
     const backCash = Math.floor(withoutShiping * 0.02);
     const [rows, fields] = await promisePool.query(
-      "UPDATE TheOrders SET `paid` = ? WHERE TheOrders.`id` = ?",
+      "UPDATE `Orders` SET `paid` = ? WHERE `Orders`.`id` = ?",
       [isPaid, id]
     );
     if (method !== "cashback") {
