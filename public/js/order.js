@@ -1,7 +1,15 @@
 "use strict";
 
 if (localStorage.getItem("Token") === "noToken") {
-  location.replace("/");
+  const OrderForm = document.getElementById("order");
+  const inpDev = OrderForm.querySelector("#name");
+  inpDev.className = "input";
+  const inplabel = document.createElement("label");
+  inplabel.innerText = "الاسم";
+  const nameInp = document.createElement("input");
+  nameInp.type = "text";
+  nameInp.required = true;
+  inpDev.append(inplabel, nameInp);
 }
 var disCount;
 if (localStorage.getItem("disCount")) {
@@ -50,12 +58,17 @@ function calContainer() {
     var Thelocation = document.getElementById("location");
     var TheCity = document.getElementById("theCity").value;
     var shiping = 0;
-
     if (Thelocation.value !== "الفرع") {
-      if (TheCity === "الشروق") {
-        shiping = 20;
-      } else {
-        shiping = 40;
+      switch (TheCity) {
+        case "الشروق":
+          shiping = 20;
+          break;
+        case "":
+          shiping = 20;
+          break;
+        default:
+          shiping = 40;
+          break;
       }
     } else {
       shiping = 0;
@@ -64,6 +77,8 @@ function calContainer() {
   }
   function promoCode() {
     if (location.pathname.includes("/pay/info/cashback")) {
+      return "";
+    } else if (localStorage.getItem("Token") === "noToken") {
       return "";
     } else {
       return '\n        <form action="/get/promocode" method="post" id="promocode">\n          <input type="hidden" name="id" value=\''.concat(
@@ -151,12 +166,6 @@ function addToOrder() {
   disCountInp.type = "hidden";
   disCountInp.name = "discount";
   disCountInp.value = JSON.stringify(disCount);
-  var totalInp = document.createElement("input");
-  totalInp.type = "hidden";
-  totalInp.name = "total";
-  totalInp.value = JSON.parse(getTotal() + ShipingPrice());
-  OrderForm.append(totalInp);
-  console.log(totalInp.value);
   OrderForm.append(tokenInp);
   OrderForm.append(cartInp);
   OrderForm.append(disCountInp);

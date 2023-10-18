@@ -1,5 +1,5 @@
 const db = require("../db/index");
-// const fs = require("fs");
+const fs = require("fs");
 const os = require("os-utils");
 const promisePool = db.promise();
 
@@ -85,7 +85,7 @@ const controller = {
   },
   getAll: async (req, res) => {
     const [rows, fields] = await promisePool.query(
-      "SELECT * FROM `Componies` ORDER BY na DESC;SELECT * FROM `Offer`;SELECT name FROM Categories;"
+      "SELECT * FROM `Componies` ORDER BY ranking DESC;SELECT * FROM `Offer`;SELECT name FROM Categories;"
     );
     const companies = rows[0];
     const categories = rows[2];

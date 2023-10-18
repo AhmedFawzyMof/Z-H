@@ -56,14 +56,20 @@
             order.date.getMinutes() %>:<%= order.date.getSeconds() %>
           </h4>
         </div>
-        <p>شارع: <%=order.addrSt%></p>
-        <p>عماره: <%=order.addrB%></p>
-        <p>طابق: <%=order.addrF%></p>
+        <p>شارع: <%=order.street%></p>
+        <p>عماره: <%=order.building%></p>
+        <p>طابق: <%=order.floor%></p>
         <p>تسيلم في: <%= order.where %></p>
-        <p>المستخدم: <%=order.email%></p>
-        <p>رقم الهاتف: <%="0"+order.phone%></p>
-        <p>هاتف احتياطي: <%="0"+order.spare_phone%></p>
-        <p>المجموع: <%=order.total%> ج</p>
+        <p>المستخدم: <%=order.name%></p>
+        <p>رقم الهاتف: <%=order.phone%></p>
+        <p>هاتف احتياطي: <%=order.spare_phone%></p>
+        <p>
+          المجموع: <% if( JSON.parse(order.discount).value > 0) { %>
+          <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+          cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
+          <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+          cur.quantity},0)%> <% } %> ج
+        </p>
 
         <% order.cart.forEach(item => { %>
         <div class="orderitem">

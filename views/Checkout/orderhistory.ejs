@@ -29,16 +29,21 @@
         </div>
         <div class="orderInfo">
           <h3>تفاصيل الطلب</h3>
-          <p>الاسم: <%= name.username %></p>
-          <p>بريد إلكتروني: <%= name.email %></p>
-          <p>شارع: <%=order.addrSt%></p>
-          <p>عماره: <%=order.addrB%></p>
-          <p>طابق: <%=order.addrF%></p>
-          <p>تسليم في: <%= order.where %></p>
-          <p>رقم الهاتف: <%= order.phone %></p>
-          <p>هاتف احتياطي: <%= order.spare_phone %></p>
-          <p>المجموع: <%= order.total %> ج</p>
+          <p>الاسم: <%= name.name %></p>
+          <p>شارع: <%=name.street%></p>
+          <p>عماره: <%=name.building%></p>
+          <p>طابق: <%=name.floor%></p>
+          <p>رقم الهاتف: <%= name.phone %></p>
+          <p>هاتف احتياطي: <%= name.spare_phone %></p>
           <p>مكان التسليم: <%= order.where %></p>
+          <p>الخصم: <%= JSON.parse(order.discount).value %></p>
+          <p>
+            الاجمالي: <% if( JSON.parse(order.discount).value > 0) { %>
+            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+            cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
+            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
+            cur.quantity},0)%> <% } %>
+          </p>
         </div>
         <div class="Orderitems">
           <h3>منتجات الطلب</h3>

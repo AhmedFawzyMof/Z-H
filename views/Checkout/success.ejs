@@ -11,7 +11,7 @@
       rel="stylesheet"
     />
   </head>
-  <body onload="cartLen()">
+  <body>
     <%- include('../components/nav') %>
 
     <div class="Container">
@@ -30,9 +30,6 @@
     <script>
       "use strict";
 
-      if (localStorage.getItem("Token") === "noToken") {
-        location.replace("/");
-      }
       function getCoupon() {
         fetch("/getcoupon", {
           method: "POST",
@@ -49,6 +46,7 @@
           .then(function (res) {
             if (res.success !== 0) {
               localStorage.setItem("coupon", res.success);
+              localStorage.setItem("State", res.Admin);
             } else {
               localStorage.setItem("coupon", "0");
             }

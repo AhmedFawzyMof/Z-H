@@ -18,6 +18,7 @@
         <div id="countContainer"></div>
       </div>
       <form id="order" action="/order" method="post">
+        <div class="input" id="name"></div>
         <div class="input">
           <select name="city" id="theCity" required onchange="notShrouk()">
             <option value="" selected disabled>المدن</option>
@@ -56,8 +57,6 @@
           <label>رقم هاتف احتياطي</label>
           <input type="tel" name="phone2" minlength="11" id="ph2" />
         </div>
-        <input type="hidden" readonly name="delivered" value="0" />
-        <input type="hidden" readonly name="paid" value="0" />
         <input type="hidden" readonly name="method" value="creditcard" />
         <div id="otherinput"></div>
         <div class="location"></div>

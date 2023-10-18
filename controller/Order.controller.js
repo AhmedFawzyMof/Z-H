@@ -1,11 +1,125 @@
 const db = require("../db/index");
+const fs = require("fs");
 const { v4: uuidv4 } = require("uuid");
 const promisePool = db.promise();
 const os = require("os-utils");
 
+async function checkUser(userdata) {
+  let spare_phone;
+
+  if (userdata.spare_phone !== "") {
+    spare_phone = userdata.spare_phone;
+  }
+
+  const [user, _] = await promisePool.query(
+    "SELECT * FROM Users WHERE phone=? OR spare_phone=?",
+    [userdata.phone, spare_phone]
+  );
+
+  if (user.length > 0) {
+    const [update, _] = await promisePool.query(
+      "UPDATE Users SET `phone`=?, `spare_phone`=?, `street`=?, `building`=?, `floor`=? WHERE id=?",
+      [
+        userdata.phone,
+        userdata.spare_phone,
+        userdata.street,
+        userdata.building,
+        userdata.floor,
+        user[0].id,
+      ]
+    );
+    return user[0].id;
+  } else {
+    const id = uuidv4();
+    const coupons = [];
+    const [insert, _] = await promisePool.query(
+      "INSERT INTO `Users` (`id`, `name`, `phone`, `Admin`, `Stuff`, `coupons`, `spare_phone`, `street`, `building`, `floor) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [
+        id,
+        userdata.name,
+        userdata.phone,
+        0,
+        0,
+        JSON.stringify(coupons),
+        userdata.spare_phone,
+        userdata.street,
+        userdata.building,
+        userdata.floor,
+      ]
+    );
+    return id;
+  }
+}
+
+async function checkCoupons(discount, userId) {
+  const disCount = JSON.parse(discount);
+  const [user, _] = await promisePool.query(
+    "SELECT coupons FROM Users WHERE id=?",
+    [userId]
+  );
+  let TheCoupon;
+  TheCoupon = user[0].coupons.find((coupon, i) => {
+    Object.assign(coupon, { index: i });
+    return coupon.code === disCount.code;
+  });
+
+  if (TheCoupon === undefined) {
+    const [coupon, _] = await promisePool.query(
+      "SELECT * FROM `Coupons` WHERE code=?",
+      [TheCoupon.code]
+    );
+
+    if (coupon.length > 0) {
+      const [update, _] = await promisePool.query(
+        "UPDATE Coupons SET usersUsed=? WHERE id=?",
+        [JSON.stringify(coupon[0].usersUsed.push(userId)), userId]
+      );
+    }
+  } else {
+    user[0].coupons.splice(TheCoupon.i, 1);
+    const [uodate, _] = await promisePool.query(
+      "UPDATE Users SET coupons=? WHERE id=?",
+      [JSON.stringify(user[0].coupons), userId]
+    );
+  }
+}
+
+async function createOrder(orderdata) {
+  const [order, _] = await promisePool.query(
+    "INSERT INTO `Orders` (`id`, `user`, `delivered`, `paid`, `date`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+    [
+      orderdata.id,
+      orderdata.user,
+      orderdata.delivered,
+      orderdata.paid,
+      orderdata.date,
+      orderdata.where,
+      orderdata.discount,
+      orderdata.city,
+      orderdata.method,
+    ]
+  );
+  if (orderdata.method === "cashback") {
+    const [data, _] = await promisePool.query(
+      `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
+    );
+  }
+  return orderdata.id;
+}
+
+async function insertOrderProduct(products, orderId) {
+  products.forEach(async (product) => {
+    const [pro, _] = await promisePool.query(
+      "INSERT INTO `OrderProducts` (`product`, `order`, `quantity`) VALUES (?, ?, ?)",
+      [parseInt(product.id), orderId, product.quantity]
+    );
+  });
+}
+
 const controller = {
   addOne: async (req, res) => {
-    let {
+    const {
+      name,
       city,
       where,
       addrSt,
@@ -13,128 +127,88 @@ const controller = {
       addrF,
       phone,
       phone2,
-      user,
-      total,
-      cart,
-      delivered,
-      paid,
       method,
-      amount,
+      user,
+      cart,
       discount,
     } = req.body;
-    const id = uuidv4();
-    const localTime = new Date().toLocaleString("en-US", {
-      timeZone: "Egypt",
-    });
-    const date = new Date(localTime);
-    const ph = phone.toString();
-    const sph = phone2.toString();
+    let token;
+    if (user === "noToken") {
+      const users = {
+        name: name,
+        city: city,
+        phone: phone,
+        spare_phone: phone2,
+        street: addrSt,
+        building: addrB,
+        floor: addrF,
+      };
+      token = await checkUser(users);
+    } else {
+      token = user;
+    }
+    const order = {
+      id: uuidv4(),
+      user: token,
+      delivered: 0,
+      paid: 0,
+      date: new Date(),
+      where: where,
+      discount: discount,
+      city: city,
+      method: method,
+    };
+    if (JSON.parse(discount).code !== "") {
+      await checkCoupons(discount, token);
+    }
+    const OrderId = await createOrder(order);
 
-    if (JSON.parse(cart).length > 0) {
-      JSON.parse(cart).forEach(async (product) => {
-        const [stock, _] = await promisePool.query(
-          `UPDATE Products SET inStock = inStock-${product.quantity} WHERE id = ${product.id};SELECT inStock FROM Products WHERE id=${product.id}`
-        );
-        Y(stock[1][0].inStock, product);
-      });
+    await insertOrderProduct(JSON.parse(cart), OrderId);
 
-      const Y = async (stock, pp) => {
-        let isOutOfStock = false;
-
-        if (stock <= 0) {
-          isOutOfStock = true;
-        }
-
-        if (!isOutOfStock) {
-          const [rows, fields] = await promisePool.query(
-            "SELECT coupons FROM Users WHERE id = ?",
-            [user]
-          );
-          let totalCost;
-          if (where == "الفرع") {
-            totalCost = total - 20;
-          } else {
-            totalCost = total;
-          }
-          let coupons = rows[0].coupons;
-          coupons.forEach((coupon, index) => {
-            if (JSON.stringify(coupon) === discount) {
-              coupons.splice(index, 1);
-            }
-          });
-          const [rows2, fields2] = await promisePool.query(
-            "INSERT INTO TheOrders (`id`, `user`, `addrSt`, `addrB`, `addrF`, `phone`, `spare_phone`, `delivered`, `paid`, `total`, `date`, `cart`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-            [
-              id,
-              user,
-              addrSt,
-              addrB,
-              addrF,
-              ph,
-              sph,
-              delivered,
-              paid,
-              totalCost,
-              date,
-              JSON.stringify(JSON.parse(cart)),
-              where,
-              discount,
-              city,
-              method,
-            ]
-          );
-          switch (method) {
-            case "cashback":
-              const [rows3, fields3] = await promisePool.query(
-                `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
-              );
-              break;
-            default:
-              const [rows1, fields1] = await promisePool.query(
-                `UPDATE Users SET coupons='${JSON.stringify(
-                  coupons
-                )}' WHERE id='${user}'`
-              );
-              break;
-          }
-          res.send(`
+    res.send(`
           <script>
             localStorage.setItem("cart","[]")
+            localStorage.setItem("Token","${token}")
             localStorage.removeItem("coupon")
             localStorage.removeItem("disCount")
             location.replace("/pay/info/success");
           </script>`);
-        } else {
-          console.log(pp);
-          const [stock, _] = await promisePool.query(
-            `UPDATE Products SET inStock = inStock+${pp.quantity} WHERE id = ${pp.id};`
-          );
-          res.redirect("/cart/show/items");
-        }
-      };
-    } else {
-      res.redirect("/");
-    }
   },
   getSuccess: (req, res) => {
     res.render("Checkout/success");
   },
   getOrderHistory: async (req, res) => {
     const userId = req.params.userId;
-    const name = {};
     const [r1, f1] = await promisePool.query(
-      "SELECT username,email FROM Users WHERE id = ?",
+      "SELECT `name`, `phone`, `spare_phone`, `street`, `building`, `floor` FROM Users WHERE id = ?",
       [userId]
     );
-    Object.assign(name, r1[0]);
     const [r2, f2] = await promisePool.query(
-      "SELECT * FROM TheOrders WHERE user = ?",
+      "SELECT * FROM `Orders` WHERE user = ?",
       [userId]
     );
+    const orders_id = r2.map((or) => {
+      return or.id;
+    });
+    const [r3, _] = await promisePool.query(
+      "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+      [orders_id]
+    );
+
+    r2.forEach((order) => {
+      Object.assign(order, { cart: [] });
+
+      r3.forEach((ord) => {
+        if (ord.order === order.id) {
+          order.cart.push(ord);
+          return order;
+        }
+      });
+    });
 
     res.render("Checkout/orderhistory", {
       orders: r2,
-      name: name,
+      name: r1[0],
     });
     os.cpuUsage(function (v) {
       console.log("CPU USAGE (%): " + v);

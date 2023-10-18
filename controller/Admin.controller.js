@@ -68,7 +68,7 @@ const controller = {
     const userId = rows[0].id;
 
     if (rows[0].Admin === 1) {
-      const [rows, fields] = await promisePool.query("SELECT * FROM TheOrders");
+      const [rows, fields] = await promisePool.query("SELECT * FROM `Orders`");
       if (rows.length > 0) {
         const numOfResults = rows.length;
         const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
@@ -90,9 +90,31 @@ const controller = {
         }
         const startingLimit = (page - 1) * resultsPerPage;
         const [sql, fields1] = await promisePool.query(
-          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where,TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id  WHERE date > '2023-10-6' ORDER BY delivered ASC LIMIT ?,?",
+          "SELECT `Orders`.`id`, `Orders`.`user`, `Orders`.`delivered`, `Orders`.`paid`, `Orders`.`date`, `Orders`.`where`, `Orders`.`discount`, `Orders`.`city`, `Orders`.`method`, `Users`.`name`, `Users`.`phone`, `Users`.`spare_phone`, `Users`.`street`, `Users`.`building`, `Users`.`floor` FROM `Orders` INNER JOIN `Users` ON `Orders`.`user` = `Users`.`id`  WHERE `date` > '2023-10-6' ORDER BY `delivered` ASC LIMIT ?,?",
           [startingLimit, resultsPerPage]
         );
+
+        const OrdersIds = [];
+
+        sql.forEach((orderId) => {
+          OrdersIds.push(orderId.id);
+        });
+
+        const [products, _] = await promisePool.query(
+          "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+          [OrdersIds]
+        );
+        sql.forEach((order) => {
+          Object.assign(order, { cart: [] });
+
+          products.forEach((ord) => {
+            if (ord.order === order.id) {
+              order.cart.push(ord);
+              return order;
+            }
+          });
+        });
+        console.log(sql);
         let iterator = page - 5 < 1 ? 1 : page - 5;
         let endingLink =
           iterator + 9 < numberOfPages
@@ -121,7 +143,7 @@ const controller = {
         });
       }
     } else if (rows[0].Stuff === 1) {
-      const [rows, fields] = await promisePool.query("SELECT * FROM TheOrders");
+      const [rows, fields] = await promisePool.query("SELECT * FROM `Orders`");
       if (rows.length > 0) {
         const numOfResults = rows.length;
         const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
@@ -143,7 +165,7 @@ const controller = {
         }
         const startingLimit = (page - 1) * resultsPerPage;
         const [sql, fields1] = await promisePool.query(
-          "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where,TheOrders.discount,Users.email FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id ORDER BY delivered ASC LIMIT ?,?",
+          "SELECT `Orders`.`id`, `Orders`.`user`, `Orders`.`delivered`, `Orders`.`paid`, `Orders`.`date`, `Orders`.`where`, `Orders`.`discount`, `Orders`.`city`, `Orders`.`method`, `Users`.`name`, `Users`.`phone`, `Users`.`spare_phone`, `Users`.`street`, `Users`.`building`, `Users`.`floor` FROM `Orders` INNER JOIN `Users` ON `Orders`.`user` = `Users`.`id`  WHERE `date` > '2023-10-6' ORDER BY `delivered` ASC LIMIT ?,?",
           [startingLimit, resultsPerPage]
         );
         let iterator = page - 5 < 1 ? 1 : page - 5;
@@ -306,7 +328,7 @@ const controller = {
       [token]
     );
     const [rows2, fields2] = await promisePool.query(
-      "SELECT COUNT(*) as 'OrdersLen' FROM `TheOrders` WHERE delivered = 0;"
+      "SELECT COUNT(*) as 'OrdersLen' FROM `Orders` WHERE delivered = 0;"
     );
     const [rows3, fields3] = await promisePool.query(
       "SELECT COUNT(*) as 'ContactLen' FROM `Contact` WHERE seen = 0;"
@@ -334,13 +356,13 @@ const controller = {
     );
     if (user[0].Admin === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where, TheOrders.discount, Users.username FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });
     } else if (user[0].Stuff === 1) {
       const [orders, fields] = await promisePool.query(
-        "SELECT TheOrders.id, TheOrders.user, TheOrders.addrSt, TheOrders.addrB, TheOrders.addrF, TheOrders.phone, TheOrders.spare_phone, TheOrders.delivered, TheOrders.paid, TheOrders.total, TheOrders.date, TheOrders.cart, TheOrders.city, TheOrders.method, TheOrders.where, TheOrders.discount, Users.username FROM TheOrders INNER JOIN Users ON TheOrders.user = Users.id WHERE `TheOrders`.`id` = ?",
+        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
         [order]
       );
       res.render("admin/orders/id", { order: orders[0] });
@@ -349,106 +371,97 @@ const controller = {
     }
   },
   getTotalSales: async (req, res) => {
-    const token = req.params.admin;
-
-    const [rows, fields] = await promisePool.query(
-      "SELECT Admin,Stuff,id FROM Users WHERE id=?;",
-      [token]
-    );
-    const [orders, _] = await promisePool.query(
-      "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `TheOrders` WHERE date > '2023-10-6' AND delivered = 1"
-    );
-
-    let [product, __] = await promisePool.query(
-      "SELECT `id`,`name`,`price`,`compony`,`buingPrice` FROM `Products`"
-    );
-
-    const sum = orders.reduce((p, c) => {
-      const Far3 = () => {
-        if (c.where === "الفرع") {
-          return p + c.total;
-        }
-        if (c.city !== "الشروق") {
-          return p + c.total - 40;
-        } else {
-          return p + c.total - 20;
-        }
-      };
-      return Far3();
-    }, 0);
-    let discounts = 0;
-    const productSales = [];
-    orders.forEach((order) => {
-      if (JSON.parse(order.discount).code !== "") {
-        const code = JSON.parse(order.discount);
-        discounts += code.value;
-      }
-      order.cart.forEach((pro) => {
-        product.forEach((p) => {
-          if (pro.id == p.id) {
-            Object.assign(p, { quantity: [pro.quantity] });
-            productSales.push(p);
-          }
-        });
-      });
-    });
-    const unique = [];
-    for (const item of productSales) {
-      const isDuplicate = unique.find((obj) => obj.id === item.id);
-      if (!isDuplicate) {
-        unique.push(item);
-      } else {
-        item.quantity.push(isDuplicate.quantity[0]);
-      }
-    }
-
-    unique.sort(function (a, b) {
-      return a.compony.localeCompare(b.compony, ["ar"]);
-    });
-    unique.forEach((p) => {
-      const quantity = p.quantity.reduce((acc, curr) => {
-        return acc + curr;
-      }, 0);
-
-      let safy = 0;
-      if (p.buingPrice !== null) {
-        safy = p.price - p.buingPrice;
-      }
-
-      Object.assign(p, { total: safy * quantity });
-    });
-
-    let profit = 0;
-
-    unique.forEach((p) => {
-      profit += p.total;
-    });
-    let totalSales = 0;
-    unique.forEach((product) => {
-      const quantity = product.quantity.reduce((acc, curr) => {
-        return acc + curr;
-      }, 0);
-
-      totalSales += product.price * quantity;
-    });
-    if (rows[0].Admin == 1) {
-      res.render("admin/totalSales/index.ejs", {
-        orderslen: orders.length,
-        total: sum,
-        totalS: profit,
-        totalSales: totalSales,
-        discounts: discounts,
-        product: unique,
-      });
-    } else if (rows[0].Stuff == 1) {
-      res.redirect("/admin/panle/orders/" + row1.id);
-    } else {
-      res.redirect("/");
-    }
+    // const token = req.params.admin;
+    // const [rows, fields] = await promisePool.query(
+    //   "SELECT Admin,Stuff,id FROM Users WHERE id=?;",
+    //   [token]
+    // );
+    // const [orders, _] = await promisePool.query(
+    //   "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `Orders` WHERE date > '2023-10-6' AND delivered = 1"
+    // );
+    // let [product, __] = await promisePool.query(
+    //   "SELECT `id`,`name`,`price`,`compony`,`buingPrice` FROM `Products`"
+    // );
+    // const sum = orders.reduce((p, c) => {
+    //   const Far3 = () => {
+    //     if (c.where === "الفرع") {
+    //       return p + c.total;
+    //     }
+    //     if (c.city !== "الشروق") {
+    //       return p + c.total - 40;
+    //     } else {
+    //       return p + c.total - 20;
+    //     }
+    //   };
+    //   return Far3();
+    // }, 0);
+    // let discounts = 0;
+    // const productSales = [];
+    // orders.forEach((order) => {
+    //   if (JSON.parse(order.discount).code !== "") {
+    //     const code = JSON.parse(order.discount);
+    //     discounts += code.value;
+    //   }
+    //   order.cart.forEach((pro) => {
+    //     product.forEach((p) => {
+    //       if (pro.id == p.id) {
+    //         Object.assign(p, { quantity: [pro.quantity] });
+    //         productSales.push(p);
+    //       }
+    //     });
+    //   });
+    // });
+    // const unique = [];
+    // for (const item of productSales) {
+    //   const isDuplicate = unique.find((obj) => obj.id === item.id);
+    //   if (!isDuplicate) {
+    //     unique.push(item);
+    //   } else {
+    //     item.quantity.push(isDuplicate.quantity[0]);
+    //   }
+    // }
+    // unique.sort(function (a, b) {
+    //   return a.compony.localeCompare(b.compony, ["ar"]);
+    // });
+    // unique.forEach((p) => {
+    //   const quantity = p.quantity.reduce((acc, curr) => {
+    //     return acc + curr;
+    //   }, 0);
+    //   let safy = 0;
+    //   if (p.buingPrice !== null) {
+    //     safy = p.price - p.buingPrice;
+    //   }
+    //   Object.assign(p, { total: safy * quantity });
+    // });
+    // let profit = 0;
+    // unique.forEach((p) => {
+    //   profit += p.total;
+    // });
+    // let totalSales = 0;
+    // unique.forEach((product) => {
+    //   const quantity = product.quantity.reduce((acc, curr) => {
+    //     return acc + curr;
+    //   }, 0);
+    //   totalSales += product.price * quantity;
+    // });
+    // if (rows[0].Admin == 1) {
+    //   res.render("admin/totalSales/index.ejs", {
+    //     orderslen: orders.length,
+    //     total: sum,
+    //     totalS: profit,
+    //     totalSales: totalSales,
+    //     discounts: discounts,
+    //     product: unique,
+    //   });
+    // } else if (rows[0].Stuff == 1) {
+    //   res.redirect("/admin/panle/orders/" + row1.id);
+    // } else {
+    //   res.redirect("/");
+    // }
   },
   getNew: async (req, res) => {
     const [orders, _] = await promisePool.query(
-      "SELECT * FROM TheOrders WHERE delivered = 0"
+      "SELECT * FROM `Orders` WHERE delivered = 0"
     );
     let New = false;
     if (orders.length > 0) {
@@ -609,7 +622,7 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
       const [rows, fields] = await promisePool.query(
-        "SELECT `TheOrders`.`id`, `TheOrders`.`user`, `TheOrders`.`addrSt`, `TheOrders`.`addrB`, `TheOrders`.`addrF`,`TheOrders`.`phone`, `TheOrders`.`spare_phone`, `TheOrders`.`delivered`, `TheOrders`.`paid`, `TheOrders`.`total`, `TheOrders`.`date`, `TheOrders`.`cart`, `Users`.`email` FROM `TheOrders` INNER JOIN `Users` ON `TheOrders`.`user` = `Users`.`id` WHERE `TheOrders`.`id` LIKE ?",
+        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE id LIKE ?",
         [search]
       );
 
@@ -804,7 +817,7 @@ const controller = {
   deleteOrder: async (req, res) => {
     const id = req.body.orderid;
     const [rows, fields] = await promisePool.query(
-      "DELETE FROM `TheOrders` WHERE `TheOrders`.`id` = ?",
+      "DELETE FROM `Orders` WHERE `Orders`.`id` = ?",
       [id]
     );
 

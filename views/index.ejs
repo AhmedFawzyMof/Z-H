@@ -12,7 +12,7 @@
     />
     <script src="/js/carousel.js" defer></script>
   </head>
-  <body onload="workingHour(),CartFunction(),cartLen(), logedUser()">
+  <body onload="workingHour(),CartFunction(),cartLen()">
     <%- include('components/nav') %> <% if (offers.length > 0) { %>
       <div class="message" style=" 
         display: block;   
@@ -69,7 +69,7 @@
             <div class="categories">
             <% } %>
         <a href="/<%=category[i].name%>">
-          <% if(category[i].New) {%>
+          <% if(category[i].new) {%>
             <img src="/img/new.png" class="new">
             <% } %>
           <img src="<%=category[i].image%>" alt="<%=category[i].name%>" />

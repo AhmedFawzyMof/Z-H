@@ -9,7 +9,7 @@ const connection = mysql.createPool({
   waitForConnections: true,
   connectionLimit: 10,
   multipleStatements: true,
-  ssl: "Amazon RDS",
+  // ssl: "Amazon RDS",
 });
 
 module.exports = connection;
