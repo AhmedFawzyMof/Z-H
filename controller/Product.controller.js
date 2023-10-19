@@ -108,6 +108,7 @@ const controller = {
     );
 
     const product = rows[0];
+    console.log(product);
     res.render("Product/id", {
       product: product,
     });

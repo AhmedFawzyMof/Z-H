@@ -181,6 +181,26 @@
               place-items: center;
             "
           >
+            المدينة
+          </p>
+          <p><%=order.city%></p>
+        </div>
+        <div
+          class="p"
+          style="
+            display: grid;
+            grid-template-columns: 30% 70%;
+            place-items: center;
+          "
+        >
+          <p
+            style="
+              border-left: 1px solid #333;
+              width: 100%;
+              display: grid;
+              place-items: center;
+            "
+          >
             تاريخ الطلب
           </p>
           <p id="date" dir="ltr">
@@ -300,8 +320,8 @@
               font-size: 12.5px;
             "
           >
-            <% if (order.where == 'الفرع') { %> 0 ج <% }else if (order.city !==
-            'الشروق') { %> 40 ج <% } else { %> 20 ج<% } %>
+            <% if (order.where == 'الفرع') { %> 0 ج <% }else if (order.city
+            !=='الشروق') { %> 40 ج <% } else { %> 20 ج<% } %>
           </p>
         </div>
         <div

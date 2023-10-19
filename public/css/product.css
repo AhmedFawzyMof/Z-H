@@ -278,6 +278,7 @@ nav ul li a {
   position: absolute;
   top: 5px;
   left: 55px;
+  z-index: 99;
 }
 
 #favourite button {
@@ -303,6 +304,7 @@ nav ul li a {
   position: absolute;
   top: 5px;
   left: 55px;
+  z-index: 99;
 }
 
 #delfavourite button {
