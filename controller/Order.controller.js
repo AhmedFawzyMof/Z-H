@@ -200,7 +200,8 @@ const controller = {
     );
 
     r2.forEach((order) => {
-      Object.assign(order, { cart: [] });
+      let total = 0;
+      Object.assign(order, { cart: [], total: total });
 
       r3.forEach((ord) => {
         if (ord.order === order.id) {
@@ -208,6 +209,18 @@ const controller = {
           return order;
         }
       });
+      total = order.cart.reduce((arr, cur) => {
+        return arr + cur.price * cur.quantity;
+      }, 0);
+      if (JSON.parse(order.discount).value > 0) {
+        total -= JSON.parse(order.discount).value;
+      }
+      if (order.city == "الشروق" && order.where == "المنزل") {
+        total += 20;
+      }
+      if (order.city !== "الشروق") {
+        total += 40;
+      }
     });
 
     res.render("Checkout/orderhistory", {

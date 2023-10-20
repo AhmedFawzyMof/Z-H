@@ -105,6 +105,7 @@ const controller = {
           [OrdersIds]
         );
         sql.forEach((order) => {
+          let total = 0;
           Object.assign(order, { cart: [] });
 
           products.forEach((ord) => {
@@ -113,6 +114,19 @@ const controller = {
               return order;
             }
           });
+          total = order.cart.reduce((arr, cur) => {
+            return arr + cur.price * cur.quantity;
+          }, 0);
+          if (JSON.parse(order.discount).value > 0) {
+            total -= JSON.parse(order.discount).value;
+          }
+          if (order.city == "الشروق" && order.where == "المنزل") {
+            total += 20;
+          }
+          if (order.city !== "الشروق") {
+            total += 40;
+          }
+          Object.assign(order, { total: total });
         });
         let iterator = page - 5 < 1 ? 1 : page - 5;
         let endingLink =
@@ -141,61 +155,6 @@ const controller = {
           userId,
         });
       }
-    } else if (rows[0].Stuff === 1) {
-      const [rows, fields] = await promisePool.query("SELECT * FROM `Orders`");
-      if (rows.length > 0) {
-        const numOfResults = rows.length;
-        const numberOfPages = Math.ceil(numOfResults / resultsPerPage);
-        let page = req.query.page ? Number(req.query.page) : 1;
-        if (page > numberOfPages) {
-          res.redirect(
-            "/admin/panle/orders/" +
-              userId +
-              "/?page=" +
-              encodeURIComponent(numberOfPages)
-          );
-        } else if (page < 1) {
-          res.redirect(
-            "/admin/panle/orders/" +
-              userId +
-              "/?page=" +
-              encodeURIComponent("1")
-          );
-        }
-        const startingLimit = (page - 1) * resultsPerPage;
-        const [sql, fields1] = await promisePool.query(
-          "SELECT `Orders`.`id`, `Orders`.`user`, `Orders`.`delivered`, `Orders`.`paid`, `Orders`.`date`, `Orders`.`where`, `Orders`.`discount`, `Orders`.`city`, `Orders`.`method`, `Users`.`name`, `Users`.`phone`, `Users`.`spare_phone`, `Users`.`street`, `Users`.`building`, `Users`.`floor` FROM `Orders` INNER JOIN `Users` ON `Orders`.`user` = `Users`.`id`  WHERE `date` > '2023-10-6' ORDER BY `delivered` ASC LIMIT ?,?",
-          [startingLimit, resultsPerPage]
-        );
-        let iterator = page - 5 < 1 ? 1 : page - 5;
-        let endingLink =
-          iterator + 9 < numberOfPages
-            ? iterator + 9
-            : page + (numberOfPages - page);
-
-        if (endingLink < page + 4) {
-          iterator -= page + 4 - numberOfPages;
-        }
-        res.render("admin/orders", {
-          orders: sql,
-          page,
-          iterator,
-          endingLink,
-          numberOfPages,
-          userId,
-        });
-      } else {
-        res.render("admin/orders", {
-          orders: rows,
-          page: 1,
-          iterator: 1,
-          endingLink: 1,
-          numberOfPages: 1,
-          userId,
-        });
-      }
-    } else {
-      res.redirect("/");
     }
   },
   getCategory: async (req, res) => {
@@ -369,6 +328,7 @@ const controller = {
         [OrdersIds]
       );
       orders.forEach((order) => {
+        let total = 0;
         Object.assign(order, { cart: [] });
 
         products.forEach((ord) => {
@@ -377,32 +337,19 @@ const controller = {
             return order;
           }
         });
-      });
-      res.render("admin/orders/id", { order: orders[0] });
-    } else if (user[0].Stuff === 1) {
-      const [orders, fields] = await promisePool.query(
-        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id WHERE `Orders`.`id` = ?",
-        [order]
-      );
-      const OrdersIds = [];
-
-      orders.forEach((orderId) => {
-        OrdersIds.push(orderId.id);
-      });
-
-      const [products, _] = await promisePool.query(
-        "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
-        [OrdersIds]
-      );
-      orders.forEach((order) => {
-        Object.assign(order, { cart: [] });
-
-        products.forEach((ord) => {
-          if (ord.order === order.id) {
-            order.cart.push(ord);
-            return order;
-          }
-        });
+        total = order.cart.reduce((arr, cur) => {
+          return arr + cur.price * cur.quantity;
+        }, 0);
+        if (JSON.parse(order.discount).value > 0) {
+          total -= JSON.parse(order.discount).value;
+        }
+        if (order.city == "الشروق" && order.where == "المنزل") {
+          total += 20;
+        }
+        if (order.city !== "الشروق") {
+          total += 40;
+        }
+        Object.assign(order, { total: total });
       });
       res.render("admin/orders/id", { order: orders[0] });
     } else {

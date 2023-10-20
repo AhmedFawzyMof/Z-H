@@ -354,11 +354,7 @@
               font-size: 12.5px;
             "
           >
-            <% if( JSON.parse(order.discount).value > 0) { %>
-            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-            cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
-            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-            cur.quantity},0)%> <% } %> ج
+            <%= order.total %> ج
           </p>
         </div>
         <div

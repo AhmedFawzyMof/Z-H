@@ -37,13 +37,7 @@
           <p>هاتف احتياطي: <%= name.spare_phone %></p>
           <p>مكان التسليم: <%= order.where %></p>
           <p>الخصم: <%= JSON.parse(order.discount).value %></p>
-          <p>
-            الاجمالي: <% if( JSON.parse(order.discount).value > 0) { %>
-            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-            cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
-            <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-            cur.quantity},0)%> <% } %>
-          </p>
+          <p>الاجمالي: <%=order.total%></p>
         </div>
         <div class="Orderitems">
           <h3>منتجات الطلب</h3>

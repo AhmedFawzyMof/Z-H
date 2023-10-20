@@ -63,13 +63,7 @@
         <p>المستخدم: <%=order.name%></p>
         <p>رقم الهاتف: <%=order.phone%></p>
         <p>هاتف احتياطي: <%=order.spare_phone%></p>
-        <p>
-          المجموع: <% if( JSON.parse(order.discount).value > 0) { %>
-          <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-          cur.quantity},0) - JSON.parse(order.discount).value %> <% }else { %>
-          <%=order.cart.reduce((arr, cur)=>{ return arr + cur.price *
-          cur.quantity},0)%> <% } %> ج
-        </p>
+        <p>المجموع: <%=order.total %> ج</p>
 
         <% order.cart.forEach(item => { %>
         <div class="orderitem">
