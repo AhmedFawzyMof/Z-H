@@ -128,6 +128,14 @@ const controller = {
       });
     }
   },
+  getUseData: async (req, res) => {
+    const id = req.params.id;
+    const [user, _] = await promisePool.query(
+      "SELECT * FROM Users WHERE id=?",
+      [id]
+    );
+    res.json({ user: user[0] });
+  },
 };
 
 module.exports = controller;

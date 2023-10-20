@@ -9,6 +9,7 @@ const AdminController = require("../controller/Admin.controller");
 const SubcategoryController = require("../controller/SubCategory.controller");
 //? GET {
 router.get("/", cache(150), CategoryController.getAll);
+router.get("/get/User/:id", UserController.getUseData);
 router.get("/get/newOrders", AdminController.getNew);
 router.get("/:subcategory", cache(150), CategoryController.getProducts);
 router.get("/product/show/:id", cache(150), ProductController.getOne);

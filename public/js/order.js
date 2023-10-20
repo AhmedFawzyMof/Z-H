@@ -201,6 +201,24 @@ function getLoc() {
     fo.removeAttribute("readonly");
   }
 }
+
+async function autoFill() {
+  const Token = localStorage.getItem("Token");
+  if (Token !== "noToken") {
+    var st = document.getElementById("st");
+    var bu = document.getElementById("bu");
+    var fo = document.getElementById("fo");
+    var ph = document.getElementById("ph");
+    const getUsersData = await fetch(`/get/User/${Token}`);
+    const res = await getUsersData.json();
+    st.value = res.user.street;
+    bu.value = res.user.building;
+    fo.value = res.user.floor;
+    ph.value = res.user.phone;
+    console.log(res);
+  }
+}
+autoFill();
 window.addEventListener("pageshow", function (event) {
   var historyTraversal =
     event.persisted ||
