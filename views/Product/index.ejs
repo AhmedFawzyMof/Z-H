@@ -17,7 +17,7 @@
     <div id="errmsg"></div>
     <div class="container">
       <% if (products.length > 0) { %> <% for(let i = 0; i < products.length;
-      i++) { %>
+      i++) { %> <% if(products[i].hidden == 0) { %>
       <div class="Product" id="<%= products[i].id %>">
         <% if (products[i].available) { %>
         <input type="hidden" id="id" value="<%=products[i].id%>" />
@@ -66,7 +66,7 @@
           </div>
         </a>
       </div>
-      <% } %>
+      <% } %> <% } %>
     </div>
     <script src="/js/product.js"></script>
     <script>
