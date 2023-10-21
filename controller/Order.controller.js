@@ -254,18 +254,29 @@ const controller = {
     });
   },
   editPaid: async (req, res) => {
-    const { id, isPaid, total, user, method } = req.body;
-    const withoutShiping = total - 20;
-    const backCash = Math.floor(withoutShiping * 0.02);
+    const { id, isPaid, user, method } = req.body;
+    let total = 0;
+
     const [rows, fields] = await promisePool.query(
       "UPDATE `Orders` SET `paid` = ? WHERE `Orders`.`id` = ?",
       [isPaid, id]
     );
-    if (method !== "cashback") {
-      const [rows, fields] = await promisePool.query(
-        "UPDATE Users SET cashback=cashback+? WHERE id=?",
-        [backCash, user]
-      );
+
+    const [products, _] = await promisePool.query(
+      "SELECT Products.price, OrderProducts.product, OrderProducts.quantity FROM OrderProducts INNER JOIN Products ON product = Products.id WHERE `order` = ?",
+      [id]
+    );
+    if (isPaid === "1") {
+      products.forEach((products) => {
+        total += products.price;
+      });
+      const backCash = Math.floor(total * 0.02);
+      if (method !== "cashback") {
+        const [rows, fields] = await promisePool.query(
+          "UPDATE Users SET cashback=cashback+? WHERE id=?",
+          [backCash, user]
+        );
+      }
     }
 
     res.send(
