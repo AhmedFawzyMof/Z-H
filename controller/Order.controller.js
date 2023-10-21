@@ -191,38 +191,39 @@ const controller = {
       "SELECT * FROM `Orders` WHERE user = ?",
       [userId]
     );
-    const orders_id = r2.map((or) => {
-      return or.id;
-    });
-    const [r3, _] = await promisePool.query(
-      "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
-      [orders_id]
-    );
+    if (r2.length > 0) {
+      const orders_id = r2.map((or) => {
+        return or.id;
+      });
+      const [r3, _] = await promisePool.query(
+        "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+        [orders_id]
+      );
 
-    r2.forEach((order) => {
-      let total = 0;
-      Object.assign(order, { cart: [], total: total });
+      r2.forEach((order) => {
+        let total = 0;
+        Object.assign(order, { cart: [], total: total });
 
-      r3.forEach((ord) => {
-        if (ord.order === order.id) {
-          order.cart.push(ord);
-          return order;
+        r3.forEach((ord) => {
+          if (ord.order === order.id) {
+            order.cart.push(ord);
+            return order;
+          }
+        });
+        total = order.cart.reduce((arr, cur) => {
+          return arr + cur.price * cur.quantity;
+        }, 0);
+        if (JSON.parse(order.discount).value > 0) {
+          total -= JSON.parse(order.discount).value;
+        }
+        if (order.city == "الشروق" && order.where == "المنزل") {
+          total += 20;
+        }
+        if (order.city !== "الشروق") {
+          total += 40;
         }
       });
-      total = order.cart.reduce((arr, cur) => {
-        return arr + cur.price * cur.quantity;
-      }, 0);
-      if (JSON.parse(order.discount).value > 0) {
-        total -= JSON.parse(order.discount).value;
-      }
-      if (order.city == "الشروق" && order.where == "المنزل") {
-        total += 20;
-      }
-      if (order.city !== "الشروق") {
-        total += 40;
-      }
-    });
-
+    }
     res.render("Checkout/orderhistory", {
       orders: r2,
       name: r1[0],
