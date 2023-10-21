@@ -430,6 +430,20 @@ const controller = {
         `);
     }
   },
+  check: async (req, res) => {
+    const data = req.body;
+    const products = [];
+    data.forEach((da) => {
+      products.push(da.id);
+    });
+    const [isItAva, _] = await promisePool.query(
+      "SELECT available, id FROM Products WHERE id IN (?) AND available = 0",
+      [products]
+    );
+    res.json({
+      isItAva,
+    });
+  },
 };
 
 module.exports = controller;

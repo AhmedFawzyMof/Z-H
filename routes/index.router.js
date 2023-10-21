@@ -24,6 +24,7 @@ router.get("/pay/info/creditcard_on_delivery", OrderController.getCreditCard);
 router.get("/pay/info/cashback/:user", OrderController.getCashBack);
 router.get("/users/info/terms", UserController.getTerms);
 router.get("/users/info/delete", UserController.getDelUser);
+router.post("/check/products", ProductController.check);
 // router.get("/pay/info/credit_card", OrderController.getCreditCard);
 router.get("/pay/info/success", OrderController.getSuccess);
 router.get("/user/info/admin/:admin", AdminController.getAdmin);

@@ -84,6 +84,27 @@ function Items() {
   Container.innerHTML = ItemsInCart;
   return true;
 }
+async function checkForP() {
+  const chekIfProductAvalabil = await fetch("/check/products", {
+    method: "post",
+    headers: new Headers({ "content-type": "application/json" }),
+    body: JSON.stringify(cart),
+  });
+  const res = await chekIfProductAvalabil.json();
+  const products = res.isItAva;
+  for (let i = 0; i < products.length; i++) {
+    const product_id = products[i].id;
+    var newCart = [];
+    for (var j = 0; j < cart.length; j++) {
+      if (parseInt(cart[j].id) !== product_id) {
+        newCart.push(cart[j]);
+      }
+    }
+    localStorage.setItem("cart", JSON.stringify(newCart));
+
+    location.reload();
+  }
+}
 
 function removeItemFormCart(productId) {
   var newCart = [];
