@@ -357,94 +357,62 @@ const controller = {
     }
   },
   getTotalSales: async (req, res) => {
-    // const token = req.params.admin;
-    // const [rows, fields] = await promisePool.query(
-    //   "SELECT Admin,Stuff,id FROM Users WHERE id=?;",
-    //   [token]
-    // );
-    // const [orders, _] = await promisePool.query(
-    //   "SELECT `where`,`total`,`cart`,`city`, `discount` FROM `Orders` WHERE date > '2023-10-6' AND delivered = 1"
-    // );
-    // let [product, __] = await promisePool.query(
-    //   "SELECT `id`,`name`,`price`,`compony`,`buingPrice` FROM `Products`"
-    // );
-    // const sum = orders.reduce((p, c) => {
-    //   const Far3 = () => {
-    //     if (c.where === "الفرع") {
-    //       return p + c.total;
-    //     }
-    //     if (c.city !== "الشروق") {
-    //       return p + c.total - 40;
-    //     } else {
-    //       return p + c.total - 20;
-    //     }
-    //   };
-    //   return Far3();
-    // }, 0);
-    // let discounts = 0;
-    // const productSales = [];
-    // orders.forEach((order) => {
-    //   if (JSON.parse(order.discount).code !== "") {
-    //     const code = JSON.parse(order.discount);
-    //     discounts += code.value;
-    //   }
-    //   order.cart.forEach((pro) => {
-    //     product.forEach((p) => {
-    //       if (pro.id == p.id) {
-    //         Object.assign(p, { quantity: [pro.quantity] });
-    //         productSales.push(p);
-    //       }
-    //     });
-    //   });
-    // });
-    // const unique = [];
-    // for (const item of productSales) {
-    //   const isDuplicate = unique.find((obj) => obj.id === item.id);
-    //   if (!isDuplicate) {
-    //     unique.push(item);
-    //   } else {
-    //     item.quantity.push(isDuplicate.quantity[0]);
-    //   }
-    // }
-    // unique.sort(function (a, b) {
-    //   return a.compony.localeCompare(b.compony, ["ar"]);
-    // });
-    // unique.forEach((p) => {
-    //   const quantity = p.quantity.reduce((acc, curr) => {
-    //     return acc + curr;
-    //   }, 0);
-    //   let safy = 0;
-    //   if (p.buingPrice !== null) {
-    //     safy = p.price - p.buingPrice;
-    //   }
-    //   Object.assign(p, { total: safy * quantity });
-    // });
-    // let profit = 0;
-    // unique.forEach((p) => {
-    //   profit += p.total;
-    // });
-    // let totalSales = 0;
-    // unique.forEach((product) => {
-    //   const quantity = product.quantity.reduce((acc, curr) => {
-    //     return acc + curr;
-    //   }, 0);
-    //   totalSales += product.price * quantity;
-    // });
-    // if (rows[0].Admin == 1) {
-    //   res.render("admin/totalSales/index.ejs", {
-    //     orderslen: orders.length,
-    //     total: sum,
-    //     totalS: profit,
-    //     totalSales: totalSales,
-    //     discounts: discounts,
-    //     product: unique,
-    //   });
-    // } else if (rows[0].Stuff == 1) {
-    //   res.redirect("/admin/panle/orders/" + row1.id);
-    // } else {
-    //   res.redirect("/");
-    // }
+    const token = req.params.admin;
+    const [rows, fields] = await promisePool.query(
+      "SELECT Admin,Stuff,id FROM Users WHERE id=?;",
+      [token]
+    );
+
+    const [ordersLen, _] = await promisePool.query(
+      "SELECT count(id) AS orders_len FROM zhmarket.Orders WHERE date > '2023-10-6' AND delivered = 1"
+    );
+
+    const [product, __] = await promisePool.query(
+      "SELECT Products.name, Products.price, Products.compony, Products.buingPrice, OrderProducts.product, SUM(OrderProducts.quantity) AS quantity, Orders.date FROM OrderProducts INNER JOIN Products ON OrderProducts.product = Products.id INNER JOIN Orders ON Orders.id = OrderProducts.order WHERE Orders.delivered = 1 AND Orders.date > '2023-10-6' GROUP BY Products.name ORDER BY quantity DESC"
+    );
+
+    const [discounts, ___] = await promisePool.query(
+      "SELECT discount FROM zhmarket.Orders"
+    );
+
+    let totalProfit = 0;
+    let totalDiscounts = 0;
+    let totalRevenues = 0;
+    let totalSales = 0;
+    let totalProducts = 0;
+
+    product.forEach((p) => {
+      totalSales += p.price * p.quantity;
+      totalProducts += parseInt(p.quantity);
+      if (p.buingPrice !== 0 && p.buingPrice !== null) {
+        totalProfit += (p.price - p.buingPrice) * p.quantity;
+      }
+    });
+
+    discounts.forEach((discount) => {
+      const disCount = JSON.parse(discount.discount);
+      if (disCount.value > 0) {
+        totalDiscounts += disCount.value;
+      }
+    });
+    totalRevenues = totalSales - totalDiscounts;
+    if (rows[0].Admin == 1) {
+      res.render("admin/totalSales/index.ejs", {
+        orderslen: ordersLen[0].orders_len,
+        totalRevenues: totalRevenues,
+        totalSales: totalSales,
+        totalDiscounts: totalDiscounts,
+        totalProfit: totalProfit.toFixed(2),
+        totalProducts: totalProducts,
+        product: product,
+      });
+    } else if (rows[0].Stuff == 1) {
+      res.redirect("/admin/panle/orders/" + row1.id);
+    } else {
+      res.redirect("/");
+    }
   },
+
   getNew: async (req, res) => {
     const [orders, _] = await promisePool.query(
       "SELECT * FROM `Orders` WHERE delivered = 0"

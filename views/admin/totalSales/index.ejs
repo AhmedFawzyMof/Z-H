@@ -10,6 +10,7 @@
       rel="stylesheet"
     />
   </head>
+
   <body>
     <div class="container">
       <div class="totalorders">
@@ -18,15 +19,19 @@
       </div>
       <div class="totalSales">
         <p>إجمالي الإيرادات:</p>
-        <p>ج<%= total %></p>
+        <p>ج<%= totalRevenues %></p>
       </div>
       <div class="totalSales">
         <p>المجموع:</p>
-        <p>ج<%= totalS %></p>
+        <p>ج<%= totalProfit %></p>
       </div>
       <div class="totalSales">
         <p>الخصومات:</p>
-        <p>ج<%= discounts %></p>
+        <p>ج<%= totalDiscounts %></p>
+      </div>
+      <div class="totalSales">
+        <p>عدد المنتجعات المباعة:</p>
+        <p><%= totalProducts %></p>
       </div>
       <div class="products">
         <div class="TH">
@@ -44,14 +49,12 @@
           <p><%=p.name%></p>
           <p><%=p.price%></p>
           <p><%= p.buingPrice %></p>
+          <p><%=p.quantity%></p>
+          <p><%= p.price * p.quantity %></p>
           <p>
-            <%=p.quantity.reduce((acc, curr) => { return acc + curr; }, 0);%>
+            <% if(p.buingPrice !== null && p.buingPrice !== 0 ) {%> <%=((p.price
+            - p.buingPrice) * p.quantity).toFixed(2) %> <% }else{ %> 0 <%}%>
           </p>
-          <p>
-            <%= p.price * p.quantity.reduce((acc, curr) => { return acc + curr;
-            }, 0); %>
-          </p>
-          <p><%= p.total %></p>
           <% }); %>
         </div>
         <div class="other">
