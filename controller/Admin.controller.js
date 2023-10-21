@@ -372,7 +372,7 @@ const controller = {
     );
 
     const [discounts, ___] = await promisePool.query(
-      "SELECT discount FROM zhmarket.Orders"
+      "SELECT discount FROM zhmarket.Orders WHERE date > '2023-10-6' AND delivered = 1"
     );
 
     let totalProfit = 0;
