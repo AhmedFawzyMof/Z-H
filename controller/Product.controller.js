@@ -130,9 +130,15 @@ const controller = {
           "SELECT coupons FROM `Users` WHERE id = ?",
           [JSON.parse(id)]
         );
-
         const coupons = rows[0].coupons;
-        let coupon = coupons.find((coupon) => coupon.code == code);
+
+        coupons.forEach((r) => {
+          delete r.index;
+        });
+
+        let coupon = coupons.find((coupon) => {
+          return coupon.code == code;
+        });
 
         const dis = { code: "", value: 0 };
         if (coupon !== undefined) {
@@ -436,12 +442,18 @@ const controller = {
     data.forEach((da) => {
       products.push(da.id);
     });
-    const [isItAva, _] = await promisePool.query(
-      "SELECT available, id FROM Products WHERE id IN (?) AND available = 0",
-      [products]
-    );
-    res.json({
-      isItAva,
+    if (products.length > 0) {
+      const [isItAva, _] = await promisePool.query(
+        "SELECT available, id FROM Products WHERE id IN (?) AND available = 0",
+        [products]
+      );
+
+      return res.json({
+        isItAva,
+      });
+    }
+    return res.json({
+      isItAva: [],
     });
   },
 };

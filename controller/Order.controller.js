@@ -54,7 +54,6 @@ async function checkUser(userdata) {
     return id;
   }
 }
-
 async function checkCoupons(discount, userId) {
   const disCount = JSON.parse(discount);
   const [user, _] = await promisePool.query(
@@ -62,11 +61,19 @@ async function checkCoupons(discount, userId) {
     [userId]
   );
   let TheCoupon;
-  TheCoupon = user[0].coupons.find((coupon, i) => {
-    Object.assign(coupon, { index: i });
-    return coupon.code === disCount.code;
+  user[0].coupons.forEach((coupon, i) => {
+    if (coupon.code === disCount.code) {
+      TheCoupon = coupon;
+      user[0].coupons.splice(i, 1);
+    }
   });
-
+  console.log(user[0].coupons, disCount);
+  if (TheCoupon !== undefined) {
+    const [updateuser, _] = await promisePool.query(
+      "UPDATE Users SET coupons=? WHERE id=?",
+      [JSON.stringify(user[0].coupons), userId]
+    );
+  }
   if (TheCoupon === undefined) {
     const [coupon, _] = await promisePool.query(
       "SELECT * FROM `Coupons` WHERE code=?",
@@ -79,15 +86,8 @@ async function checkCoupons(discount, userId) {
         [JSON.stringify(coupon[0].usersUsed.push(userId)), userId]
       );
     }
-  } else {
-    user[0].coupons.splice(TheCoupon.i, 1);
-    const [uodate, _] = await promisePool.query(
-      "UPDATE Users SET coupons=? WHERE id=?",
-      [JSON.stringify(user[0].coupons), userId]
-    );
   }
 }
-
 async function createOrder(orderdata) {
   const [order, _] = await promisePool.query(
     "INSERT INTO `Orders` (`id`, `user`, `delivered`, `paid`, `date`, `where`, `discount`, `city`, `method`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
@@ -110,7 +110,6 @@ async function createOrder(orderdata) {
   }
   return orderdata.id;
 }
-
 async function insertOrderProduct(products, orderId) {
   products.forEach(async (product) => {
     const [pro, _] = await promisePool.query(
