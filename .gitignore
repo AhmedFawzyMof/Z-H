@@ -3,5 +3,5 @@ node_modules
 package-lock.json
 payment.md
 gulpfile.js
-newV.txt
+babel.config.json
 2023-9.json
