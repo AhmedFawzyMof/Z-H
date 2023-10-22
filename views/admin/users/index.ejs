@@ -13,6 +13,16 @@
   </head>
   <body onload="">
     <div id="container">
+      <div class="searchForUser">
+        <form id="myForm">
+          البحث عن المستخدم
+          <input type="search" name="searchUser" />
+          <button type="submit" onclick="search()">
+            <i class="bx bx-search"></i>
+          </button>
+        </form>
+        <div id="result"></div>
+      </div>
       <div
         class="Users"
         style="
@@ -38,7 +48,13 @@
             </button>
           </form>
           <p>معرف المستخدم: <%=user.id.substr(24, 25)%></p>
-          <p>اسم المستخدم: <%=user.username%></p>
+          <p>اسم المستخدم: <%=user.name%></p>
+          <p>رقم الهاتف المستخدم: <%=user.phone%></p>
+          <p>هاتف احتياطي للمستخدم: <%=user.spare_phone%></p>
+          <p>رصيد كاش باك للمستخدم: <%=user.cashback%></p>
+          <p>
+            عنوان المستخدم:<%=user.street%>, <%=user.building%>, <%=user.floor%>
+          </p>
           <div class="manger">
             المستخدم مدير: <% if (user.Admin === 1) { %> نعم <% }else { %> ﻻ <%
             } %>
@@ -51,19 +67,8 @@
               <button type="submit">تغيير</button>
             </form>
           </div>
-          <p>البريد الالكتروني: <%=user.email%></p>
         </div>
         <% }) %>
-      </div>
-      <div class="searchForUser">
-        <form id="myForm">
-          البحث عن المستخدم
-          <input type="search" name="searchUser" />
-          <button type="submit" onclick="search()">
-            <i class="bx bx-search"></i>
-          </button>
-        </form>
-        <div id="result"></div>
       </div>
     </div>
     <br />

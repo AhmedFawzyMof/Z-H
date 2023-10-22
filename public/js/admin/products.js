@@ -72,7 +72,7 @@ myForm.addEventListener("submit", function (e) {
     });
 });
 function ordersL(data) {
-  const Container = document.getElementById("result");
+  const Container = document.querySelector(".products");
 
   Container.innerHTML = data;
 }

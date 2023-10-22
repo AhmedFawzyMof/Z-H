@@ -21,7 +21,7 @@ function search() {
       });
   });
   function usersL(data) {
-    const Container = document.getElementById("result");
+    const Container = document.querySelector(".Users");
 
     Container.innerHTML = data;
   }

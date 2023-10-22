@@ -433,8 +433,8 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + Searchquery + "%";
       const [rows, fields] = await promisePool.query(
-        `SELECT * FROM Users WHERE email LIKE ?`,
-        [search]
+        `SELECT * FROM Users WHERE id LIKE ? OR phone LIKE ?`,
+        [search, search]
       );
       function manger(user) {
         if (user.Admin === 1) {
@@ -452,7 +452,15 @@ const controller = {
                       <button class='delete' type='submit'><i class='bx bx-trash'></i></button>
                     </form>
                     <p>معرف المستخدم: ${user.id.substr(24, 25)}</p>
-                    <p>اسم المستخدم: ${user.username}</p>
+                    <p>اسم المستخدم: ${user.name}</p>
+                    <p>رقم الهاتف المستخدم: ${user.phone}</p>
+                    <p>هاتف احتياطي للمستخدم: ${user.spare_phone}</p>
+                    <p>رصيد كاش باك للمستخدم: ${user.cashback}</p>
+                    <p>
+                      عنوان المستخدم:${user.street}, ${user.building}, ${
+            user.floor
+          }
+                    </p>
                     <div class='manger'>المستخدم مدير: ${manger(user)} 
                     <form action='/edit/user' method='post'>
                     <input type='hidden' name='id' value='${user.id}'/>
@@ -463,7 +471,6 @@ const controller = {
                     <button type='submit'>تغيير</button>
                   </form>
                   </div>
-                    <p>البريد الالكتروني: ${user.email}</p>
                   </div>`;
         })
         .join("");
@@ -576,11 +583,44 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
       const [rows, fields] = await promisePool.query(
-        "SELECT Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, User.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE id LIKE ?",
+        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ?",
         [search]
       );
 
-      console.log(rows[0].cart);
+      const OrdersIds = [];
+
+      rows.forEach((orderId) => {
+        OrdersIds.push(orderId.id);
+      });
+
+      const [products, _] = await promisePool.query(
+        "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+        [OrdersIds]
+      );
+      rows.forEach((order) => {
+        let total = 0;
+        Object.assign(order, { cart: [] });
+
+        products.forEach((ord) => {
+          if (ord.order === order.id) {
+            order.cart.push(ord);
+            return order;
+          }
+        });
+        total = order.cart.reduce((arr, cur) => {
+          return arr + cur.price * cur.quantity;
+        }, 0);
+        if (JSON.parse(order.discount).value > 0) {
+          total -= JSON.parse(order.discount).value;
+        }
+        if (order.city == "الشروق" && order.where == "المنزل") {
+          total += 20;
+        }
+        if (order.city !== "الشروق") {
+          total += 40;
+        }
+        Object.assign(order, { total: total });
+      });
 
       const mappedItems = rows
         .map((order, index) => {
@@ -622,10 +662,10 @@ const controller = {
                       </form>
                       <p>معرف الطلب: ${order.id.substr(24, 25)}</p>
                       <p>تاريخ الطلب: ${order.date}</p>
-                      <p>شارع: ${order.addrSt}</p>
-                      <p>عماره: ${order.addrB}</p>
-                      <p>طابق: ${order.addrF}</p>
-                      <p>المستخدم: ${order.email}</p>
+                      <p>شارع: ${order.street}</p>
+                      <p>عماره: ${order.building}</p>
+                      <p>طابق: ${order.floor}</p>
+                      <p>المستخدم: ${order.name}</p>
                       <p>رقم الهاتف:  ${order.phone}</p>
                       <p>هاتف احتياطي: ${order.spare_phone}</p>
                       <p>المجموع: ${order.total} ج</p>

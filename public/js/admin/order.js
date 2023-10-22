@@ -20,7 +20,7 @@ function search() {
       });
   });
   function ordersL(data) {
-    const Container = document.getElementById("result");
+    const Container = document.getElementById("container");
 
     Container.innerHTML = data;
   }

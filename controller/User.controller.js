@@ -17,9 +17,6 @@ const controller = {
         </script>
       `
     );
-    os.cpuUsage(function (v) {
-      console.log("CPU USAGE (%): " + v);
-    });
   },
   about: (req, res) => {
     res.render("about");
@@ -40,9 +37,6 @@ const controller = {
         <script>
         location.replace('/info/contact_us/success')
         </script>`);
-    os.cpuUsage(function (v) {
-      console.log("CPU USAGE (%): " + v);
-    });
   },
   contact_success: (req, res) => {
     res.render("contact_success");
@@ -86,9 +80,6 @@ const controller = {
     );
     res.render("User/coupon", {
       coupons: rows,
-    });
-    os.cpuUsage(function (v) {
-      console.log("CPU USAGE (%): " + v);
     });
   },
   getTerms: (req, res) => {
