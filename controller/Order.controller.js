@@ -270,7 +270,7 @@ const controller = {
       products.forEach((products) => {
         total += products.price;
       });
-      const backCash = Math.floor(total * 0.02);
+      const backCash = Math.floor(total * 0.01);
       if (method !== "cashback") {
         const [rows, fields] = await promisePool.query(
           "UPDATE Users SET cashback=cashback+? WHERE id=?",
