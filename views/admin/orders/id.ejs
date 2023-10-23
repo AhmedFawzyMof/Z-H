@@ -42,7 +42,7 @@
       style="display: grid; place-content: center; place-items: center"
     >
       <div class="orderRec" style="position: relative">
-        <img src="/img/print.jpeg" style="width: 100%" />
+        <img src="/img/فل.jpg" style="width: 100%; height: 225px;" />
         <p>رقم الطلب : <%=order.id.substr(24, 25)%></p>
 
         <div
@@ -493,8 +493,10 @@
             <p>القيمة: <%= JSON.parse(order.discount).value %></p>
           </div>
         </div>
-        <img style="width: 100%; height: 125px;" src="/img/pla.png">
-        <p>جزء من كل طلب هتطلبه يهروح  لبنك الطعام المصري لصالح الشعب الفلسطيني</p>
+        <div class="pla" style="width: 100%; display: grid; place-items: center;">
+          <img style="width: 60%; height: 100px;" src="/img/pla.png">
+        </div>    
+        <p style="font-weight: 700;">جزء من كل طلب هتطلبه يهروح  لبنك الطعام المصري لصالح الشعب الفلسطيني</p>
         <% } %>
       </div>
     </div>
