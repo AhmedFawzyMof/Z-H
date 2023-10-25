@@ -67,13 +67,13 @@ async function checkCoupons(discount, userId) {
       user[0].coupons.splice(i, 1);
     }
   });
-  console.log(user[0].coupons, disCount);
   if (TheCoupon !== undefined) {
     const [updateuser, _] = await promisePool.query(
       "UPDATE Users SET coupons=? WHERE id=?",
       [JSON.stringify(user[0].coupons), userId]
     );
   }
+  TheCoupon = disCount;
   if (TheCoupon === undefined) {
     const [coupon, _] = await promisePool.query(
       "SELECT * FROM `Coupons` WHERE code=?",

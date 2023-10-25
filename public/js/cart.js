@@ -485,10 +485,14 @@ function CalContainer() {
     for (var i = 0; i < cart.length; i++) {
       total += cart[i].price * cart[i].quantity;
     }
-    if (disCount.value >= total) {
-      return total;
-    } else if (disCount.value !== 0) {
-      return total - disCount.value;
+    if (disCount.code !== "الكيان الملكي") {
+      if (disCount.value >= total) {
+        return total;
+      } else if (disCount.value !== 0) {
+        return total - disCount.value;
+      } else {
+        return total;
+      }
     } else {
       return total;
     }
