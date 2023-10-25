@@ -34,7 +34,7 @@ async function checkUser(userdata) {
     const coupons = [
       { code: "13102019", value: 10 },
       { code: "80402002", value: 15 },
-      { code: "29072002", value: 20 },
+      { code: "دعم فلسطين", value: 0 },
     ];
     const [insert, _] = await promisePool.query(
       "INSERT INTO `Users` (`id`, `name`, `phone`, `Admin`, `Stuff`, `coupons`, `spare_phone`, `street`, `building`, `floor`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
