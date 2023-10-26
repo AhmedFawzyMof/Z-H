@@ -168,6 +168,8 @@ const controller = {
           Thecoupon[0].usersUsed.forEach((user) => {
             if (user === JSON.parse(id)) {
               used = true;
+            } else {
+              Thecoupon[0].usersUsed.push(JSON.parse(id));
             }
           });
         } else {
