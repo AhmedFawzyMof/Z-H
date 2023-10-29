@@ -105,7 +105,7 @@ async function createOrder(orderdata) {
   );
   if (orderdata.method === "cashback") {
     const [data, _] = await promisePool.query(
-      `UPDATE Users SET cashback=cashback-${amount} WHERE id ='${user}' `
+      `UPDATE Users SET cashback=cashback-${parseInt(orderdata.amount)} WHERE id ='${orderdata.user}' `
     );
   }
   return orderdata.id;
@@ -134,6 +134,7 @@ const controller = {
       user,
       cart,
       discount,
+      amount,
     } = req.body;
     let token;
     if (user === "noToken") {
@@ -160,6 +161,7 @@ const controller = {
       discount: discount,
       city: city,
       method: method,
+      amount: amount
     };
     if (JSON.parse(discount).code !== "") {
       await checkCoupons(discount, token);
