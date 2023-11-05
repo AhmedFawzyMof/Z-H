@@ -579,13 +579,13 @@ const controller = {
   },
   searchOrders: async (req, res) => {
     const Searchquery = req.body.searchUser;
-
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
       const [rows, fields] = await promisePool.query(
-        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ?",
-        [search]
+        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ? OR Orders.date LIKE ?",
+        [search, search]
       );
+console.log(rows)
 
       const OrdersIds = [];
 
