@@ -364,11 +364,11 @@ const controller = {
     );
 
     const [ordersLen, _] = await promisePool.query(
-      "SELECT count(id) AS orders_len FROM zhmarket.Orders WHERE date > '2023-10-6' AND delivered = 1"
+      "SELECT count(id) AS orders_len FROM zhmarket.Orders WHERE date > '2023-11-6' AND delivered = 1"
     );
 
     const [product, __] = await promisePool.query(
-      "SELECT Products.name, Products.price, Products.compony, Products.buingPrice, OrderProducts.product, SUM(OrderProducts.quantity) AS quantity, Orders.date FROM OrderProducts INNER JOIN Products ON OrderProducts.product = Products.id INNER JOIN Orders ON Orders.id = OrderProducts.order WHERE Orders.delivered = 1 AND Orders.date > '2023-10-6' GROUP BY Products.name ORDER BY quantity DESC"
+      "SELECT Products.name, Products.price, Products.compony, Products.buingPrice, OrderProducts.product, SUM(OrderProducts.quantity) AS quantity, Orders.date FROM OrderProducts INNER JOIN Products ON OrderProducts.product = Products.id INNER JOIN Orders ON Orders.id = OrderProducts.order WHERE Orders.delivered = 1 AND Orders.date > '2023-11-6' GROUP BY Products.name ORDER BY quantity DESC"
     );
 
     const [discounts, ___] = await promisePool.query(
