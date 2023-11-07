@@ -850,5 +850,3 @@ const controller = {
 };
 
 module.exports = controller;
-
-// بلاك فرايدي
