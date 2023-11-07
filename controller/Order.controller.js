@@ -105,7 +105,9 @@ async function createOrder(orderdata) {
   );
   if (orderdata.method === "cashback") {
     const [data, _] = await promisePool.query(
-      `UPDATE Users SET cashback=cashback-${parseInt(orderdata.amount)} WHERE id ='${orderdata.user}' `
+      `UPDATE Users SET cashback=cashback-${parseInt(
+        orderdata.amount
+      )} WHERE id ='${orderdata.user}' `
     );
   }
   return orderdata.id;
@@ -161,7 +163,7 @@ const controller = {
       discount: discount,
       city: city,
       method: method,
-      amount: amount
+      amount: amount,
     };
     if (JSON.parse(discount).code !== "") {
       await checkCoupons(discount, token);
@@ -296,9 +298,6 @@ const controller = {
   getCreditCard: (req, res) => {
     res.render("Checkout/credit-card");
   },
-  getCreditCard: (req, res) => {
-    res.render("Checkout/credit-card");
-  },
   getCashBack: async (req, res) => {
     const user = req.params.user;
     const [rows, fields] = await promisePool.query(
@@ -306,6 +305,71 @@ const controller = {
       [user]
     );
     res.render("Checkout/cashback", { cashback: rows[0].cashback });
+  },
+  editOrder: async (req, res) => {
+    const {
+      admin,
+      userId,
+      orderId,
+      opid,
+      productId,
+      quantity,
+      productAdd,
+      quantityAdd,
+    } = req.body;
+    if (
+      admin == "d0c233f5-2900-4ae8-88fd-50975e92c6b1" ||
+      admin == "f08b373f-b416-46c1-9f17-bee858d8765e"
+    ) {
+      if (typeof productId == "object") {
+        let values = "";
+        productId.forEach((p, i) => {
+          if (i == 0) {
+            values += `(${opid[i]}, ${p}, '${orderId}', ${quantity[i]})`;
+          } else {
+            values += `,(${opid[i]}, ${p}, '${orderId}', ${quantity[i]})`;
+          }
+        });
+        let stmt =
+          "INSERT INTO OrderProducts (id, product,`order`, quantity) VALUES ? ON DUPLICATE KEY UPDATE product=VALUES(product),`order`=VALUES(`order`), quantity=VALUES(quantity)";
+        const sql = stmt.replace("?", values);
+        const [edit, _] = await promisePool.query(sql);
+      } else if (productId != "") {
+        const [edit, _] = await promisePool.query(
+          "UPDATE OrderProducts SET product=?, `order`=?, quantity=? WHERE id =?",
+          [productId, orderId, quantity, opid]
+        );
+      }
+      // if (userId != "") {
+      //   const [edit, _] = await promisePool.query(
+      //     "UPDATE Orders SET user=? WHERE id=?",
+      //     [userId, orderId]
+      //   );
+      // }
+      if (productAdd != "") {
+        const [add, _] = await promisePool.query(
+          "INSERT INTO OrderProducts (product, `order`, quantity) VALUES (?, ?, ?)",
+          [productAdd, orderId, quantityAdd]
+        );
+      }
+      res.send(
+        `
+        <script>
+          window.history.back();
+          location.reload()
+        </script>
+      `
+      );
+    } else {
+      res.send(
+        `
+        <script>
+          window.history.back();
+          location.reload()
+        </script>
+      `
+      );
+    }
   },
 };
 

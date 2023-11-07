@@ -25,7 +25,10 @@
     <div id="container">
       <% if (orders.length > 0){ %> <% orders.forEach((order, index) => { %>
 
-      <div class="orderRec" key="<%= index %>">
+      <div class="orderRec" id="<%= index %>">
+        <button class="editBtn" onclick="editorder('<%=order.id%>')">
+          <i class="bx bxs-edit-alt"></i>
+        </button>
         <div class="icons">
           <form action="/delete/order" method="post">
             <input
@@ -64,7 +67,38 @@
         <p>رقم الهاتف: <%=order.phone%></p>
         <p>هاتف احتياطي: <%=order.spare_phone%></p>
         <p>المجموع: <%=order.total %> ج</p>
-
+        <div class="editDiv" id="<%=order.id%>">
+          <form action="/edit/order" method="post">
+            <input type="hidden" name="admin" id="admin" />
+            <div class="input">
+              <label>معرف المستخدم</label>
+              <input type="text" name="userId" value="<%=order.user%>" />
+            </div>
+            <input type="hidden" name="orderId" value="<%=order.id%>" />
+            <h2>تعديل المنتجات</h2>
+            <% order.cart.forEach(item => { %>
+            <input type="hidden" name="opid" value="<%=item.opId%>" />
+            <div class="input">
+              <label>معرف المنتج</label>
+              <input type="number" name="productId" value="<%=item.product%>" />
+            </div>
+            <div class="input">
+              <label>الكمية</label>
+              <input type="number" name="quantity" value="<%=item.quantity%>" />
+            </div>
+            <% }) %>
+            <h2>إضافة المنتجات</h2>
+            <div class="input">
+              <label>معرف المنتج</label>
+              <input type="number" name="productAdd" />
+            </div>
+            <div class="input">
+              <label>الكمية</label>
+              <input type="number" name="quantityAdd" />
+            </div>
+            <button type="submit">تعديل</button>
+          </form>
+        </div>
         <% order.cart.forEach(item => { %>
         <div class="orderitem">
           <img src="<%= item.image %>" alt="<%= item.name %>" />
@@ -131,6 +165,21 @@
       </a>
       <% } %>
     </div>
+
     <script src="/js/admin/order.js"></script>
+    <script>
+      function editorder(orderid) {
+        const editForm = document.getElementById(orderid);
+        const adminvalue = editForm.querySelector("#admin");
+        adminvalue.value = localStorage.getItem("Token");
+        console.log(adminvalue.value);
+        editForm.classList.toggle("active");
+        if (editForm.classList.contains("active")) {
+          editForm.style.display = "block";
+        } else {
+          editForm.style.display = "none";
+        }
+      }
+    </script>
   </body>
 </html>

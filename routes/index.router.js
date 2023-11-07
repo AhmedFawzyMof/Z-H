@@ -75,6 +75,7 @@ router.post("/delete/fav", ProductController.deleteFav);
 router.post("/edit/user", UserController.editManger);
 router.post("/edit/order/delivered", OrderController.editDelivered);
 router.post("/edit/order/paid", OrderController.editPaid);
+router.post("/edit/order", OrderController.editOrder);
 router.post("/edit/category", CategoryController.editCategory);
 router.post("/edit/subcategory", SubcategoryController.editSubcategory);
 router.post("/edit/product", ProductController.editProduct);

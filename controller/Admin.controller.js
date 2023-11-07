@@ -90,7 +90,7 @@ const controller = {
         }
         const startingLimit = (page - 1) * resultsPerPage;
         const [sql, fields1] = await promisePool.query(
-          "SELECT `Orders`.`id`, `Orders`.`user`, `Orders`.`delivered`, `Orders`.`paid`, `Orders`.`date`, `Orders`.`where`, `Orders`.`discount`, `Orders`.`city`, `Orders`.`method`, `Users`.`name`, `Users`.`phone`, `Users`.`spare_phone`, `Users`.`street`, `Users`.`building`, `Users`.`floor` FROM `Orders` INNER JOIN `Users` ON `Orders`.`user` = `Users`.`id`  WHERE `date` > '2023-10-6' ORDER BY `delivered` ASC LIMIT ?,?",
+          "SELECT `Orders`.`id`, `Orders`.`user`, `Orders`.`delivered`, `Orders`.`paid`, `Orders`.`date`, `Orders`.`where`, `Orders`.`discount`, `Orders`.`city`, `Orders`.`method`, `Users`.`name`, `Users`.`phone`, `Users`.`spare_phone`, `Users`.`street`, `Users`.`building`, `Users`.`floor` FROM `Orders` INNER JOIN `Users` ON `Orders`.`user` = `Users`.`id`  WHERE `date` > '2023-11-7' ORDER BY `delivered` ASC LIMIT ?,?",
           [startingLimit, resultsPerPage]
         );
 
@@ -101,7 +101,7 @@ const controller = {
         });
 
         const [products, _] = await promisePool.query(
-          "SELECT OrderProducts.product, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
+          "SELECT OrderProducts.product, OrderProducts.id AS opId, OrderProducts.quantity, OrderProducts.`order`, Products.name, Products.image, Products.price  FROM OrderProducts INNER JOIN Products ON OrderProducts.product=Products.id  WHERE `order` IN (?)",
           [OrdersIds]
         );
         sql.forEach((order) => {
@@ -432,8 +432,8 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + Searchquery + "%";
       const [rows, fields] = await promisePool.query(
-        `SELECT * FROM Users WHERE id LIKE ? OR phone LIKE ? OR name ?`,
-        [search, search]
+        `SELECT * FROM Users WHERE id LIKE ? OR phone LIKE ? OR name LIKE ? OR Admin = 1`,
+        [search, search, search]
       );
       function manger(user) {
         if (user.Admin === 1) {
