@@ -364,15 +364,15 @@ const controller = {
     );
 
     const [ordersLen, _] = await promisePool.query(
-      "SELECT count(id) AS orders_len FROM zhmarket.Orders WHERE date > '2023-11-6' AND delivered = 1"
+      "SELECT count(id) AS orders_len FROM zhmarket.Orders WHERE date > '2023-11-7' AND delivered = 1"
     );
 
     const [product, __] = await promisePool.query(
-      "SELECT Products.name, Products.price, Products.compony, Products.buingPrice, OrderProducts.product, SUM(OrderProducts.quantity) AS quantity, Orders.date FROM OrderProducts INNER JOIN Products ON OrderProducts.product = Products.id INNER JOIN Orders ON Orders.id = OrderProducts.order WHERE Orders.delivered = 1 AND Orders.date > '2023-11-6' GROUP BY Products.name ORDER BY quantity DESC"
+      "SELECT Products.name, Products.price, Products.compony, Products.buingPrice, OrderProducts.product, SUM(OrderProducts.quantity) AS quantity, Orders.date FROM OrderProducts INNER JOIN Products ON OrderProducts.product = Products.id INNER JOIN Orders ON Orders.id = OrderProducts.order WHERE Orders.delivered = 1 AND Orders.date > '2023-11-7' GROUP BY Products.name ORDER BY quantity DESC"
     );
 
     const [discounts, ___] = await promisePool.query(
-      "SELECT discount FROM zhmarket.Orders WHERE date > '2023-11-6' AND delivered = 1"
+      "SELECT discount FROM zhmarket.Orders WHERE date > '2023-11-7' AND delivered = 1"
     );
 
     let totalProfit = 0;
@@ -432,7 +432,7 @@ const controller = {
     if (Searchquery !== "") {
       const search = "%" + Searchquery + "%";
       const [rows, fields] = await promisePool.query(
-        `SELECT * FROM Users WHERE id LIKE ? OR phone LIKE ?`,
+        `SELECT * FROM Users WHERE id LIKE ? OR phone LIKE ? OR name ?`,
         [search, search]
       );
       function manger(user) {
@@ -580,11 +580,12 @@ const controller = {
     const Searchquery = req.body.searchUser;
     if (Searchquery !== "") {
       const search = "%" + `${Searchquery}` + "%";
+      const date = Searchquery;
+      console.log(date);
       const [rows, fields] = await promisePool.query(
-        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ? OR Orders.date LIKE ?",
-        [search, search]
+        "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ? OR Orders.date >= ? AND Orders.date < ? + INTERVAL 1 DAY",
+        [search, date, date]
       );
-      console.log(rows);
 
       const OrdersIds = [];
 
