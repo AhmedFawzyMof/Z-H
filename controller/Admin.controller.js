@@ -1,7 +1,7 @@
 const db = require("../db/index");
 const resultsPerPage = 25;
 const promisePool = db.promise();
-
+const fs = require("fs");
 const controller = {
   //! GET {
   getProducut: async (req, res) => {
@@ -372,7 +372,7 @@ const controller = {
     );
 
     const [discounts, ___] = await promisePool.query(
-      "SELECT discount FROM zhmarket.Orders WHERE date > '2023-10-6' AND delivered = 1"
+      "SELECT discount FROM zhmarket.Orders WHERE date > '2023-11-6' AND delivered = 1"
     );
 
     let totalProfit = 0;
@@ -412,7 +412,6 @@ const controller = {
       res.redirect("/");
     }
   },
-
   getNew: async (req, res) => {
     const [orders, _] = await promisePool.query(
       "SELECT * FROM `Orders` WHERE delivered = 0"
@@ -585,7 +584,7 @@ const controller = {
         "SELECT Orders.id, Orders.user, Orders.delivered, Orders.paid, Orders.date, Orders.where, Orders.discount, Orders.city, Orders.method, Users.name, Users.phone, Users.spare_phone, Users.street, Users.building, Users.floor FROM `Orders` INNER JOIN Users ON Orders.user = Users.id  WHERE Orders.id LIKE ? OR Orders.date LIKE ?",
         [search, search]
       );
-console.log(rows)
+      console.log(rows);
 
       const OrdersIds = [];
 
@@ -851,3 +850,5 @@ console.log(rows)
 };
 
 module.exports = controller;
+
+// بلاك فرايدي
