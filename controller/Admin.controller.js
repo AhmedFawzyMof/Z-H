@@ -485,8 +485,8 @@ const controller = {
     const search = "%" + Searchquery + "%";
 
     const [products, fields] = await promisePool.query(
-      `SELECT * FROM Products WHERE name LIKE ?`,
-      [search]
+      `SELECT * FROM Products WHERE name LIKE ? OR id = ?`,
+      [search, Searchquery]
     );
 
     const [categories, fields1] = await promisePool.query(
