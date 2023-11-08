@@ -23,37 +23,34 @@ const controller = {
   getProducts: async (req, res) => {
     const compony = req.params.subcategory;
     var Trows;
-    if (compony !== "بلاك فرايدي") {
-      const [rows, fields] = await promisePool.query(
-        "SELECT * FROM `Products` WHERE compony = ? ORDER BY available DESC",
-        [compony]
-      );
-      Trows = rows;
-    } else {
+    if (compony === "بلاك فرايداي") {
       const [rows, fields] = await promisePool.query(
         "SELECT * FROM `Products` WHERE compony = ? ORDER BY offer DESC",
         [compony]
       );
       Trows = rows;
+    } else {
+      const [rows, fields] = await promisePool.query(
+        "SELECT * FROM `Products` WHERE compony = ? ORDER BY available DESC",
+        [compony]
+      );
+      Trows = rows;
     }
+    console.log(compony);
     switch (Trows.length) {
       case 0:
         res.render("Product", {
           products: [],
           subcate: compony,
         });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
+
         break;
       default:
         res.render("Product", {
           products: Trows,
           subcate: compony,
         });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
+
         break;
     }
   },
@@ -74,9 +71,6 @@ const controller = {
           categories: categories,
         });
 
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
         break;
       default:
         products = rows[0];
@@ -87,9 +81,6 @@ const controller = {
           categories: categories,
         });
 
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
         break;
     }
   },

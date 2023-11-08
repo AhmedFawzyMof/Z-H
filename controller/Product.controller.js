@@ -386,16 +386,10 @@ const controller = {
           msg: "تم حفظ المنتج في قائمة المفضلة",
           length: lengthR[0].Length + 1,
         });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
       } else {
         res.json({
           success: 0,
           msg: "المنتج موجود بالفعل في المفضلة",
-        });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
         });
       }
     }

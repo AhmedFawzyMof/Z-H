@@ -54,16 +54,10 @@ const controller = {
           success: rows[0].coupons.length,
           Admin: rows[0].Admin,
         });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
-        });
       } else {
         res.json({
           success: 0,
           Admin: rows[0].Admin,
-        });
-        os.cpuUsage(function (v) {
-          console.log("CPU USAGE (%): " + v);
         });
       }
     } else {
