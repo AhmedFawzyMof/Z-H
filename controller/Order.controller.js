@@ -88,7 +88,7 @@ async function checkCoupons(discount, userId) {
         [JSON.stringify(coupon[0].usersUsed.push(userId)), userId]
       );
     } else {
-      TheCoupon = { code: "", value: 0 };
+     return TheCoupon = { code: "", value: 0 };
     }
   }
   return TheCoupon;
