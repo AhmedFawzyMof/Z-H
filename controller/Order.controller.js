@@ -350,12 +350,12 @@ const controller = {
           [productId, orderId, quantity, opid]
         );
       }
-      // if (userId != "") {
-      //   const [edit, _] = await promisePool.query(
-      //     "UPDATE Orders SET user=? WHERE id=?",
-      //     [userId, orderId]
-      //   );
-      // }
+      if (userId != "") {
+        const [edit, _] = await promisePool.query(
+          "UPDATE Orders SET user=? WHERE id=?",
+          [userId, orderId]
+        );
+      }
       if (productAdd != "") {
         const [add, _] = await promisePool.query(
           "INSERT INTO OrderProducts (product, `order`, quantity) VALUES (?, ?, ?)",
