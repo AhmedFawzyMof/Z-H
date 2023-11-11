@@ -56,6 +56,7 @@ async function checkUser(userdata) {
 }
 async function checkCoupons(discount, userId) {
   const disCount = JSON.parse(discount);
+
   const [user, _] = await promisePool.query(
     "SELECT coupons FROM Users WHERE id=?",
     [userId]
@@ -67,26 +68,30 @@ async function checkCoupons(discount, userId) {
       user[0].coupons.splice(i, 1);
     }
   });
+
   if (TheCoupon !== undefined) {
     const [updateuser, _] = await promisePool.query(
       "UPDATE Users SET coupons=? WHERE id=?",
       [JSON.stringify(user[0].coupons), userId]
     );
   }
-  TheCoupon = disCount;
   if (TheCoupon === undefined) {
     const [coupon, _] = await promisePool.query(
       "SELECT * FROM `Coupons` WHERE code=?",
-      [TheCoupon.code]
+      [disCount.code]
     );
 
     if (coupon.length > 0) {
+      TheCoupon = disCount;
       const [update, _] = await promisePool.query(
         "UPDATE Coupons SET usersUsed=? WHERE id=?",
         [JSON.stringify(coupon[0].usersUsed.push(userId)), userId]
       );
+    } else {
+      TheCoupon = { code: "", value: 0 };
     }
   }
+  return TheCoupon;
 }
 async function createOrder(orderdata) {
   const [order, _] = await promisePool.query(
@@ -153,16 +158,13 @@ const controller = {
     } else {
       const [update, _] = await promisePool.query(
         "UPDATE Users SET `phone`=?, `spare_phone`=?, `street`=?, `building`=?, `floor`=? WHERE id=?",
-        [
-          userdata.phone,
-          userdata.spare_phone,
-          userdata.street,
-          userdata.building,
-          userdata.floor,
-          user,
-        ]
+        [phone, phone2, addrSt, addrB, addrF, user]
       );
       token = user;
+    }
+    let Coupon;
+    if (JSON.parse(discount).code !== "") {
+      Coupon = await checkCoupons(discount, token);
     }
     const order = {
       id: uuidv4(),
@@ -171,26 +173,23 @@ const controller = {
       paid: 0,
       date: new Date(),
       where: where,
-      discount: discount,
+      discount: JSON.stringify(Coupon),
       city: city,
       method: method,
       amount: amount,
     };
-    // if (JSON.parse(discount).code !== "") {
-    //   await checkCoupons(discount, token);
-    // }
-    // const OrderId = await createOrder(order);
+    const OrderId = await createOrder(order);
 
-    // await insertOrderProduct(JSON.parse(cart), OrderId);
+    await insertOrderProduct(JSON.parse(cart), OrderId);
 
-    // res.send(`
-    //       <script>
-    //         localStorage.setItem("cart","[]")
-    //         localStorage.setItem("Token","${token}")
-    //         localStorage.removeItem("coupon")
-    //         localStorage.removeItem("disCount")
-    //         location.replace("/pay/info/success");
-    //       </script>`);
+    res.send(`
+          <script>
+            localStorage.setItem("cart","[]")
+            localStorage.setItem("Token","${token}")
+            localStorage.removeItem("coupon")
+            localStorage.removeItem("disCount")
+            location.replace("/pay/info/success");
+          </script>`);
   },
   getSuccess: (req, res) => {
     res.render("Checkout/success");
