@@ -14,20 +14,6 @@
   </head>
   <body onload="workingHour(),CartFunction(),cartLen()">
     <%- include('components/nav') %> <% if (offers.length > 0) { %>
-      <div class="message" style=" 
-        display: block;   
-        padding: 0 7px;
-        background: red;
-        display: flex;
-        color: #fff;
-        font-size: 15px;
-        font-weight: 700;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-    ">
-<p>التطبيق معطل لأجل بعض المشاكل الفنية</p>      
-</div>
       <div class="wrapper">
       <i id="left" class="bx bx-chevron-left"></i>
       <div class="carousel">
@@ -119,19 +105,6 @@ if (!localStorage.getItem("POPUP")) {
     localStorage.removeItem("noPOP");
   });
 }
-
-// function workingHour() {
-//   var hour = new Date().getHours();
-  
-//   if (hour >= 0 && hour <= 8) {
-//     var message = document.querySelector(".message");
-//     message.style.display = "flex";
-//   } else {
-//     var _message = document.querySelector(".message");
-//     _message.style.display = "none";
-//   }
-// }
-// workingHour()
     </script>
   </body>
 </html>
