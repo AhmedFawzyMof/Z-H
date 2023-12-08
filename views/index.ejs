@@ -12,7 +12,7 @@
     />
     <script src="/js/carousel.js" defer></script>
   </head>
-  <body onload="workingHour(),CartFunction(),cartLen()">
+  <body onload="workingHour(),cartLen()">
     <%- include('components/nav') %> <% if (offers.length > 0) { %>
       <div class="wrapper">
       <i id="left" class="bx bx-chevron-left"></i>
@@ -68,8 +68,7 @@
     <script>
       "use strict";
 
-function CartFunction() {
-  if (!localStorage.getItem("cart")) {
+ if (!localStorage.getItem("cart")) {
     localStorage.setItem("cart", "[]");
   }
   if (!localStorage.getItem("Token")) {
@@ -82,7 +81,7 @@ function CartFunction() {
   if (!localStorage.getItem("favlist")) {
     localStorage.setItem("favlist", "0");
   }
-}
+
 if (!localStorage.getItem("POPUP")) {
   var Div = document.createElement("div");
   var a = document.createElement("a");
