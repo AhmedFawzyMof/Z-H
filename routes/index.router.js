@@ -8,6 +8,8 @@ const OtherController = require("../controller/Other.controller");
 const OrderController = require("../controller/Orders.controller");
 const AdminController = require("../controller/Admin.controller");
 const CompanyController = require("../controller/Company.controller");
+const validate = require("../helper/Validate");
+
 //? GET {
 router.get("/", cache(150), CategoryController.GetAllCompanies);
 router.get("/get/newOrders", AdminController.getNew);
@@ -16,7 +18,7 @@ router.get("/product/show/:id", cache(150), ProductController.ProductById);
 router.get("/zh/feed/back", cache(150), OtherController.getfeedback);
 router.get("/cart/show/items", OtherController.getCart);
 router.get("/fav/show/:user", ProductController.GetFavourite);
-router.get("/zh/info/cashback/:user", UserController.CashBackBlance);
+router.get("/zh/info/cashback/:user", validate, Controller.CashBackBlance);
 router.get("/zh/info/about", OtherController.about);
 router.get("/zh/info/contact_us", OtherController.contactus);
 router.get("/pay/info/cash_on_delivery", OtherController.getCash);
@@ -38,7 +40,7 @@ router.get("/admin/panle/subcategorys/:admin", AdminController.getSubCategory);
 router.get("/admin/panle/orders/:admin", AdminController.getOrders);
 router.get("/info/contact_us/success", OtherController.contact_success);
 router.get("/order/info/admin/:admin/:order", AdminController.orderPage);
-router.get("/show/coupon/:user", UserController.UserCoupons);
+router.get("/show/coupon/:user", validate, UserController.UserCoupons);
 //? }
 //? POST {
 router.get("/contact", OtherController.contact);

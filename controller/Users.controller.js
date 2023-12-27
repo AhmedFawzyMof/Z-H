@@ -6,7 +6,7 @@ const controller = {
     const { id, isManger } = req.body;
     const [_, __] = await promisePool.query(
       "UPDATE `Users` SET `Admin` = ? WHERE `Users`.`id` = ?",
-      [isManger, id]
+      [isManger, id],
     );
     res.send(
       `
@@ -14,7 +14,7 @@ const controller = {
           window.history.back();
           location.reload()
         </script>
-      `
+      `,
     );
   },
   GetCoupons: async (req, res) => {
@@ -27,7 +27,7 @@ const controller = {
     }
     const [rows, fields] = await promisePool.query(
       "SELECT * FROM Users WHERE id = ?",
-      user
+      user,
     );
     const UsersCoupons = rows[0].coupons;
     const UsersAdmin = rows[0].Admin;
@@ -47,7 +47,7 @@ const controller = {
     const user = req.params.user;
     const [coupons, _] = await promisePool.query(
       "SELECT coupons FROM Users WHERE id=?;",
-      [user]
+      [user],
     );
     res.render("User/coupon", {
       coupons: coupons,
@@ -55,15 +55,10 @@ const controller = {
   },
   CashBackBlance: async (req, res) => {
     const user = req.params.user;
-    if (user == "noToken") {
-      res.json({
-        success: 0,
-      });
-      return;
-    }
+
     const [rows, fields] = await promisePool.query(
       "SELECT * FROM Users WHERE id = ?",
-      [user]
+      [user],
     );
     const CashBackBlance = rows[0].cashback;
     res.render("User/cashbackpoints", { cashback: CashBackBlance });
